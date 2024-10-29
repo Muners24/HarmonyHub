@@ -59,7 +59,7 @@ class Editor {
 
 }
 
-
+alert("ok");
 
 // Inicializa el Editor cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", () => {
