@@ -1,0 +1,53 @@
+<!-- mi_aplicacion/templates/mi_aplicacion/pentagrama.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vexflow/4.2.5/vexflow-min.js"
+      integrity="sha512-6TxXkXvDGlTfA/gxa+Odoa/so4d4/bjB6c5lgyZq8OVWqUVoDm2dC2PSI4g8Shlc2RZ6FnS1jh792Fo3HRINnw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    {% load static %}
+    <script src="{% static 'Scripts/Editor.js' %}" defer></script>
+    <script src="{% static 'Scripts/Compas.js' %}" defer></script>
+    <script src="{% static 'Scripts/Nota.js' %}" defer></script>
+    <script src="{% static 'Scripts/VexRec.js' %}" defer></script>
+
+    <style>
+      #toolbar {
+        display: flex;
+        gap: 10px;
+      }
+      .tool {
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+      }
+    </style>
+
+    <title>Pentagrama</title>
+  </head>
+
+  <body>
+    <p>{{ var }} asd ffasdf</p>
+
+    <div id="toolbar">
+      <div class="tool" data-action="action0">0</div>
+      <div class="tool" data-action="action1">1</div>
+      <div class="tool" data-action="action2">2</div>
+      <div class="tool" data-action="action3">3</div>
+      <div class="tool" data-action="action4">4</div>
+      <div class="tool" data-action="action5">5</div>
+      <div class="tool" data-action="action6">6</div>
+      <div class="tool" data-action="action7">7</div>
+      <div class="tool" data-action="action8">8</div>
+      <div class="tool" data-action="action9">9</div>
+    </div>
+
+    <div id="Editor"></div>
+  </body>
+</html>

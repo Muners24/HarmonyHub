@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Editor de Noteflight</title>
+    <script src="https://www.noteflight.com/clientapi/2.0.0/nfclient.js"></script>
+
+    <style>
+      body {
+        margin: 0; /* Elimina márgenes */
+        position: relative; /* Necesario para posicionar el div absolutamente */
+      }
+      #score1 {
+        position: absolute; /* Permite colocar el div en una posición específica */
+        top: 100px; /* Distancia desde la parte superior */
+        left: 100px; /* Distancia desde la izquierda */
+        border: 1px solid #ccc; /* Agrega un borde opcional */
+      }
+      
+      #overlay {
+        position: absolute; /* Para cubrir el div #score1 */
+        top: 100px; /* Debe coincidir con el top de #score1 */
+        left: 100px; /* Debe coincidir con el left de #score1 */
+        width: 901px; /* Ancho del overlay */
+        height: 50px; /* Alto del overlay */
+        background-color: rgba(255, 255, 255, 255); /* Color de fondo transparente */
+        pointer-events: auto; /* Permitir eventos en el overlay */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="score1"></div>
+    <div id="overlay"></div> <!-- Overlay para bloquear clics -->
+
+    <script>
+      NFClient.init()
+      
+      var options = {
+        width: 900,
+        height: 600,
+        viewParams: {
+          scale: 1,
+          role: 'template',
+          app: 'html5',
+          hideFullWindow: true
+        }
+      }
+      var scoreView = new NFClient.ScoreView('score1', 'fcfd6d0bc0770f67cdbe1b8129456521fec090a0', options)
+    </script>
+  </body>
+</html>
