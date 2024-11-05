@@ -39,10 +39,10 @@ deactivate nondestructive
 if [ "${OSTYPE:-}" = "cygwin" ] || [ "${OSTYPE:-}" = "msys" ] ; then
     # transform D:\path\to\venv to /d/path/to/venv on MSYS
     # and to /cygdrive/d/path/to/venv on Cygwin
-    export VIRTUAL_ENV=$(cygpath "C:\HarmonyHub\env")
+    export VIRTUAL_ENV=$(cygpath "C:\django-prueba\env")
 else
     # use the path as-is
-    export VIRTUAL_ENV="C:\HarmonyHub\env"
+    export VIRTUAL_ENV="C:\django-prueba\env"
 fi
 
 _OLD_VIRTUAL_PATH="$PATH"
