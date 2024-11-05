@@ -12,7 +12,7 @@ class EditorListener {
 
     debounce(func, delay) {
         let timeout;
-        return function(...args) {
+        return function (...args) {
             clearTimeout(timeout);
             timeout = setTimeout(() => func.apply(this, args), delay);
         };
@@ -43,25 +43,24 @@ class EditorListener {
     }
 
     handleClick(event) {
-        
+
         const x = event.pageX - this.rec.left;
         const y = event.pageY - this.rec.top;
         for (let i = 0; i < this.compases.length; i++) {
             for (let j = 0; j < this.compases[i].notas.length; j++) {
                 if (this.compases[i].notas[j].getRec().collisionPoint(x, y)) {
-                    this.compases[i].notas[j].setSelected(true);
                     this.nota_selected = this.compases[i].notas[j];
+                    this.nota_selected.setSelected(true);
                 }
                 else {
                     this.compases[i].notas[j].setSelected(false);
                 }
-
             }
         }
         this.Editdraw();
     }
 
-  
+
     selectRight() {
         for (let i = 0; i < this.compases.length; i++) {
             for (let j = 0; j < this.compases[i].notas.length; j++) {

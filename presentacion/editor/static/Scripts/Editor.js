@@ -1,72 +1,165 @@
 
-const { Renderer, Stave, StaveNote, Formatter, Beam, StaveTie, Voice, Stem } = Vex.Flow
+const { Renderer, Stave, StaveNote, Formatter, Beam, StaveTie, Voice, Stem, Barline } = Vex.Flow
 
 
-class Editor {
+class Editor extends EditorListener {
   constructor(svg) {
+    super(svg);
     this.svgElement = document.getElementById(svg);
     this.render = new Renderer(this.svgElement, Renderer.Backends.SVG);
-    this.render.resize(1000, 700);
+    this.bordeR = window.innerWidth - 200;
+    this.render.resize(this.bordeR, 700);
     this.context = this.render.getContext();
 
-    this.voices = [];
-    this.staves = [];
-    this.notes = [];
+    this.compases = [];
+
+  }
+
+  addCompas(timeNum = 4, timeDen = 4) {
+
+    if (this.compases.length == 0) {
+      this.compases.push(new Compas(timeNum, timeDen));
+      this.compases[0].addTimeSignature(timeNum, timeDen);
+      return;
+    }
+
+    let tNum;
+    let tDen;
+    for (let i = 0; i < this.compases.length; i++) {
+      if (this.compases[i].getKeySignature != '') {
+        tNum = this.compases[i].timeNum;
+        tDen = this.compases[i].timeDen;
+      }
+    }
+
+    this.compases.push(new Compas(tNum, tDen));
+
   }
 
   config() {
-
-    this.staves.push(new Stave(10, 40, 200));
-    //treble  bass  alto  tenor  percussion
-    this.staves[0].addClef('treble').addTimeSignature('4/4');
-
-    let notes1 = [
-      new StaveNote({ keys: ['g/4'], duration: '8' }),
-      new StaveNote({ keys: ['a/4'], duration: '8' }),
-      new StaveNote({ keys: ['b/4'], duration: '4' }),
-      new StaveNote({ keys: ['c/5'], duration: '8' }),
-      new StaveNote({ keys: ['g/4'], duration: '8' }),
-      new StaveNote({ keys: ['b/4'], duration: '4' })
-    ];
-
-    for (let i = 0; i < notes1.length; i++) {
-      this.notes.push(notes1[i]);
-    }
+    this.addCompas(4, 8);
+    this.compases[0]
+      .addClef('tenor')
+      .addKeySignature('Cb');
+    this.addCompas();
+    this.addCompas();
+    this.addCompas();
+    this.addCompas();
+    this.addCompas();
+    this.addCompas();
+    this.addCompas();
+    this.addCompas();
+    this.addCompas();
+    this.addCompas();
+    this.addCompas();
+    this.addCompas();
+    this.addCompas();
   }
 
-  Editdraw() {
-    this.context.clearRect(0, 0, this.svgElement.clientWidth, this.svgElement.clientHeight);
-    for (var i = 0; i < this.staves.length; i++) {
-      this.staves[i].setContext(this.context).draw();
+  formatCompas() {
+    if (!this.formated) {
+      for (let i = 0; i < this.compases.length; i++) {
+        this.compases[i].updateSize();
+      }
+
+      this.compases[0].setPos(0, 0);
+      let over_y = this.compases[0].getOverY();
+      let final_y = this.compases[0].getFinalY();
+      let compases_c = 1;
+
+      for (let i = 1; i < this.compases.length; i++) {
+        let compas_anterior = this.compases[i - 1];
+
+        //agrega un compas si no se sale del borde
+        //va contando los compases en el pentagrama
+        //calcula el exedente sobre los compases
+        let espacio_vacio = this.bordeR - compas_anterior.getFinalX();
+        if (espacio_vacio > this.compases[i].getW()) {
+          if (over_y < this.compases[i].getOverY())
+            over_y = this.compases[i].getOverY();
+        
+          this.compases[i].setX(compas_anterior.getFinalX());
+          this.compases[i].setY(compas_anterior.getY());
+          compases_c++;
+          continue;
+        }
+
+        //queda fuera del pentagrama
+        //asigna el espacio sobrante a los compases
+        //los reorganiza en X
+        //asigna sus y igual al y inicial encontrado;
+        for (let j = i - compases_c; j < i; j++) {
+          this.compases[j].addW(espacio_vacio / compases_c);
+          if (j != i - compases_c)
+            this.compases[j].setX(this.compases[j - 1].getFinalX());
+          this.compases[j].addY(over_y);
+
+          if (final_y < this.compases[j].getFinalY())
+            final_y = this.compases[j].getFinalY();
+        }
+
+        this.compases[i].setX(0);
+        this.compases[i].setY(final_y);
+
+        compases_c = 1;
+        over_y = this.compases[i].getOverY();
+        final_y = this.compases[i].getFinalY();
+      }
+
+      let espacio_vacio = this.bordeR - this.compases[this.compases.length - 1].getFinalX();
+      for (let j = this.compases.length - compases_c; j < this.compases.length; j++) {
+        this.compases[j].addW(espacio_vacio / compases_c);
+        if (j != this.compases.length - compases_c)
+          this.compases[j].setX(this.compases[j - 1].getFinalX());
+        this.compases[j].addY(over_y);
+      }
     }
-    let beam = Beam.generateBeams(this.notes);
-
-    Formatter.FormatAndDraw(this.context, this.staves[0], this.notes);
-    beam.forEach((b) => {
-      b.setContext(this.context).draw();
+  }
+  Editdraw() {
+    requestAnimationFrame(() => {
+      this.drawCompases();
     });
+  }
+  drawCompases() {
+    this.formatCompas();
+    this.formated = true;
+    this.context.clearRect(0, 0, this.svgElement.clientWidth, this.svgElement.clientHeight);
+    this.context.setFillStyle('rgba(0,0,0,1)');
+    let is_final = false;
+    for (let i = 0; i < this.compases.length; i++) {
+      if (i == this.compases.length - 1)
+        is_final = true;
+      this.compases[i].draw(this.context, is_final);
+    }
 
-    let compas = new Compas(210,40,4,4);
-    compas.draw(this.context);
-    
+    /*
+    //rectangulos para comprobar medidas
+    this.context.setFillStyle('rgba(150,150,150,0.5)');
+    for (let i = 0; i < this.compases.length; i++) {
+      let compas = this.compases[i];
+      let h = compas.getFinalY() - compas.getMinY();
+      this.context.fillRect(compas.getX(), compas.getMinY(), compas.getW(), h);
+    }
 
-    let compas2 = new Compas(210+compas.w, 40,4,4);
-    compas2.draw(this.context);
+    for (let i = 0; i < this.compases.length; i++) {
+      for (let j = 0; j < this.compases[i].notas.length; j++) {
+        let n = this.compases[i].notas[j].getRec();
+        this.context.fillRect(n.x, n.y, n.w, n.h);
 
-    let compassub = new Compas(210,120,4,4);
-    compassub.draw(this.context);
+      }
+    }*/
   }
 
 }
 
-alert("ok");
 
+/*
 // Inicializa el Editor cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", () => {
-    let editor = new Editor('Editor');
-    editor.config();
-    editor.Editdraw();
-});
+  let editor = new Editor('Editor');
+  editor.config();
+  editor.Editdraw();
+});*/
 
 
 

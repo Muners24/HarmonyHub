@@ -71,6 +71,8 @@ function config(editor){
         .addDot();
 }
 
+
+
 // Inicializa el Editor cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", () => {
     let editor = new Editor('Editor');

@@ -11,43 +11,27 @@
     ></script>
 
     {% load static %}
+    <script src="{% static 'Scripts/EditorListener.js' %}" defer></script>
+    <script src="{% static 'Scripts/VexRec.js' %}" defer></script>
+    <script src="{% static 'Scripts/Alturas.js' %}" defer></script>
     <script src="{% static 'Scripts/Editor.js' %}" defer></script>
     <script src="{% static 'Scripts/Compas.js' %}" defer></script>
     <script src="{% static 'Scripts/Nota.js' %}" defer></script>
-    <script src="{% static 'Scripts/VexRec.js' %}" defer></script>
+    <script src="{% static 'Scripts/Vex.js' %}" defer></script>
+    <script src="{% static 'Scripts/Partitura.js' %}" defer></script>
 
     <style>
-      #toolbar {
-        display: flex;
-        gap: 10px;
-      }
-      .tool {
-        padding: 10px;
-        background-color: #007bff;
-        color: white;
-        cursor: pointer;
-      }
+      .ml-100 {
+        margin-left: 100px;
+      }      
     </style>
 
     <title>Pentagrama</title>
   </head>
 
   <body>
-    <p>{{ var }} asdx ffasdf</p>
+    <p>{{ var }} asd ffasdf</p>
 
-    <div id="toolbar">
-      <div class="tool" data-action="action0">0</div>
-      <div class="tool" data-action="action1">1</div>
-      <div class="tool" data-action="action2">2</div>
-      <div class="tool" data-action="action3">3</div>
-      <div class="tool" data-action="action4">4</div>
-      <div class="tool" data-action="action5">5</div>
-      <div class="tool" data-action="action6">6</div>
-      <div class="tool" data-action="action7">7</div>
-      <div class="tool" data-action="action8">8</div>
-      <div class="tool" data-action="action9">9</div>
-    </div>
-
-    <div id="Editor"></div>
+    <div id="Editor" class = "ml-100"></div>
   </body>
 </html>
