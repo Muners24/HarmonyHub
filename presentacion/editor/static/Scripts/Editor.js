@@ -1,5 +1,9 @@
 
-const { Renderer, Stave, StaveNote, Formatter, Beam, StaveTie, Voice, Stem, Barline } = Vex.Flow
+const { Renderer, Stave, StaveNote, Formatter,
+  Beam, StaveTie, Voice, Stem, Barline,
+  Clef, TimeSignature, KeySignature,
+  Fraction
+} = Vex.Flow
 
 
 class Editor extends EditorListener {
@@ -11,12 +15,10 @@ class Editor extends EditorListener {
     this.render.resize(this.bordeR, 700);
     this.context = this.render.getContext();
 
-    this.compases = [];
 
   }
 
   addCompas(timeNum = 4, timeDen = 4) {
-
     if (this.compases.length == 0) {
       this.compases.push(new Compas(timeNum, timeDen));
       this.compases[0].addTimeSignature(timeNum, timeDen);
@@ -37,10 +39,23 @@ class Editor extends EditorListener {
   }
 
   config() {
-    this.addCompas(4, 8);
+    this.addCompas(3, 4);
     this.compases[0]
-      .addClef('tenor')
-      .addKeySignature('Cb');
+      .addClef('treble')
+      .addKeySignature('G');
+    this.addCompas();
+    this.addCompas();
+    this.addCompas();
+    this.addCompas();
+    this.addCompas();
+    this.addCompas();
+    this.addCompas();
+    this.addCompas();
+    this.addCompas();
+    this.addCompas();
+    this.addCompas();
+    this.addCompas();
+    this.addCompas();
     this.addCompas();
     this.addCompas();
     this.addCompas();
@@ -77,7 +92,7 @@ class Editor extends EditorListener {
         if (espacio_vacio > this.compases[i].getW()) {
           if (over_y < this.compases[i].getOverY())
             over_y = this.compases[i].getOverY();
-        
+
           this.compases[i].setX(compas_anterior.getFinalX());
           this.compases[i].setY(compas_anterior.getY());
           compases_c++;
@@ -112,7 +127,11 @@ class Editor extends EditorListener {
         if (j != this.compases.length - compases_c)
           this.compases[j].setX(this.compases[j - 1].getFinalX());
         this.compases[j].addY(over_y);
+        if (final_y < this.compases[j].getFinalY())
+          final_y = this.compases[j].getFinalY();
       }
+
+      this.render.resize(this.bordeR, final_y);
     }
   }
   Editdraw() {
@@ -132,13 +151,30 @@ class Editor extends EditorListener {
       this.compases[i].draw(this.context, is_final);
     }
 
-    /*
+
     //rectangulos para comprobar medidas
     this.context.setFillStyle('rgba(150,150,150,0.5)');
     for (let i = 0; i < this.compases.length; i++) {
       let compas = this.compases[i];
       let h = compas.getFinalY() - compas.getMinY();
       this.context.fillRect(compas.getX(), compas.getMinY(), compas.getW(), h);
+
+      if (compas.getClef() != '') {
+        let clef = compas.getClefRec();
+        this.context.fillRect(clef.x, clef.y, clef.w, clef.h);
+      }
+
+      if (compas.getKeySignature() != '') {
+        let key = compas.getKeySignatureRec();
+        this.context.fillRect(key.x, key.y, key.w, key.h);
+      }
+
+      if (compas.getTimeSignature() != '') {
+        let time = compas.getTimeNumRec();
+        this.context.fillRect(time.x, time.y, time.w, time.h);
+        time = compas.getTimeDenRec();
+        this.context.fillRect(time.x, time.y, time.w, time.h);
+      }
     }
 
     for (let i = 0; i < this.compases.length; i++) {
@@ -147,19 +183,21 @@ class Editor extends EditorListener {
         this.context.fillRect(n.x, n.y, n.w, n.h);
 
       }
-    }*/
+    }
   }
 
 }
 
 
-/*
 // Inicializa el Editor cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", () => {
   let editor = new Editor('Editor');
   editor.config();
   editor.Editdraw();
-});*/
+});
+
+
+
 
 
 

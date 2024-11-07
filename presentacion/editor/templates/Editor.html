@@ -9,11 +9,12 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.6.0/math.min.js"></script>
 
     {% load static %}
     <script src="{% static 'Scripts/EditorListener.js' %}" defer></script>
     <script src="{% static 'Scripts/VexRec.js' %}" defer></script>
-    <script src="{% static 'Scripts/Alturas.js' %}" defer></script>
+    <script src="{% static 'Scripts/Notacion.js' %}" defer></script>
     <script src="{% static 'Scripts/Editor.js' %}" defer></script>
     <script src="{% static 'Scripts/Compas.js' %}" defer></script>
     <script src="{% static 'Scripts/Nota.js' %}" defer></script>
@@ -31,7 +32,13 @@
 
   <body>
     <p>{{ var }} asd ffasdf</p>
-
+    
+    <!-- 
+    <div class="col">
+      <div contenedor menu >
+      <div class="row">
+        <div class = "barra ">
+        <div id editor >-->
     <div id="Editor" class = "ml-100"></div>
   </body>
 </html>

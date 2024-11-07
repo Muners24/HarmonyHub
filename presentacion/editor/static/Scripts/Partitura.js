@@ -72,10 +72,10 @@ function config(editor){
 }
 
 
-
+/*
 // Inicializa el Editor cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", () => {
     let editor = new Editor('Editor');
     config(editor);
     editor.Editdraw();
-});
+});*/

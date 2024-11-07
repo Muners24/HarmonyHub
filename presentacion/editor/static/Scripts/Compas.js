@@ -8,20 +8,39 @@ class Compas extends VexRec {
         this.timeNum = timeNum;
         this.timeDen = timeDen;
 
+        this.capacidad = 0;
+
         this.notas = [];
 
         this.timeSignature = '';
         this.keySignature = '';
         this.clef = '';
 
+        this.timeSignature_sel = false;
+        this.keySignature_sel = false;
+        this.clef_sel = false;
+
         this.stave;
         this.initSilencios();
         this.updateSize();
-        this.actualizaStave();
     }
 
+    updateCpacity(){
+        this.capacidad = this.timeNum/this.timeDen;
+    }
 
+    getCapacity(){
+        this.updateCpacity();
+        return this.capacidad;
+    }
 
+    getTimeDen(){
+        return this.timeDen;
+    }
+
+    getTimeNum(){
+        return this.timeNum;
+    }
     initSilencios() {
 
         for (let i = 0; i < this.timeNum; i++) {
@@ -34,7 +53,7 @@ class Compas extends VexRec {
         this.notas.push(nota);
     }
 
-    actualizaStave() {
+    actualizaStave(context) {
         this.stave = new Stave(this.x, this.y, this.w);
         if (this.clef != '')
             this.stave.addClef(this.clef);
@@ -42,16 +61,39 @@ class Compas extends VexRec {
         if (this.timeSignature != '')
             this.stave.addTimeSignature(this.timeSignature);
 
-        if (this.keySignature != '')
-            this.stave.addKeySignature(this.keySignature);
+        if (this.keySignature != '') {
+            if (this.keySignature != 'C')
+                this.stave.addKeySignature(this.keySignature);
+            else
+                this.stave.addKeySignature('G');
+        }
+
+        let mod = this.stave.getModifiers();
+
+        for (let i = 0; i < mod.length; i++) {
+            if (mod[i] instanceof Clef) {
+                if (this.clef_sel && this.clef != 'C')
+                    mod[i].setStyle({ fillStyle: 'red', strokeStyle: 'red' });
+            } else if (mod[i] instanceof TimeSignature) {
+                if (this.timeSignature_sel)
+                    mod[i].setStyle({ fillStyle: 'red', strokeStyle: 'red' });
+            } else if (mod[i] instanceof KeySignature) {
+                if (this.keySignature_sel)
+                    mod[i].setStyle({ fillStyle: 'red', strokeStyle: 'red' });
+
+                if (this.keySignature == 'C')
+                    mod[i].setStyle({ fillStyle: 'rgba(0,0,0,0)', strokeStyle: 'rgba(0,0,0,0)' });
+            }
+        }
 
     }
 
-    draw(context,is_final) {
-        this.actualizaStave();
-        if(is_final)
+    draw(context, is_final) {
+        this.actualizaStave(context);
+
+        if (is_final)
             this.stave.setEndBarType(Barline.type.END);
-        
+
         this.stave.setContext(context).draw();
         let staveNotes = [];
         for (let i = 0; i < this.notas.length; i++) {
@@ -66,6 +108,10 @@ class Compas extends VexRec {
         return this;
     }
 
+    getClef() {
+        return this.clef;
+    }
+
     removeClef() {
         this.clef = '';
         return this;
@@ -76,7 +122,7 @@ class Compas extends VexRec {
         return this;
     }
 
-    getKeySignature(){
+    getKeySignature() {
         return this.keySignature;
     }
 
@@ -87,6 +133,9 @@ class Compas extends VexRec {
         return this;
     }
 
+    getTimeSignature() {
+        return this.timeSignature;
+    }
     removeTimeSignature() {
         this.timeSignature = '';
         return this;
@@ -137,7 +186,7 @@ class Compas extends VexRec {
                 max_note_y = this.notas[i].getFinalY();
         }
 
-        let final_compas = this.getY() + this.getH()/2;
+        let final_compas = this.getY() + this.getH() / 2;
 
         if (max_note_y > this.getH())
             return final_compas + max_note_y;
@@ -145,16 +194,68 @@ class Compas extends VexRec {
         return final_compas + this.getH();
     }
 
-    getClefRec(){
+    getClefRec() {
         return new VexRec(
             this.getX(),
-            this.getY(),
-            0,
-            0
+            this.getY() + this.getH() / 2 - 15,
+            35,
+            this.getH() * 0.9
         );
     }
 
-    getKeySignatureRec(){
-
+    getKeySignatureRec() {
+        let clef_rec = this.getClefRec();
+        return new VexRec(
+            clef_rec.getFinalX(),
+            clef_rec.getY(),
+            Notacion.getKeySignatureW(this.keySignature),
+            clef_rec.getH()
+        );
     }
+
+    getTimeNumRec() {
+        let keyS_rec = this.getKeySignatureRec();
+        return new VexRec(
+            keyS_rec.getFinalX(),
+            keyS_rec.getY()+keyS_rec.getH()/2,
+            32,
+            keyS_rec.getH()/2
+        );
+    }
+
+    getTimeDenRec(){
+        let keyS_rec = this.getKeySignatureRec();
+        return new VexRec(
+            keyS_rec.getFinalX(),
+            keyS_rec.getY(),
+            32,
+            keyS_rec.getH()/2
+        );
+    }
+
+    selectClef() {
+        this.timeSignature_sel = false;
+        this.keySignature_sel = false;
+        this.clef_sel = true;
+    }
+
+    selectTime() {
+        this.timeSignature_sel = true;
+        this.keySignature_sel = false;
+        this.clef_sel = false;
+    }
+
+    selectKeySign() {
+        this.timeSignature_sel = false;
+        this.keySignature_sel = true;
+        this.clef_sel = false;
+    }
+
+    noSignSelected() {
+        this.timeSignature_sel = false;
+        this.keySignature_sel = false;
+        this.clef_sel = false;
+    }
+
+   
 }

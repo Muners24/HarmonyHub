@@ -66,14 +66,14 @@ class Nota extends VexRec {
     };
 
     getStartY(){
-        let y = Alturas.getNoteY(this.keys[0]);
+        let y = Notacion.getNoteY(this.keys[0]);
         if(y != null)
             return y-5;
         return 0;
     }
 
     getFinalY(){
-        let y = Alturas.getNoteY(this.keys[0]);
+        let y = Notacion.getNoteY(this.keys[0]);
         if(y != null)
             return y+5;
         return 0;
@@ -103,6 +103,14 @@ class Nota extends VexRec {
     setDuration(duration){
         this.duracion = duration;
         return this;
+    }
+
+    getDuration(){
+        return this.duracion;
+    }
+
+    isRest(){
+        return this.duracion.includes('r');
     }
 };
 
