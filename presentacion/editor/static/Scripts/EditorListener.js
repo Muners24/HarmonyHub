@@ -267,7 +267,16 @@ class EditorListener {
         //si la duracion es menor a la duracion anterior se dividira
         if (1 / intDuration < 1 / intPrevDuration) {
             let silencios = intDuration / intPrevDuration - 1;
-            const nuevosSilencios = Array.from({ length: silencios }, () => new Nota(['b/4'], duration + 'r'));
+            let nuevosSilencios;
+       
+            if (compas.notas[this.nota_selected].isRest()) 
+                nuevosSilencios = Array.from({ length: silencios }, () => new Nota(['b/4'], duration+'r'));
+            else 
+                nuevosSilencios = Array.from({ length: silencios }, () => new Nota(
+                    [...compas.notas[this.nota_selected].keys],
+                    duration));
+            
+
             compas.notas.splice(this.nota_selected + 1, 0, ...nuevosSilencios);
             return;
         }
@@ -315,28 +324,29 @@ class EditorListener {
             //entonces su ritmo debe ser dividido
             //calcular el resultante de la duracion - la mordida que se le dio
             //genera divisiones coherentes con la duracion
-            this.biteNote(compas,i,surplusFrac);
+            this.biteNote(compas, i, surplusFrac);
             return;
         }
     }
 
     //esta funcion debe ligar las notas generadas
     //aun esta implementado la ligadura
-    biteNote(compas,i,biteFraction){
+    biteNote(compas, i, biteFraction) {
         let currentDur = new Fraction(1, parseInt(compas.notas[i].getDuration()));
         let restRitmo = currentDur.subtract(biteFraction);
 
         while (restRitmo.numerator !== 0) {
             restRitmo.simplify();
-
             if (compas.notas[i].isRest())
                 compas.notas.splice(i + 1, 0, new Nota(['b/4'], String(restRitmo.denominator) + 'r'));
             else
-                compas.notas.splice(i + 1, 0, new Nota(['b/4'], String(restRitmo.denominator)));
+                compas.notas.splice(i + 1, 0, new Nota(
+                    [...compas.notas[i].keys.slice()],
+                     String(restRitmo.denominator)));
 
             restRitmo.subtract(new Fraction(1, restRitmo.denominator));
         }
-        compas.notas.splice(i,1);
+        compas.notas.splice(i, 1);
     }
 }
 
