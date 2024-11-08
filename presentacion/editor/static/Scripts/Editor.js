@@ -153,6 +153,7 @@ class Editor extends EditorListener {
 
 
     //rectangulos para comprobar medidas
+     
     this.context.setFillStyle('rgba(150,150,150,0.5)');
     for (let i = 0; i < this.compases.length; i++) {
       let compas = this.compases[i];

@@ -2,6 +2,13 @@ class EditorListener {
     constructor(svg) {
         this.svgElement = document.getElementById(svg);
         this.svgElement.addEventListener('click', (event) => this.handleClick(event));
+        this.svgElement.addEventListener('mousemove', (event) => {
+            if (this.nota_selected !== -1) {
+                // Si nota_selected es diferente de -1, ejecutamos la función debounced
+                this.debounce(this.handleMov.bind(this), 60)(event);
+            }
+        });
+
         //requiere focus si se configura con svgElement
         document.addEventListener('keydown', this.debounce(this.handleKeydown.bind(this), 100));
         this.rec = this.svgElement.getBoundingClientRect();
@@ -9,10 +16,6 @@ class EditorListener {
         this.compas_selected = -1;
 
         this.compases = [];
-
-        this.clef = null;
-        this.timeSign = null;
-        this.keySign = null;
 
         this.formated = false;
     }
@@ -23,6 +26,12 @@ class EditorListener {
             clearTimeout(timeout);
             timeout = setTimeout(() => func.apply(this, args), delay);
         };
+    }
+
+
+
+    handleMov(event) {
+
     }
 
     handleKeydown(event) {
@@ -49,16 +58,26 @@ class EditorListener {
                 this.switchClef(Notacion.getPreviusClef.bind(Notacion));
                 this.Editdraw();
                 break;
+            case '.':
+                if (this.addDot()) {
+                    this.formated = false;
+                    this.Editdraw();
+                }
+                break;
             default:
         }
 
-        const durationRegex = /^[1-7]$/;
-        if (durationRegex.test(event.key)) {
-            let exp = parseInt(event.key) - 1;
-            this.formated = false;
-            this.setRithm(String(2 ** exp));
-            this.Editdraw();
+        if (this.nota_selected !== -1) {
+            const durationRegex = /^[1-7]$/;
+            if (durationRegex.test(event.key)) {
+                let exp = parseInt(event.key) - 1;
+                if (this.setRithm(String(2 ** exp))) {
+                    this.formated = false;
+                    this.Editdraw();
+                }
+            }
         }
+
     }
 
     handleClick(event) {
@@ -188,7 +207,7 @@ class EditorListener {
 
             this.compases[this.compas_selected].notas[this.nota_selected].setSelected(false);
             if (this.compas_selected > 0) {
-                this.nota_selected = this.compases[this.compas_selected--].notas.length - 1;
+                this.nota_selected = this.compases[--this.compas_selected].notas.length - 1;
                 this.compases[this.compas_selected].notas[this.nota_selected].setSelected(true);
                 return;
             }
@@ -237,17 +256,19 @@ class EditorListener {
 
     setRithm(duration) {
         if (this.nota_selected === -1)
-            return;
+            return false;
 
         let compas = this.compases[this.compas_selected];
         let prevDuration = compas.notas[this.nota_selected].getDuration();
-
-        if (prevDuration.includes('r'))
-            compas.notas[this.nota_selected].setDuration(duration + 'r');
-        else
-            compas.notas[this.nota_selected].setDuration(duration);
-
-        this.compasAdjustRithm(compas, duration, prevDuration);
+        
+        if(this.compasAdjustRithm(compas, duration, prevDuration)){
+            if (prevDuration.includes('r'))
+                compas.notas[this.nota_selected].setDuration(duration + 'r');
+            else
+                compas.notas[this.nota_selected].setDuration(duration);
+            return true;
+        }
+        return false;
     }
 
     //continuar con la division de notas:
@@ -255,82 +276,89 @@ class EditorListener {
         let intPrevDuration = parseInt(prevDuration);
         let intDuration = parseInt(duration);
 
-        if (intDuration == intPrevDuration)
-            return;
-
-        //si la duracion es mayor a la capacidad del compas se anula el cambio
-        if (1 / intDuration > compas.getCapacity()) {
-            compas.notas[this.nota_selected].setDuration(prevDuration);
-            return;
+        //si las duraciones son iguales pero tiene puntillo, se le quita
+        if (intDuration === intPrevDuration) {
+            if (compas.notas[this.nota_selected].hasDot()) {
+                this.removeDot();
+                return true;
+            }
+            return false;
         }
 
+        //si la duracion es mayor a la capacidad del compas se anula el cambio
+        if (1 / intDuration > compas.getCapacity())
+            return false;
+      
         //si la duracion es menor a la duracion anterior se dividira
         if (1 / intDuration < 1 / intPrevDuration) {
+            if (compas.notas[this.nota_selected].hasDot())
+                this.removeDot();
             let silencios = intDuration / intPrevDuration - 1;
-            let nuevosSilencios;
-       
-            if (compas.notas[this.nota_selected].isRest()) 
-                nuevosSilencios = Array.from({ length: silencios }, () => new Nota(['b/4'], duration+'r'));
-            else 
-                nuevosSilencios = Array.from({ length: silencios }, () => new Nota(
-                    [...compas.notas[this.nota_selected].keys],
-                    duration));
-            
-
+            let nuevosSilencios = Array.from({ length: silencios }, () => new Nota(['b/4'], duration + 'r'));
             compas.notas.splice(this.nota_selected + 1, 0, ...nuevosSilencios);
-            return;
+            return true;
         }
 
         //la duracion es mayor o igual que la duracion anterior
         //se debe comprobar la duracion restante del compas (contando la nota seleccionada)
         let resDuration = 1 / intPrevDuration;
+        if (compas.notas[this.nota_selected].hasDot()) 
+            resDuration += (1 / (parseInt(compas.notas[this.nota_selected].getDuration()) * 2));
+        
         for (let i = this.nota_selected + 1; i < compas.notas.length; i++) {
             resDuration += 1 / parseInt(compas.notas[i].getDuration());
         }
 
         //si la duracion es mayor que la duracion restante del compas se anula
-        if (1 / intDuration > resDuration) {
-            compas.notas[this.nota_selected].setDuration(prevDuration);
-            return;
-        }
+        if (1 / intDuration > resDuration) 
+            return false;
+        
+
+        if (compas.notas[this.nota_selected].hasDot()) 
+            this.removeDot();
+        
 
         //la nota atropellara a otras notas
         //se calcula el excedente que atropella a otras notas
         let durFrac = new Fraction(1, intDuration);
         let prevDurFrac = new Fraction(1, intPrevDuration);
 
-        let surplusFrac = durFrac.subtract(prevDurFrac);
-        //let surplusDur = 1 / intDuration - 1 / intPrevDuration;
+        let excessFrac = durFrac.subtract(prevDurFrac);
+        //let excessDur = 1 / intDuration - 1 / intPrevDuration;
+        this.fixOverlapNotes(compas, this.nota_selected + 1, excessFrac)
+        return true;
+    }
 
-        for (let i = this.nota_selected + 1; i < compas.notas.length; i++) {
+    fixOverlapNotes(compas, indexNote, excessFrac) {
+        for (let i = indexNote; i < compas.notas.length; i++) {
 
             let currentDur = new Fraction(1, parseInt(compas.notas[i].getDuration()));
             //si el exedente es igual a la duracion acual, le hace pop
-            if (surplusFrac.equals(currentDur)) {
+            if (excessFrac.equals(currentDur)) {
                 compas.notas.splice(i, 1);
                 return;
             }
 
             //si el exedente es mayor o igual a la duracion actual, le hace pop
             //y se ajusta el exedente
-            if (surplusFrac.greaterThanEquals(currentDur)) {
+            if (excessFrac.greaterThanEquals(currentDur)) {
                 compas.notas.splice(i, 1);
-                surplusFrac.subtract(currentDur);
+                excessFrac.subtract(currentDur);
                 i--;
                 continue;
             }
 
             //si no las cubre totalmente
             //entonces su ritmo debe ser dividido
-            //calcular el resultante de la duracion - la mordida que se le dio
-            //genera divisiones coherentes con la duracion
-            this.biteNote(compas, i, surplusFrac);
+            this.biteNote(compas, i, excessFrac);
             return;
         }
     }
 
-    //esta funcion debe ligar las notas generadas
+/*********************************************************************************************/
+    //este metodo debe ligar las notas generadas
     //aun esta implementado la ligadura
+/************************************************************************************************/
     biteNote(compas, i, biteFraction) {
         let currentDur = new Fraction(1, parseInt(compas.notas[i].getDuration()));
         let restRitmo = currentDur.subtract(biteFraction);
@@ -342,11 +370,58 @@ class EditorListener {
             else
                 compas.notas.splice(i + 1, 0, new Nota(
                     [...compas.notas[i].keys.slice()],
-                     String(restRitmo.denominator)));
+                    String(restRitmo.denominator)));
 
             restRitmo.subtract(new Fraction(1, restRitmo.denominator));
         }
         compas.notas.splice(i, 1);
     }
+
+    //si el puntillo es valido, se acomoda todo el compas
+    //usando los mismos metodos que al cambiar de ritmo
+    //se debe diferenciar del metodo addDot de la clase Nota
+    addDot() {
+        if (this.nota_selected === -1)
+            return false;
+
+        let compas = this.compases[this.compas_selected];
+        if (compas.notas[this.nota_selected].hasDot())
+            return false;
+
+        let resDuration = new Fraction(0, 1);
+        for (let i = this.nota_selected + 1; i < compas.notas.length; i++) {
+            resDuration += new Fraction(1, parseInt(compas.notas[i].getDuration()));
+        }
+        //si el dot no cabe, no se hace nada
+        let dotDuration = new Fraction(1, parseInt(compas.notas[this.nota_selected].getDuration()));
+        dotDuration.divide(2);
+        if (dotDuration.greaterThan(resDuration))
+            return false;
+
+        //cabe, entonces se sobrepone a las siguientes notas
+        compas.notas[this.nota_selected].addDot();
+        this.fixOverlapNotes(compas, this.nota_selected + 1, dotDuration);
+        return true;
+    }
+
+    //remueve el puntillo y agrega un silencio en su lugar
+    //se usa cuando el ritmo de la nota cambia o cuando se elimina el puntillo
+    //se debe diferenciar del metodo removeDot de la clase Nota
+    removeDot() {
+        let compas = this.compases[this.compas_selected];
+        compas.notas[this.nota_selected].removeDot();
+        let duration = parseInt(compas.notas[this.nota_selected].getDuration()) * 2;
+        compas.notas.splice(this.nota_selected + 1, 0, new Nota(['b/4'], String(duration) + 'r'))
+    }
 }
 
+/* Probar si el mousemov tiene bajo rendimiento
+   handleMovRequestAnimFrame(event) {
+       if (!this.isMoving) {
+           this.isMoving = true;
+           requestAnimationFrame(() => {
+               this.handleMov(event);
+               this.isMoving = false;
+           });
+       }
+   }*/

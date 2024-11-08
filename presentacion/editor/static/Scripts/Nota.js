@@ -60,6 +60,15 @@ class Nota extends VexRec {
         return this;
     }
 
+    hasDot(){
+        return this.doted;
+    }
+
+    removeDot(){
+        this.doted = false;
+        return this;
+    }
+
     getStaveNote() {
         this.actualizaStaveNote();
         return this.nota;
