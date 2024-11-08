@@ -258,13 +258,13 @@ class EditorListener {
         if (intDuration == intPrevDuration)
             return;
 
-        //si la duracion es mayor a la capacidad del compas 
+        //si la duracion es mayor a la capacidad del compas se anula el cambio
         if (1 / intDuration > compas.getCapacity()) {
             compas.notas[this.nota_selected].setDuration(prevDuration);
             return;
         }
 
-        //si la duracion es menor a la nota que esta modificando se dividira
+        //si la duracion es menor a la duracion anterior se dividira
         if (1 / intDuration < 1 / intPrevDuration) {
             let silencios = intDuration / intPrevDuration - 1;
             const nuevosSilencios = Array.from({ length: silencios }, () => new Nota(['b/4'], duration + 'r'));
@@ -272,14 +272,14 @@ class EditorListener {
             return;
         }
 
-        //ya que la duracion sobrepasa la duracion de la nota padre,
+        //la duracion es mayor o igual que la duracion anterior
         //se debe comprobar la duracion restante del compas (contando la nota seleccionada)
         let resDuration = 1 / intPrevDuration;
         for (let i = this.nota_selected + 1; i < compas.notas.length; i++) {
             resDuration += 1 / parseInt(compas.notas[i].getDuration());
         }
 
-        //si la duracion es mayor que la duracion restante del compas
+        //si la duracion es mayor que la duracion restante del compas se anula
         if (1 / intDuration > resDuration) {
             compas.notas[this.nota_selected].setDuration(prevDuration);
             return;
@@ -291,17 +291,14 @@ class EditorListener {
         let prevDurFrac = new Fraction(1, intPrevDuration);
 
         let surplusFrac = durFrac.subtract(prevDurFrac);
-
         //let surplusDur = 1 / intDuration - 1 / intPrevDuration;
 
         for (let i = this.nota_selected + 1; i < compas.notas.length; i++) {
 
             let currentDur = new Fraction(1, parseInt(compas.notas[i].getDuration()));
-
             //si el exedente es igual a la duracion acual, le hace pop
             if (surplusFrac.equals(currentDur)) {
                 compas.notas.splice(i, 1);
-                i--;
                 return;
             }
 
@@ -317,26 +314,29 @@ class EditorListener {
             //si no las cubre totalmente
             //entonces su ritmo debe ser dividido
             //calcular el resultante de la duracion - la mordida que se le dio
-            //dividir el resultante en notas coherentes
-            //el siguiente codigo no cumple lo anterior
-            let restoRitmo = currentDur.subtract(surplusFrac);
-
-            while (restoRitmo.numerator !== 0) {
-                restoRitmo.simplify();
-
-                alert(String(restoRitmo.numerator) + ' ' + String(restoRitmo.denominator));
-                if (compas.notas[i].isRest())
-                    compas.notas.splice(i + 1, 0, new Nota(['b/4'], String(restoRitmo.denominator) + 'r'));
-                else
-                    compas.notas.splice(i + 1, 0, new Nota(['b/4'], String(restoRitmo.denominator)));
-
-                restoRitmo.subtract(new Fraction(1, restoRitmo.denominator));
-            }
-            compas.splice(i, 1);
+            //genera divisiones coherentes con la duracion
+            this.biteNote(compas,i,surplusFrac);
             return;
         }
+    }
 
+    //esta funcion debe ligar las notas generadas
+    //aun esta implementado la ligadura
+    biteNote(compas,i,biteFraction){
+        let currentDur = new Fraction(1, parseInt(compas.notas[i].getDuration()));
+        let restRitmo = currentDur.subtract(biteFraction);
 
+        while (restRitmo.numerator !== 0) {
+            restRitmo.simplify();
+
+            if (compas.notas[i].isRest())
+                compas.notas.splice(i + 1, 0, new Nota(['b/4'], String(restRitmo.denominator) + 'r'));
+            else
+                compas.notas.splice(i + 1, 0, new Nota(['b/4'], String(restRitmo.denominator)));
+
+            restRitmo.subtract(new Fraction(1, restRitmo.denominator));
+        }
+        compas.notas.splice(i,1);
     }
 }
 
