@@ -1,23 +1,25 @@
 class EditorListener {
-    constructor(svg) {
-        this.svgElement = document.getElementById(svg);
-        this.svgElement.addEventListener('click', (event) => this.handleClick(event));
-        this.svgElement.addEventListener('mousemove', (event) => {
+    constructor(canvas) {
+        this.canvas = document.getElementById(canvas);
+        this.canvas.addEventListener('click', (event) => this.handleClick(event));
+        /*
+        this.canvas.addEventListener('mousemove', (event) => {
             if (this.nota_selected !== -1) {
                 // Si nota_selected es diferente de -1, ejecutamos la función debounced
                 this.debounce(this.handleMov.bind(this), 60)(event);
             }
-        });
+        });*/
 
         //requiere focus si se configura con svgElement
-        document.addEventListener('keydown', this.debounce(this.handleKeydown.bind(this), 100));
-        this.rec = this.svgElement.getBoundingClientRect();
+        document.addEventListener('keydown', this.debounce(this.handleKeydown.bind(this), 16));
+        this.rec = this.canvas.getBoundingClientRect();
         this.nota_selected = -1;
         this.compas_selected = -1;
 
         this.compases = [];
 
         this.formated = false;
+
     }
 
     debounce(func, delay) {
@@ -82,7 +84,8 @@ class EditorListener {
 
     handleClick(event) {
         const x = event.pageX - this.rec.left;
-        const y = event.pageY - this.rec.top;
+        const y = event.pageY - this.rec.top + 15;
+
 
         if (this.compases[0].getClefRec().collisionPoint(x, y)) {
             this.compases[0].selectClef();
@@ -260,8 +263,8 @@ class EditorListener {
 
         let compas = this.compases[this.compas_selected];
         let prevDuration = compas.notas[this.nota_selected].getDuration();
-        
-        if(this.compasAdjustRithm(compas, duration, prevDuration)){
+
+        if (this.compasAdjustRithm(compas, duration, prevDuration)) {
             if (prevDuration.includes('r'))
                 compas.notas[this.nota_selected].setDuration(duration + 'r');
             else
@@ -288,7 +291,7 @@ class EditorListener {
         //si la duracion es mayor a la capacidad del compas se anula el cambio
         if (1 / intDuration > compas.getCapacity())
             return false;
-      
+
         //si la duracion es menor a la duracion anterior se dividira
         if (1 / intDuration < 1 / intPrevDuration) {
             if (compas.notas[this.nota_selected].hasDot())
@@ -302,21 +305,21 @@ class EditorListener {
         //la duracion es mayor o igual que la duracion anterior
         //se debe comprobar la duracion restante del compas (contando la nota seleccionada)
         let resDuration = 1 / intPrevDuration;
-        if (compas.notas[this.nota_selected].hasDot()) 
+        if (compas.notas[this.nota_selected].hasDot())
             resDuration += (1 / (parseInt(compas.notas[this.nota_selected].getDuration()) * 2));
-        
+
         for (let i = this.nota_selected + 1; i < compas.notas.length; i++) {
             resDuration += 1 / parseInt(compas.notas[i].getDuration());
         }
 
         //si la duracion es mayor que la duracion restante del compas se anula
-        if (1 / intDuration > resDuration) 
+        if (1 / intDuration > resDuration)
             return false;
-        
 
-        if (compas.notas[this.nota_selected].hasDot()) 
+
+        if (compas.notas[this.nota_selected].hasDot())
             this.removeDot();
-        
+
 
         //la nota atropellara a otras notas
         //se calcula el excedente que atropella a otras notas
@@ -355,10 +358,10 @@ class EditorListener {
         }
     }
 
-/*********************************************************************************************/
+    /*********************************************************************************************/
     //este metodo debe ligar las notas generadas
     //aun esta implementado la ligadura
-/************************************************************************************************/
+    /************************************************************************************************/
     biteNote(compas, i, biteFraction) {
         let currentDur = new Fraction(1, parseInt(compas.notas[i].getDuration()));
         let restRitmo = currentDur.subtract(biteFraction);
@@ -413,7 +416,36 @@ class EditorListener {
         let duration = parseInt(compas.notas[this.nota_selected].getDuration()) * 2;
         compas.notas.splice(this.nota_selected + 1, 0, new Nota(['b/4'], String(duration) + 'r'))
     }
+
+    // Función para reproducir una nota
+    playNote(frequency, duration) {
+        // Crear un oscilador
+        const oscillator = this.audioContext.createOscillator();
+
+        // Establecer la frecuencia de la nota (por ejemplo, 440 Hz para La)
+        oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
+
+        // Crear un amplificador (GainNode) para controlar el volumen
+        const gainNode = this.audioContext.createGain();
+        gainNode.gain.setValueAtTime(0.1, this.audioContext.currentTime);  // Controla el volumen
+
+        // Conectar el oscilador al amplificador y luego al destino de salida (los altavoces)
+        oscillator.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+
+        // Iniciar el oscilador
+        oscillator.start();
+
+        // Detener el oscilador después de la duración indicada
+        oscillator.stop(this.audioContext.currentTime + duration);
+    }
 }
+
+
+
+
+
+
 
 /* Probar si el mousemov tiene bajo rendimiento
    handleMovRequestAnimFrame(event) {

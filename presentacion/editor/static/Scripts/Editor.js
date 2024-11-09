@@ -7,14 +7,12 @@ const { Renderer, Stave, StaveNote, Formatter,
 
 
 class Editor extends EditorListener {
-  constructor(svg) {
-    super(svg);
-    this.svgElement = document.getElementById(svg);
-    this.render = new Renderer(this.svgElement, Renderer.Backends.SVG);
+  constructor(canvas) {
+    super(canvas);
+    this.render = new Renderer(this.canvas, Renderer.Backends.CANVAS);
     this.bordeR = window.innerWidth - 200;
-    this.render.resize(this.bordeR, 700);
+    this.render.resize(this.bordeR, 200);
     this.context = this.render.getContext();
-
 
   }
 
@@ -39,7 +37,7 @@ class Editor extends EditorListener {
   }
 
   config() {
-    this.addCompas(3, 4);
+    this.addCompas(4, 4);
     this.compases[0]
       .addClef('treble')
       .addKeySignature('G');
@@ -88,7 +86,7 @@ class Editor extends EditorListener {
         //agrega un compas si no se sale del borde
         //va contando los compases en el pentagrama
         //calcula el exedente sobre los compases
-        let espacio_vacio = this.bordeR - compas_anterior.getFinalX();
+        let espacio_vacio = this.bordeR - compas_anterior.getFinalX() - 1;
         if (espacio_vacio > this.compases[i].getW()) {
           if (over_y < this.compases[i].getOverY())
             over_y = this.compases[i].getOverY();
@@ -139,10 +137,11 @@ class Editor extends EditorListener {
       this.drawCompases();
     });
   }
+
   drawCompases() {
     this.formatCompas();
     this.formated = true;
-    this.context.clearRect(0, 0, this.svgElement.clientWidth, this.svgElement.clientHeight);
+    this.context.clearRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight);
     this.context.setFillStyle('rgba(0,0,0,1)');
     let is_final = false;
     for (let i = 0; i < this.compases.length; i++) {
@@ -151,9 +150,13 @@ class Editor extends EditorListener {
       this.compases[i].draw(this.context, is_final);
     }
 
+    //this.drawHitBox();
 
+  }
+
+  drawHitBox() {
     //rectangulos para comprobar medidas
-     
+
     this.context.setFillStyle('rgba(150,150,150,0.5)');
     for (let i = 0; i < this.compases.length; i++) {
       let compas = this.compases[i];
