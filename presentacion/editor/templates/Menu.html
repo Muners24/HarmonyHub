@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/menu.css' %}">
+
+    <style>
+        .contenido-container {
+            transition: margin-top 0.5s ease;
+        }
+    </style>
+
+</head>
+<boqdy>
+    <!-- Primer menu -->
+    <div class="menu">
+        <img src="{% static 'images/Logo.png' %}" alt="Logo de la página" class="logo">
+        <a href="/" class="button">
+            <img src="{% static 'images/Inicio_logo.png' %}" alt="Inicio" class="button-icon">
+            Inicio
+        </a>
+        <a href="" class="button">
+            <img src="{% static 'images/Info_logo.png' %}" alt="Estadísticas" class="button-icon">
+            Estadísticas
+        </a>
+        <a href="" class="button">
+            <img src="{% static 'images/Comunidad_Logo.png' %}" alt="Comunidad" class="button-icon">
+            Comunidad
+        </a>
+        <a href="" class="button">
+            <img src="{% static 'images/Mensajes_Logo.png' %}" alt="Mensajes" class="button-icon">
+            Mensajes
+        </a>
+    </div>
+
+    <!-- Segundo menu -->
+    <div class="menu-second">
+        <!-- Botón 'Archivo' -->
+        <a href="#" class="button" id="archivoButton">
+            <img src="{% static 'images/Archivo_Logo.png' %}" alt="Archivo" class="button-icon-S">
+            Archivo
+            <div id="archivoDropdown" class="dropdown-content">
+                <a href="#">Nuevo</a>
+                <a href="#">Abrir</a>
+                <a href="#">Guardar</a>
+
+                <a href="#" id="importarButton">Importar</a>
+                <div id="importarDropdown" class="dropdown-content-imp">
+                    <a href="#">MIDI</a>
+                </div>
+
+                <a href="#" id="exportarButton">Exportar</a>
+                <div id ="exportarDropdown" class="dropdown-content-exp">
+                    <a href="">MIDI</a>
+                </div>
+            </div>
+        </a>
+        
+        <a href="/" class="button">
+            <img src="{% static 'images/Reproducir_Logo.png' %}" alt="Reproducir" class="button-icon-S">
+            Reproducir
+        </a>
+        <a href="/" class="button">
+            <img src="{% static 'images/Compartir_Logo.png' %}" alt="Compartir" class="button-icon-S">
+            Compartir
+        </a>
+        <a href="/" class="button">
+            <img src="{% static 'images/Practica_Logo.png' %}" alt="Practicar" class="button-icon-S">
+            Practicar
+        </a>
+    </div>
+
+    <div class="toolbar">
+        <a href="#1" class="button-T">
+            <img src="{% static 'images/Symbols/Semifusa_Logo.png'%}" alt="SemiFusa" class="button-icon-T">
+        </a>
+
+        <a href="#2" class = "button-T">
+            <img src= "{% static 'images/Symbols/Fusa_Logo.png'%}" alt="Fusa" class="button-icon-T">
+        </a>
+
+        <a href="#3" class ="button-T">
+            <img src="{% static 'images/Symbols/SemiCorchea_Logo.png'%}" alt="SemiCorchea" class="button-icon-T">
+        </a>
+
+        <a href="#4" class ="button-T">
+            <img src="{% static 'images/Symbols/Corchea_Logo.png'%}" alt="Corchea" class="button-icon-T">
+        </a>
+
+        <a href="#5" class="button-T">
+            <img src="{% static 'images/Symbols/Negra_Logo.png'%}" alt="Negra" class="button-icon-T">
+        </a>
+
+        <a href="#6" class="button-T">
+            <img src="{% static 'images/Symbols/Blanca_Logo.png'%}" alt="Blanca" class="button-icon-T">
+        </a>
+
+        <a href="#7" class="button-T">
+            <img src="{% static 'images/Symbols/Redonda_Logo.png'%}" alt="Redonda" class="button-icon-T">
+        </a>
+
+        <a href="#8" class="button-T">
+            <img src="{% static 'images/Symbols/Puntillo.png'%}" alt="Puntillo" class="button-icon-T">
+        </a>
+
+        <a href="#9" class="button-T">
+            <img src="{% static 'images/Symbols/Silencio.png'%}" alt="Silencio" class="button-icon-T">
+        </a>
+
+        <a href="#10" class="button-T">
+            <img src="{% static 'images/Symbols/Doble.png'%}" alt="Doble" class="button-icon-T2">
+        </a>
+
+        <a href="#11" class="button-T">
+            <img src="{% static 'images/Symbols/Bemol.png'%}" alt="Bemol" class="button-icon-T3">
+        </a>
+
+        <a href="#12" class="button-T">
+            <img src="{% static 'images/Symbols/Natural.png'%}" alt="Natural" class="button-icon-T3">
+        </a>
+
+        <a href="#13" class="button-T">
+            <img src="{% static 'images/Symbols/Sostenido.png'%}" alt="Sostenido" class="button-icon-T3">
+        </a>
+
+        <a href="#14" class="button-T">
+            <img src="{% static 'images/Symbols/DobleSostenido.png'%}" alt="DobleSostenido" class="button-icon-T3">
+        </a>
+
+        <a href="#15" class="button-T">
+            <img src="{% static 'images/Symbols/Tie.png'%}" alt="Tie" class="button-icon-T">
+        </a>
+
+        <a href="#16" class="button-T">
+            <img src="{% static 'images/Symbols/Levato.png'%}" alt="Tie" class="button-icon-T4">
+        </a>
+
+        <a href="#17" class="button-T">
+            <img src="{% static 'images/Symbols/Diminuendo.png'%}" alt="Tie" class="button-icon-T5">
+        </a>
+
+        <a href="#18" class="button-T">
+            <img src="{% static 'images/Symbols/Triplet.png'%}" alt="Tie" class="button-icon-T6">
+        </a>
+
+        <a href="#19" class="button-T">
+            <img src="{% static 'images/Symbols/Rev.png'%}" alt="Sostenido" class="button-icon-T7">
+        </a>
+
+        <a href="#20" class="button-T">
+            <img src="{% static 'images/Symbols/d1.png'%}" alt="Sostenido" class="button-icon-T7">
+        </a>
+
+        <a href="#21" class="button-T">
+            <img src="{% static 'images/Symbols/plus.png'%}" alt="Sostenido" class="button-icon-T8">
+        </a>
+
+        <a href="#22" class="button-T">
+            <img src="{% static 'images/Symbols/conf.png'%}" alt="Sostenido" class="button-icon-T8">
+        </a>
+
+    </div>
+
+    <!-- Contenedor de contenido -->
+    <div class="contenido-container" id="contenido-container" style="margin-top: 210px;">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <script src="{% static 'Scripts/DropDown.js' %}"></script>
+
+    <script>
+        function moverContenido(movimiento) {
+            const contenedor = document.getElementById('contenido-container');
+            contenedor.style.marginTop = movimiento + "px";
+        } 
+    </script>
+</body>
+</html>

@@ -199,9 +199,3 @@ document.addEventListener("DOMContentLoaded", () => {
   editor.config();
   editor.Editdraw();
 });
-
-
-
-
-
-
