@@ -2,7 +2,11 @@
 const { Renderer, Stave, StaveNote, Formatter,
   Beam, StaveTie, Voice, Stem, Barline,
   Clef, TimeSignature, KeySignature,
-  Fraction
+  Fraction,
+
+  Modifier, Articulation, Dot, Accidental, Annotation,
+
+  StaveModifier, StaveText, StaveTempo
 } = Vex.Flow
 
 
@@ -13,7 +17,6 @@ class Editor extends EditorListener {
     this.bordeR = window.innerWidth - 200;
     this.render.resize(this.bordeR, 200);
     this.context = this.render.getContext();
-
   }
 
   addCompas(timeNum = 4, timeDen = 4) {
@@ -41,6 +44,7 @@ class Editor extends EditorListener {
     this.compases[0]
       .addClef('treble')
       .addKeySignature('G');
+    this.setTempo(111);
     this.addCompas();
     this.addCompas();
     this.addCompas();
@@ -75,7 +79,7 @@ class Editor extends EditorListener {
         this.compases[i].updateSize();
       }
 
-      this.compases[0].setPos(0, 0);
+      this.compases[0].setPos(0, 10);
       let over_y = this.compases[0].getOverY();
       let final_y = this.compases[0].getFinalY();
       let compases_c = 1;
@@ -119,7 +123,7 @@ class Editor extends EditorListener {
         final_y = this.compases[i].getFinalY();
       }
 
-      let espacio_vacio = this.bordeR - this.compases[this.compases.length - 1].getFinalX();
+      let espacio_vacio = this.bordeR - this.compases[this.compases.length - 1].getFinalX() - 1;
       for (let j = this.compases.length - compases_c; j < this.compases.length; j++) {
         this.compases[j].addW(espacio_vacio / compases_c);
         if (j != this.compases.length - compases_c)
@@ -132,6 +136,7 @@ class Editor extends EditorListener {
       this.render.resize(this.bordeR, final_y);
     }
   }
+
   Editdraw() {
     requestAnimationFrame(() => {
       this.drawCompases();
@@ -150,7 +155,7 @@ class Editor extends EditorListener {
       this.compases[i].draw(this.context, is_final);
     }
 
-    //this.drawHitBox();
+    this.drawHitBox();
 
   }
 
@@ -190,6 +195,13 @@ class Editor extends EditorListener {
     }
   }
 
+  setTempo(tempo){
+    this.compases[0].setTempo(tempo);
+  }
+
+  getH(){
+    return this.canvas.height;
+  }
 }
 
 

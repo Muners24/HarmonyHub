@@ -157,3 +157,15 @@ class Notacion {
         return 'treble';
     }
 }
+
+
+//ornament
+//this.nota.addModifier(0,new Ornament('turn'));
+//this.nota.addModifier(0,new Ornament('turn_inverted'));
+//this.nota.addModifier(0,new Ornament('tr'));
+//this.nota.addModifier(0,new Ornament('mordent'));
+//this.nota.addModifier(0,new Ornament('mordent_inverted'));
+        
+//tremolo
+//this.nota.addModifier(0,new Tremolo(3));
+        

@@ -21,27 +21,49 @@ class Nota extends VexRec {
 
     actualizaStaveNote() {
         this.nota = new StaveNote({ keys: this.keys, duration: this.duracion });
-
         if (this.doted)
             this.nota.addDotToAll();
 
-        if(this.selected)
+        if (this.selected)
             this.nota.setStyle({ fillStyle: 'red', strokeStyle: 'red' });
 
         this.nota.setStemDirection(this.stem_dir);
+
+        //accidental
+        //this.nota.addModifier(0,new Accidental('bb'));
+        //this.nota.addModifier(0,new Accidental('b'));
+        //this.nota.addModifier(0,new Accidental('n'));
+        //this.nota.addModifier(0,new Accidental('#'));
+        //this.nota.addModifier(0,new Accidental('##'));
+
+        //anotacion
+        //this.nota.addModifier(0,new Annotation('a'));
+
+        //articulaciones
+        //this.nota.addModifier(0,new Articulation('a.').setPosition(Modifier.Position.ABOVE));
+        //this.nota.addModifier(0,new Articulation('av').setPosition(Modifier.Position.ABOVE));
+        //this.nota.addModifier(0,new Articulation('a^').setPosition(Modifier.Position.ABOVE));
+        //this.nota.addModifier(0,new Articulation('a>').setPosition(Modifier.Position.ABOVE));
+        //this.nota.addModifier(0,new Articulation('a-').setPosition(Modifier.Position.ABOVE));
+        //this.nota.addModifier(0,new Articulation('a@a').setPosition(Modifier.Position.ABOVE));
+
+
+        
+
+
     }
 
     calculaRec() {
         let bound = this.nota.getBoundingBox();
         this.x = this.nota.getNoteHeadBeginX();
         this.w = this.nota.getNoteHeadEndX() - this.x;
-        if(this.duracion.includes('r')){
+        if (this.duracion.includes('r')) {
             this.h = bound.getH();
             this.y = bound.getY();
         }
-        else{
+        else {
             this.h = 10;
-            this.y = this.nota.getNoteHeadBounds().y_top-5;
+            this.y = this.nota.getNoteHeadBounds().y_top - 5;
         }
     }
 
@@ -60,11 +82,11 @@ class Nota extends VexRec {
         return this;
     }
 
-    hasDot(){
+    hasDot() {
         return this.doted;
     }
 
-    removeDot(){
+    removeDot() {
         this.doted = false;
         return this;
     }
@@ -74,33 +96,33 @@ class Nota extends VexRec {
         return this.nota;
     };
 
-    getStartY(){
+    getStartY() {
         let y = Notacion.getNoteY(this.keys[0]);
-        if(y != null)
-            return y-5;
+        if (y != null)
+            return y - 5;
         return 0;
     }
 
-    getFinalY(){
+    getFinalY() {
         let y = Notacion.getNoteY(this.keys[0]);
-        if(y != null)
-            return y+5;
+        if (y != null)
+            return y + 5;
         return 0;
     }
 
-    setSelected(sel){
+    setSelected(sel) {
         this.selected = sel;
     }
-    
-    isSelected(){
+
+    isSelected() {
         return this.selected;
     }
 
-    setKey(key){
-        if(this.duracion.includes('r'))
-            this.duracion = this.duracion.replace('r','');
-        
-        if(key.split('/')[1] > 4)
+    setKey(key) {
+        if (this.duracion.includes('r'))
+            this.duracion = this.duracion.replace('r', '');
+
+        if (key.split('/')[1] > 4)
             this.stem_dir = -1;
         else
             this.stem_dir = 1;
@@ -109,16 +131,16 @@ class Nota extends VexRec {
         return this;
     }
 
-    setDuration(duration){
+    setDuration(duration) {
         this.duracion = duration;
         return this;
     }
 
-    getDuration(){
+    getDuration() {
         return this.duracion;
     }
 
-    isRest(){
+    isRest() {
         return this.duracion.includes('r');
     }
 };
