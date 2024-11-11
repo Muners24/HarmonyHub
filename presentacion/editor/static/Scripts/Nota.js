@@ -7,74 +7,101 @@ class Nota extends VexRec {
         super(0, 0, 0, 10);
         this.keys = keys;
         this.duracion = duracion;
-        this.alteracion = "";
-        this.articulaciones = [];
+        this.accidental = '';
+        this.articulations = [];
 
         this.doted = false;
         this.selected = false;
+        this.key_selected = -1;
 
         this.stem_dir = 1;
 
         this.nota;
         this.rec;
+
+        this.notas_order = { 'c': 0, 'd': 1, 'e': 2, 'f': 3, 'g': 4, 'a': 5, 'b': 6 };
     }
 
-    actualizaStaveNote() {
+    updateStaveNote() {
         this.nota = new StaveNote({ keys: this.keys, duration: this.duracion });
         if (this.doted)
             this.nota.addDotToAll();
 
-        if (this.selected)
-            this.nota.setStyle({ fillStyle: 'red', strokeStyle: 'red' });
+        if (this.selected && this.isRest())
+            this.nota.setStyle({ fillStyle: 'rgba(0,100,200,1)' });
+
+
+        if (this.accidental != '')
+            this.nota.addModifier(0, new Accidental(this.accidental));
+
+        let count = 0;
+        for (let i = 0; i < this.keys.length; i++) {
+            if (this.keys[i].split('/')[1] > 4)
+                count--;
+            else
+                count++;
+        }
+
+        if (count < 0)
+            this.stem_dir = -1;
+        else
+            this.stem_dir = 1;
 
         this.nota.setStemDirection(this.stem_dir);
+        for (let i = 0; i < this.articulations.length; i++) {
+            let dir;
+            if (this.articulations[i] !== 'a@a') {
+                if (this.stem_dir === 1) {
+                    dir = Modifier.Position.BELOW;
+                    shift_y += 10;
+                }
+                else {
+                    dir = Modifier.Position.ABOVE;
+                    shift_y -= 10;
+                }
+            }
+            else
+                dir = Modifier.Position.ABOVE;
 
-        //accidental
-        //this.nota.addModifier(0,new Accidental('bb'));
-        //this.nota.addModifier(0,new Accidental('b'));
-        //this.nota.addModifier(0,new Accidental('n'));
-        //this.nota.addModifier(0,new Accidental('#'));
-        //this.nota.addModifier(0,new Accidental('##'));
+            this.nota.addModifier(0, new Articulation(this.articulations[i])
+                .setPosition(dir));
+        }
 
         //anotacion
         //this.nota.addModifier(0,new Annotation('a'));
 
-        //articulaciones
-        //this.nota.addModifier(0,new Articulation('a.').setPosition(Modifier.Position.ABOVE));
-        //this.nota.addModifier(0,new Articulation('av').setPosition(Modifier.Position.ABOVE));
-        //this.nota.addModifier(0,new Articulation('a^').setPosition(Modifier.Position.ABOVE));
-        //this.nota.addModifier(0,new Articulation('a>').setPosition(Modifier.Position.ABOVE));
-        //this.nota.addModifier(0,new Articulation('a-').setPosition(Modifier.Position.ABOVE));
-        //this.nota.addModifier(0,new Articulation('a@a').setPosition(Modifier.Position.ABOVE));
-
-
-        
-
-
     }
 
-    calculaRec() {
+    calculaRec(y) {
         let bound = this.nota.getBoundingBox();
         this.x = this.nota.getNoteHeadBeginX();
         this.w = this.nota.getNoteHeadEndX() - this.x;
-        if (this.duracion.includes('r')) {
+
+        if (this.isRest()) {
             this.h = bound.getH();
             this.y = bound.getY();
+            return;
         }
-        else {
-            this.h = 10;
-            this.y = this.nota.getNoteHeadBounds().y_top - 5;
-        }
+
+        this.h = 10;
+        this.y = y - 5;
+
     }
 
-    getRec() {
-        this.calculaRec();
-        return new VexRec(
-            this.x,
-            this.y,
-            this.w,
-            this.h,
-        );
+    getRecs() {
+        this.keys = this.sortKeys();
+        let ys = this.nota.getYs();
+        let recs = [];
+        for (let i = 0; i < ys.length; i++) {
+            this.calculaRec(ys[i]);
+            recs.push([i,new VexRec(
+                this.x,
+                this.y,
+                this.w,
+                this.h,
+            )]);
+        }
+        return recs;
     }
 
     addDot() {
@@ -92,42 +119,68 @@ class Nota extends VexRec {
     }
 
     getStaveNote() {
-        this.actualizaStaveNote();
+        this.updateStaveNote();
         return this.nota;
     };
 
     getStartY() {
-        let y = Notacion.getNoteY(this.keys[0]);
+        let keys = this.sortKeys();
+
+        let y = Notacion.getNoteY(keys[keys.length - 1]);
         if (y != null)
-            return y - 5;
+            return y - 35;
         return 0;
     }
 
     getFinalY() {
-        let y = Notacion.getNoteY(this.keys[0]);
+        let keys = this.sortKeys();
+        let y = Notacion.getNoteY(keys[0]);
         if (y != null)
-            return y + 5;
+            return y + 35;
         return 0;
     }
 
-    setSelected(sel) {
-        this.selected = sel;
+    sortKeys() {
+        let keys = [...this.keys];
+
+        keys.sort((a, b) => {
+            const numA = parseInt(a.split('/')[1]);
+            const numB = parseInt(b.split('/')[1]);
+
+            if (numA !== numB)
+                return numA - numB;
+
+            const letterA = a.split('/')[0];
+            const letterB = b.split('/')[0];
+
+            return this.notas_order[letterA] - this.notas_order[letterB];
+        });
+
+        return keys;
+    }
+
+    setSelected(key_index) {
+        if(key_index === -2){
+            this.selected = true;
+            let key = this.sortKeys();
+            this.key_selected = this.keys.indexOf(key[0]);
+            return this.key_selected;
+        }
+
+        this.key_selected = key_index;
+        this.selected = key_index !== -1;
+        return key_index;
     }
 
     isSelected() {
         return this.selected;
     }
 
-    setKey(key) {
-        if (this.duracion.includes('r'))
+    setKey(key, index) {
+        if (this.isRest())
             this.duracion = this.duracion.replace('r', '');
 
-        if (key.split('/')[1] > 4)
-            this.stem_dir = -1;
-        else
-            this.stem_dir = 1;
-
-        this.keys[0] = key;
+        this.keys[index] = key;
         return this;
     }
 
@@ -142,6 +195,90 @@ class Nota extends VexRec {
 
     isRest() {
         return this.duracion.includes('r');
+    }
+
+    setAccidental(accidental) {
+        if (this.isRest())
+            return false;
+
+        if (this.accidental === accidental) {
+            if (accidental === 'n') {
+                this.accidental = '';
+                return true;
+            }
+            return false;
+        }
+
+        this.accidental = accidental;
+        return true;
+    }
+
+    setArticulation(newArticulation) {
+        if (this.isRest())
+            return;
+
+        let acumulables = [];
+        acumulables.push('a-');
+        acumulables.push('a>');
+        acumulables.push('a@a');
+
+        let index = this.articulations.indexOf(newArticulation);
+        if (acumulables.indexOf(newArticulation) !== -1) {
+            if (index !== -1) {
+                this.articulations.splice(index, 1);
+                return;
+            }
+            if (newArticulation !== 'a@a')
+                this.articulations.splice(0, 0, newArticulation);
+            else
+                this.articulations.push(newArticulation);
+
+            return;
+        }
+
+        let acortadores = [];
+        acortadores.push(this.articulations.indexOf('a.'));
+        acortadores.push(this.articulations.indexOf('av'));
+        acortadores.push(this.articulations.indexOf('a^'));
+
+        if (index !== -1) {
+            this.articulations.splice(index, 1);
+            return;
+        }
+
+        for (let i = 0; i < acortadores.length; i++) {
+            if (acortadores[i] !== index) {
+                this.articulations.splice(acortadores[i], 1);
+            }
+        }
+        if (this.articulations.indexOf('a@a') !== -1) {
+            this.articulations.splice(this.articulations.length - 1, 0, newArticulation);
+            return;
+        }
+        this.articulations.push(newArticulation);
+    }
+
+    addKey(key) {
+        if (this.keys.indexOf(key) !== -1) {
+            return -1;
+        }
+
+        if (this.isRest()) {
+            this.keys.pop();
+            this.duracion = this.duracion.replace('r', '');
+        }
+
+        this.keys.push(key);
+        this.keys = this.sortKeys();
+        return this.keys.indexOf(key);
+    }
+
+    hasKey(key) {
+        return this.keys.indexOf(key) !== -1;
+    }
+
+    getKeyOfIndex(index) {
+        return this.keys[index];
     }
 };
 

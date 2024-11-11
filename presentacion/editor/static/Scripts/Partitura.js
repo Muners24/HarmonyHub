@@ -79,3 +79,5 @@ document.addEventListener("DOMContentLoaded", () => {
     config(editor);
     editor.Editdraw();
 });*/
+
+editor.addCompas();

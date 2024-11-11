@@ -156,6 +156,22 @@ class Notacion {
         }
         return 'treble';
     }
+
+    static getNoteOnY(iy, y){
+        if (this.altura_notas === null)
+            this.initMap(); 
+        
+        let key = '';
+
+        for(let i = 0;i<this.keys.length;i++){
+            let altura = this.altura_notas.get(this.keys[i]);
+            altura += iy;
+            if(altura >= y-2 &&  altura <= y+2)
+                key = this.keys[i];
+        }
+
+        return key
+    }
 }
 
 
