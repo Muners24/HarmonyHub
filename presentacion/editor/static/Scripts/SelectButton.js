@@ -13,10 +13,12 @@ stave.addClef("treble").setContext(context).draw();
 
 // Función para manejar la selección de un botón de nota
 function selectButton(noteType, event) {
+    
     const buttons = document.querySelectorAll('.button-T');
     buttons.forEach(button => {
         button.classList.remove('selected');
     });
+
 
     const selectedButton = event.currentTarget;
     selectedButton.classList.add('selected');
