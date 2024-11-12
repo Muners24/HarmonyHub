@@ -151,20 +151,33 @@ class EditorListener {
                 break;
             case '|':
                 break;
-            case 'z':
-                this.setCompasNum(6);
-                break;
-            case 'x':
-                this.setCompasNum(4);
-                break;
             case '-':
-                this.setCompasDen(2);
+                this.removeCompas();
                 break;
             case '+':
-                this.setCompasDen(8);
+                this.addCompas();
                 break;
+            case 'Backspace':
             case 'r':
                 this.setRest();
+                break;
+            case 't':
+                this.setDynamic('pp');
+                break;
+            case 'y':
+                this.setDynamic('p');
+                break;
+            case 'u':
+                this.setDynamic('mp');
+                break;
+            case 'i':
+                this.setDynamic('mf');
+                break;
+            case 'o':
+                this.setDynamic('f');
+                break;
+            case 'p':
+                this.setDynamic('ff');
                 break;
             default:
         }
@@ -185,7 +198,7 @@ class EditorListener {
             let compas = this.compases[this.compas_selected];
             if (!compas.notas[this.nota_selected].hasKey(this.temp_notas[this.nota_selected].getKeys()[0])) {
                 this.key_selected = compas.notas[this.nota_selected].addKey(this.temp_notas[this.nota_selected].getKeys()[0]);
-                this.compases[0].noSignSelected();
+                this.signDeselect();
                 this.formated = false;
                 this.Editdraw();
                 return;
@@ -211,7 +224,7 @@ class EditorListener {
             return;
         }
 
-        this.compases[0].noSignSelected();
+        this.signDeselect();
 
         if (this.nota_selected !== -1) {
             this.compases[this.compas_selected].notas[this.nota_selected].setSelected(-1);
@@ -224,7 +237,7 @@ class EditorListener {
 
 
         if (this.compas_selected === -1) {
-            this.compases[0].noSignSelected();
+            this.signDeselect();
             return;
         }
 
@@ -244,12 +257,9 @@ class EditorListener {
             }
         }
 
-        if (noteHeadRecs.length === 0) {
-            this.compases[this.compas_selected].notas[this.nota_selected].setSelected(-1);
-            this.nota_selected = -1;
-            this.compas_selected = -1;
-            this.key_selected = -1;
-            this.compases[0].noSignSelected();
+        if (noteHeadRecs.length == 0) {
+            this.noteDeselect();
+            this.signDeselect();
             this.Editdraw();
             return;
         }
@@ -261,12 +271,10 @@ class EditorListener {
         }
 
         if (this.key_selected === -1) {
-            this.compases[this.compas_selected].notas[this.nota_selected].setSelected(-1);
-            this.nota_selected = -1;
-            this.compas_selected = -1;
-            this.key_selected = -1;
-            this.compases[0].noSignSelected();
+            this.noteDeselect();
+            this.signDeselect();
             this.Editdraw();
+            return;
         }
 
         this.compases[this.compas_selected].notas[this.nota_selected].setSelected(this.key_selected);
@@ -278,9 +286,7 @@ class EditorListener {
 
         if (inicial.clef_sel) {
             inicial.selectKeySign();
-            this.nota_selected = -1;
-            this.compas_selected = -1;
-            this.key_selected = -1;
+            this.noteDeselect();
             return;
         }
 
@@ -318,9 +324,7 @@ class EditorListener {
 
         if (inicial.keySignature_sel) {
             inicial.selectClef();
-            this.nota_selected = -1;
-            this.compas_selected = -1;
-            this.key_selected = -1;
+            this.noteDeselect();
             return;
         }
 
@@ -339,9 +343,7 @@ class EditorListener {
             }
 
             inicial.selectKeySign();
-            this.nota_selected = -1;
-            this.compas_selected = -1;
-            this.key_selected = -1;
+            this.noteDeselect();
             return;
         }
 
@@ -349,13 +351,19 @@ class EditorListener {
     }
 
     noteDeselect() {
+        if(this.nota_selected === -1)
+            return;
+
         this.compases[this.compas_selected]
             .notas[this.nota_selected]
             .setSelected(-1);
-
         this.nota_selected = -1;
         this.compas_selected = -1;
         this.key_selected = -1;
+    }
+
+    signDeselect(){
+        this.compases[0].noSignSelected();
     }
 
     switchPitch(switchP) {
@@ -625,7 +633,7 @@ class EditorListener {
         if (this.nota_selected !== -1)
             this.noteDeselect();
 
-        compas.noSignSelected();
+        this.signDeselect();
 
         if (prevNum > num)
             this.cutCompas(num, compas.getTimeDen());
@@ -664,7 +672,7 @@ class EditorListener {
         if (this.nota_selected !== -1)
             this.noteDeselect();
 
-        compas.noSignSelected();
+        this.signDeselect();
 
         if (prevDen > den)
             this.decreaseCompasDen(compas.getTimeNum(), den);
@@ -677,18 +685,29 @@ class EditorListener {
         return;
     }
 
-    setRest(){
-        if(this.nota_selected === -1)
+    setRest() {
+        if (this.nota_selected === -1)
             return;
 
         let compas = this.compases[this.compas_selected];
-        if(compas.notas[this.nota_selected].isRest())
+        if (compas.notas[this.nota_selected].isRest())
             return;
-        
+
         compas.notas[this.nota_selected].convertToRest();
         this.formated = false;
         this.Editdraw();
-    }   
+    }
+
+    setDynamic(dynamic) {
+        if (this.nota_selected === -1)
+            return;
+
+        this.compases[this.compas_selected].notas[this.nota_selected].setDynamic(dynamic);
+        this.Editdraw();
+    }
+
+
+
 }
 
 

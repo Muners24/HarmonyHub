@@ -18,6 +18,7 @@ class Nota extends VexRec {
 
         this.nota;
         this.rec;
+        this.dynamic = ''
 
         this.notas_order = { 'c': 0, 'd': 1, 'e': 2, 'f': 3, 'g': 4, 'a': 5, 'b': 6 };
     }
@@ -26,6 +27,8 @@ class Nota extends VexRec {
         this.nota = new StaveNote({ keys: this.keys, duration: this.duracion });
         if (this.doted)
             this.nota.addDotToAll();
+        
+        
 
         if (this.selected && this.isRest())
             this.nota.setStyle({ fillStyle: 'rgba(0,100,200,1)' });
@@ -66,6 +69,8 @@ class Nota extends VexRec {
             this.nota.addModifier(0, new Articulation(this.articulations[i])
                 .setPosition(dir));
         }
+
+        
 
         //anotacion
         //this.nota.addModifier(0,new Annotation('a'));
@@ -285,6 +290,23 @@ class Nota extends VexRec {
         this.keys = [];
         this.keys.push('b/4');
         this.duracion += 'r';
+    }
+
+    setDynamic(dynamic){
+        if(this.dynamic === dynamic){
+            this.dynamic = '';
+            return;
+        }
+
+        this.dynamic = dynamic;
+    }
+
+    getDynamic(){
+        return this.dynamic;
+    }
+
+    hasDynamic(){
+        return this.dynamic !== -1;
     }
 };
 

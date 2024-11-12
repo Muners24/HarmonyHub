@@ -5,15 +5,15 @@ const { Renderer, Stave, StaveNote, Formatter,
   Fraction,
 
   Modifier, Articulation, Dot, Accidental, Annotation,
-  
+
   StaveModifier, StaveText, StaveTempo,
+  TextDynamics, StaveHairpin
 } = Vex.Flow
 
 
 class Editor extends EditorListener {
   constructor(canvas) {
     super(canvas);
-
   }
 
   addCompas(timeNum = 4, timeDen = 4) {
@@ -26,7 +26,7 @@ class Editor extends EditorListener {
     let tNum;
     let tDen;
     for (let i = 0; i < this.compases.length; i++) {
-      if (this.compases[i].getKeySignature != '') {
+      if (this.compases[i].getKeySignature() != '') {
         tNum = this.compases[i].timeNum;
         tDen = this.compases[i].timeDen;
       }
@@ -35,20 +35,27 @@ class Editor extends EditorListener {
     this.compases.push(new Compas(tNum, tDen));
     this.formated = false;
     this.Editdraw();
+    this.Editdraw();
   }
 
+  removeCompas() {
+    if (this.compases.length === 1)
+      return;
+
+    this.compases.pop();
+
+    this.formated = false;
+    this.Editdraw();
+    this.Editdraw();
+  }
   config() {
     this.addCompas(4, 4);
     this.compases[0]
       .addClef('treble')
-      .addKeySignature('G');
-    this.setTempo(111);
-    this.addCompas();
-    this.addCompas();
-    this.addCompas();
-    this.addCompas();
-    this.addCompas();
-    this.addCompas();
+      .addKeySignature('C');
+    this.setTempo(120);
+    this.formated = false;
+    this.Editdraw();
   }
 
   formatCompas() {
@@ -57,14 +64,15 @@ class Editor extends EditorListener {
         this.compases[i].updateSize();
       }
 
+      let clef = this.compases[0].getClef();
       this.compases[0].setPos(0, 10);
       let over_y = this.compases[0].getOverY();
       let final_y = this.compases[0].getFinalY();
       let compases_c = 1;
 
       for (let i = 1; i < this.compases.length; i++) {
+        this.compases[i].setClef('');
         let compas_anterior = this.compases[i - 1];
-
         //agrega un compas si no se sale del borde
         //va contando los compases en el pentagrama
         //calcula el exedente sobre los compases
@@ -93,6 +101,7 @@ class Editor extends EditorListener {
             final_y = this.compases[j].getFinalY();
         }
 
+        this.compases[i].setClef(clef);
         this.compases[i].setX(0);
         this.compases[i].setY(final_y);
 
@@ -185,7 +194,7 @@ class Editor extends EditorListener {
 
       let key = compas.notas[this.nota_selected].getKeyOfIndex(this.key_selected);
       let dur = parseInt(compas.notas[i].getDuration());
-      
+
       temp_notas.push(new StaveNote({ keys: [key], duration: String(dur) }))
       temp_notas[i].setStyle({ fillStyle: 'rgba(0,100,200,1)', strokeStyle: 'rgba(0,0,0,0.0)' });
       temp_notas[i].setBeam();
