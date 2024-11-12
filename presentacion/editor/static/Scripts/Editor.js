@@ -2,17 +2,17 @@
 const { Renderer, Stave, StaveNote, Formatter,
   Beam, StaveTie, Voice, Stem, Barline,
   Clef, TimeSignature, KeySignature,
-  Fraction
+  Fraction,
+
+  Modifier, Articulation, Dot, Accidental, Annotation,
+  
+  StaveModifier, StaveText, StaveTempo,
 } = Vex.Flow
 
 
 class Editor extends EditorListener {
   constructor(canvas) {
     super(canvas);
-    this.render = new Renderer(this.canvas, Renderer.Backends.CANVAS);
-    this.bordeR = window.innerWidth - 200;
-    this.render.resize(this.bordeR, 200);
-    this.context = this.render.getContext();
 
   }
 
@@ -33,7 +33,8 @@ class Editor extends EditorListener {
     }
 
     this.compases.push(new Compas(tNum, tDen));
-
+    this.formated = false;
+    this.Editdraw();
   }
 
   config() {
@@ -41,26 +42,7 @@ class Editor extends EditorListener {
     this.compases[0]
       .addClef('treble')
       .addKeySignature('G');
-    this.addCompas();
-    this.addCompas();
-    this.addCompas();
-    this.addCompas();
-    this.addCompas();
-    this.addCompas();
-    this.addCompas();
-    this.addCompas();
-    this.addCompas();
-    this.addCompas();
-    this.addCompas();
-    this.addCompas();
-    this.addCompas();
-    this.addCompas();
-    this.addCompas();
-    this.addCompas();
-    this.addCompas();
-    this.addCompas();
-    this.addCompas();
-    this.addCompas();
+    this.setTempo(111);
     this.addCompas();
     this.addCompas();
     this.addCompas();
@@ -75,7 +57,7 @@ class Editor extends EditorListener {
         this.compases[i].updateSize();
       }
 
-      this.compases[0].setPos(0, 0);
+      this.compases[0].setPos(0, 10);
       let over_y = this.compases[0].getOverY();
       let final_y = this.compases[0].getFinalY();
       let compases_c = 1;
@@ -119,7 +101,7 @@ class Editor extends EditorListener {
         final_y = this.compases[i].getFinalY();
       }
 
-      let espacio_vacio = this.bordeR - this.compases[this.compases.length - 1].getFinalX();
+      let espacio_vacio = this.bordeR - this.compases[this.compases.length - 1].getFinalX() - 1;
       for (let j = this.compases.length - compases_c; j < this.compases.length; j++) {
         this.compases[j].addW(espacio_vacio / compases_c);
         if (j != this.compases.length - compases_c)
@@ -132,6 +114,7 @@ class Editor extends EditorListener {
       this.render.resize(this.bordeR, final_y);
     }
   }
+
   Editdraw() {
     requestAnimationFrame(() => {
       this.drawCompases();
@@ -148,9 +131,66 @@ class Editor extends EditorListener {
       if (i == this.compases.length - 1)
         is_final = true;
       this.compases[i].draw(this.context, is_final);
+      this.compases[i].getRec();
     }
 
-    //this.drawHitBox();
+    this.drawKeySelected();
+
+    if (this.temp_notas.length !== 0)
+      Formatter.FormatAndDraw(this.context, this.temp_compas, this.temp_notas);
+
+    /*
+    let notas = [];
+    for(let i = 0;i<this.compases.length;i++){
+      for(let j=0;j<this.compases[i].staveNotes.length;j++){
+        notas.push(this.compases[i].staveNotes[j]);
+      }
+    }
+    const tie = new StaveTie({
+      first_note: notas[0],
+      last_note: notas[notas.length-5]
+    });
+    tie.setContext(this.context).draw();
+
+    */
+    this.drawHitBox();
+
+  }
+
+  drawKeySelected() {
+    if (this.key_selected === -1)
+      return;
+
+    let compas = this.compases[this.compas_selected];
+    if (compas.notas[this.nota_selected].isRest())
+      return;
+
+    let temp_compas = new Stave(compas.getX(), compas.getY(), compas.getW());
+    if (this.compas_selected === 0) {
+      temp_compas.addClef(compas.getClef());
+      temp_compas.addKeySignature(compas.getKeySignature());
+      temp_compas.addTimeSignature(compas.getTimeSignature());
+    }
+
+    let temp_notas = [];
+    for (let i = 0; i < compas.staveNotes.length; i++) {
+      if (i !== this.nota_selected) {
+        if (compas.notas[i].isRest())
+          temp_notas.push(new StaveNote({ keys: ['b/4'], duration: compas.notas[i].getDuration() }));
+        else
+          temp_notas.push(new StaveNote({ keys: ['b/4'], duration: compas.notas[i].getDuration() + 'r' }));
+        temp_notas[i].setStyle({ fillStyle: 'rgba(0,0,0,0.0)', strokeStyle: 'rgba(0,0,0,0.0)' });
+        continue;
+      }
+
+      let key = compas.notas[this.nota_selected].getKeyOfIndex(this.key_selected);
+      let dur = parseInt(compas.notas[i].getDuration());
+      
+      temp_notas.push(new StaveNote({ keys: [key], duration: String(dur) }))
+      temp_notas[i].setStyle({ fillStyle: 'rgba(0,100,200,1)', strokeStyle: 'rgba(0,0,0,0.0)' });
+      temp_notas[i].setBeam();
+    }
+    Formatter.FormatAndDraw(this.context, temp_compas, temp_notas);
 
   }
 
@@ -158,10 +198,12 @@ class Editor extends EditorListener {
     //rectangulos para comprobar medidas
 
     this.context.setFillStyle('rgba(150,150,150,0.5)');
+    /*
     for (let i = 0; i < this.compases.length; i++) {
-      let compas = this.compases[i];
-      let h = compas.getFinalY() - compas.getMinY();
-      this.context.fillRect(compas.getX(), compas.getMinY(), compas.getW(), h);
+      //let compas = this.compases[i];
+      //let cmp = compas.getRec();
+      
+      this.context.fillRect(cmp.getX(), cmp.getY(), cmp.getW(), cmp.getH());
 
       if (compas.getClef() != '') {
         let clef = compas.getClefRec();
@@ -180,11 +222,14 @@ class Editor extends EditorListener {
         this.context.fillRect(time.x, time.y, time.w, time.h);
       }
     }
-
+    */
     for (let i = 0; i < this.compases.length; i++) {
       for (let j = 0; j < this.compases[i].notas.length; j++) {
-        let n = this.compases[i].notas[j].getRec();
-        this.context.fillRect(n.x, n.y, n.w, n.h);
+        let recs = this.compases[i].notas[j].getRecs();
+
+        for (let k = 0; k < recs.length; k++) {
+          this.context.fillRect(recs[k][1].x, recs[k][1].y, recs[k][1].w, recs[k][1].h);
+        }
 
       }
     }
@@ -192,14 +237,17 @@ class Editor extends EditorListener {
 
 }
 
+
 // Inicializa el Editor cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", () => {
-  let editor = new Editor('Editor');
+
+  editor = new Editor('Editor');
   editor.config();
   editor.Editdraw();
-
-  document.getElementById('btn-SemiFusa'.addEventListener('click', function (){
-    editor.addCompas();
-    editor.Editdraw();
-  }))
 });
+
+
+
+
+
+

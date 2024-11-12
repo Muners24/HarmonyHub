@@ -9,8 +9,9 @@ class Compas extends VexRec {
         this.timeDen = timeDen;
 
         this.capacidad = 0;
-
+        this.tempo = 120;
         this.notas = [];
+        this.staveNotes = [];
 
         this.timeSignature = '';
         this.keySignature = '';
@@ -25,22 +26,35 @@ class Compas extends VexRec {
         this.updateSize();
     }
 
-    updateCpacity(){
-        this.capacidad = this.timeNum/this.timeDen;
+    updateCpacity() {
+        this.capacidad = this.timeNum / this.timeDen;
     }
 
-    getCapacity(){
+    getCapacity() {
         this.updateCpacity();
         return this.capacidad;
     }
 
-    getTimeDen(){
+    getTimeDen() {
         return this.timeDen;
     }
 
-    getTimeNum(){
+    getTimeNum() {
         return this.timeNum;
     }
+
+    setTimeNum(num) {
+        this.timeNum = num;
+        this.timeSignature = String(this.timeNum) + "/" + String(this.timeDen);
+        return this;
+    }
+
+    setTimeDen(den) {
+        this.timeDen = den; 
+        this.timeSignature = String(this.timeNum) + "/" + String(this.timeDen);
+        return this;
+    }
+
     initSilencios() {
 
         for (let i = 0; i < this.timeNum; i++) {
@@ -53,13 +67,17 @@ class Compas extends VexRec {
         this.notas.push(nota);
     }
 
-    actualizaStave(context) {
+    updateStave() {
         this.stave = new Stave(this.x, this.y, this.w);
-        if (this.clef != '')
-            this.stave.addClef(this.clef);
 
-        if (this.timeSignature != '')
+        if (this.clef != '') {
+            this.stave.addClef(this.clef);
+            this.stave.addModifier(new StaveTempo({ duration: String(this.timeDen), dots: 0, bpm: this.tempo }, 0, 0));
+        }
+
+        if (this.timeSignature != '') {
             this.stave.addTimeSignature(this.timeSignature);
+        }
 
         if (this.keySignature != '') {
             if (this.keySignature != 'C')
@@ -68,39 +86,48 @@ class Compas extends VexRec {
                 this.stave.addKeySignature('G');
         }
 
+
         let mod = this.stave.getModifiers();
 
         for (let i = 0; i < mod.length; i++) {
             if (mod[i] instanceof Clef) {
                 if (this.clef_sel && this.clef != 'C')
-                    mod[i].setStyle({ fillStyle: 'red', strokeStyle: 'red' });
+                    mod[i].setStyle({ fillStyle: 'rgba(0,100,200,1)' });
             } else if (mod[i] instanceof TimeSignature) {
                 if (this.timeSignature_sel)
-                    mod[i].setStyle({ fillStyle: 'red', strokeStyle: 'red' });
+
+                    mod[i].setStyle({ fillStyle: 'rgba(0,100,200,1)', strokeStyle: 'rgba(0,0,0,0.0)' });
+
             } else if (mod[i] instanceof KeySignature) {
                 if (this.keySignature_sel)
-                    mod[i].setStyle({ fillStyle: 'red', strokeStyle: 'red' });
-
+                    mod[i].setStyle({ fillStyle: 'rgba(0,100,200,1)' });
                 if (this.keySignature == 'C')
-                    mod[i].setStyle({ fillStyle: 'rgba(0,0,0,0)', strokeStyle: 'rgba(0,0,0,0)' });
+                    mod[i].setStyle({ fillStyle: 'rgba(0,0,0,0)' });
+            } else if (mod[i] instanceof StaveTempo) {
+                mod[i].setX(
+                    -this.getClefRec().getW()
+                    - this.getKeySignatureRec().getW()
+                    - this.getTimeNumRec().getW());
             }
         }
 
     }
 
     draw(context, is_final) {
-        this.actualizaStave(context);
+        this.updateStave();
 
         if (is_final)
             this.stave.setEndBarType(Barline.type.END);
 
         this.stave.setContext(context).draw();
-        let staveNotes = [];
+        this.staveNotes = [];
         for (let i = 0; i < this.notas.length; i++) {
-            staveNotes.push(this.notas[i].getStaveNote());
+            this.staveNotes.push(this.notas[i].getStaveNote());
         }
 
-        Formatter.FormatAndDraw(context, this.stave, staveNotes, { auto_beam: true });
+        Formatter.FormatAndDraw(context, this.stave, this.staveNotes, { auto_beam: true });
+
+
     }
 
     addClef(clef) {
@@ -136,6 +163,7 @@ class Compas extends VexRec {
     getTimeSignature() {
         return this.timeSignature;
     }
+
     removeTimeSignature() {
         this.timeSignature = '';
         return this;
@@ -215,21 +243,30 @@ class Compas extends VexRec {
 
     getTimeNumRec() {
         let keyS_rec = this.getKeySignatureRec();
+        let w = 32;
+        if (this.timeNum > 10 || this.timeDen > 10) {
+            w += 12;
+        }
+
         return new VexRec(
             keyS_rec.getFinalX(),
-            keyS_rec.getY()+keyS_rec.getH()/2,
-            32,
-            keyS_rec.getH()/2
+            keyS_rec.getY() + keyS_rec.getH() / 2,
+            w,
+            keyS_rec.getH() / 2
         );
     }
 
-    getTimeDenRec(){
+    getTimeDenRec() {
         let keyS_rec = this.getKeySignatureRec();
+        let w = 32;
+        if (this.timeNum > 10 || this.timeDen > 10) {
+            w += 12;
+        }
         return new VexRec(
             keyS_rec.getFinalX(),
             keyS_rec.getY(),
-            32,
-            keyS_rec.getH()/2
+            w,
+            keyS_rec.getH() / 2
         );
     }
 
@@ -257,5 +294,17 @@ class Compas extends VexRec {
         this.clef_sel = false;
     }
 
-   
+    setTempo(tempo) {
+        this.tempo = tempo;
+        return this;
+    }
+
+    getRec() {
+        return new VexRec(
+            this.getX(),
+            this.getMinY(),
+            this.getW(),
+            this.getFinalY() - this.getMinY()
+        );
+    }
 }

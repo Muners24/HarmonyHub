@@ -62,12 +62,14 @@ class Notacion {
 
         let i = this.keys.indexOf(key)
         if (i !== -1) {
-            if (i > 0)
-                i--;
+            i--
+
+            if(i < 0)
+                return null;
 
             return this.keys[i];
         }
-        return 'b/4';
+        return this.keys[0];
     }
 
     static getPreviusNote(key) {
@@ -77,12 +79,14 @@ class Notacion {
         let i = this.keys.indexOf(key);
 
         if (i !== -1) {
-            if (i < this.keys.length - 1)
-                i++;
+            i++;
+
+            if(i >= this.keys.length)
+                return null;
 
             return this.keys[i];
         }
-        return 'b/4';
+        return this.keys[this.keys.length-1];
     }
 
     static getKeySignatureW(key = 'C') {
@@ -156,4 +160,32 @@ class Notacion {
         }
         return 'treble';
     }
+
+    static getNoteOnY(iy, y){
+        if (this.altura_notas === null)
+            this.initMap(); 
+        
+        let key = '';
+
+        for(let i = 0;i<this.keys.length;i++){
+            let altura = this.altura_notas.get(this.keys[i]);
+            altura += iy;
+            if(altura >= y-2 &&  altura <= y+2)
+                key = this.keys[i];
+        }
+
+        return key
+    }
 }
+
+
+//ornament
+//this.nota.addModifier(0,new Ornament('turn'));
+//this.nota.addModifier(0,new Ornament('turn_inverted'));
+//this.nota.addModifier(0,new Ornament('tr'));
+//this.nota.addModifier(0,new Ornament('mordent'));
+//this.nota.addModifier(0,new Ornament('mordent_inverted'));
+        
+//tremolo
+//this.nota.addModifier(0,new Tremolo(3));
+        
