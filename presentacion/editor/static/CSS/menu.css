@@ -1,44 +1,42 @@
-/* Menú principal (el primero) */
+/* Menú principal */
 .menu {
-    background-color: rgba(255, 255, 255);
-    color: white; 
+    background-color: rgba(255, 255, 255, 1);
+    color: white;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     padding: 2px 10px;
-    padding-bottom: 100px;
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 950;
+    z-index: 960;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
-    width: 5%; 
+    width: 5%;
     height: auto;
-    margin-right: 355px; 
+    margin-right: 355px;
 }
 
-/* Menú secundario (el segundo) */
+/* Menú secundario */
 .menu-second {
-    background-color: rgba(255, 255, 255);
-    color: white; 
-    display:flex;
-    justify-content: center; 
+    background-color: rgba(255, 255, 255, 1);
+    color: white;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    padding: 0px 15px;
+    padding: 0 15px;
     position: fixed;
-    top: 78px; 
-    margin-bottom: 40px;
+    top: 70px;
     width: 100%;
-    z-index: 1002;
+    z-index: 980;
 }
 
 .menu-second a.button {
     display: flex;
     align-items: center;
-    padding: 15px 15px; 
+    padding: 15px;
     width: 150px;
     margin: 5px;
     background-color: #333;
@@ -47,19 +45,14 @@
     text-decoration: none;
     border-radius: 5px;
     font-size: 14px;
+    transition: background-color 0.3s ease;
 }
 
 .menu-second a.button:hover {
     background-color: #555;
 }
 
-.button-icon {
-    width: 20px;
-    height: 20px;
-    margin-right: 15px;
-}
-
-/* Contenido de los botones y iconos */
+/* Contenido de los botones e iconos */
 .menu a.button {
     display: inline-flex;
     align-items: center;
@@ -80,21 +73,18 @@
     transform: translateY(-2px);
 }
 
-.button-icon {
+/* Ajuste de iconos */
+.button-icon, .button-icon-S {
     width: 20px;
     height: 20px;
-    margin-left: 0px;
     margin-right: 15px;
 }
 
 .button-icon-S {
-    width: 20px;
-    height: 20px;
     margin-left: 25px;
-    margin-right: 15px;
 }
 
-/* Asegura que el botón Archivo sea el contexto relativo */
+/* Dropdown principal */
 #archivoButton {
     position: relative;
 }
@@ -102,17 +92,15 @@
 .dropdown-content {
     display: none;
     position: absolute;
-    margin-left: 400px;
-    top: 0px;
-    left: 0;  
+    top: 5px;
+    left: 0;
     background-color: #f9f9f9;
     min-width: 160px;
     z-index: 1000;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 1px 0;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    margin-left: 398px;
 }
 
-/* Estilos para las opciones dentro del dropdown */
 .dropdown-content a {
     color: black;
     padding: 12px 16px;
@@ -120,67 +108,55 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
-    z-index: 1001;
 }
 
 .dropdown-content a:hover {
     background-color: #ddd;
 }
 
+/* Sub-dropdown Importar */
 .dropdown-content-imp {
     display: none;
-    position:absolute;
-    top:168px;
+    position: absolute;
+    top: 169px;
     left: 100%;
     background-color: #f9f9f9;
     min-width: 160px;
-    z-index: 1001;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 1px 0; 
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-
-/* Contenedor del sub-dropdown Exportar */
+/* Sub-dropdown Exportar */
 .dropdown-content-exp {
-    display: none; /* Oculta el sub-dropdown por defecto */
+    display: none;
     position: absolute;
-    top: 210px; /* Alineado verticalmente con el botón padre */
-    left: 100%; /* Justo a la derecha del botón padre */
+    top: 210px;
+    left: 100%;
     background-color: #f9f9f9;
     min-width: 160px;
-    z-index: 1001;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 0.9px 0;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* Mostrar el dropdown cuando se activa */
+/* Mostrar dropdown al activar */
 .show {
     display: block;
 }
 
-
+/* Barra de herramientas */
 .toolbar {
-    background-color: #c9c9c9; 
-    width: 68%;
-    color: white; 
-    display:flex;
-    justify-content:baseline; 
-    margin-left: 245px;
+    background-color: #c9c9c9;
+    width: 99%;
+    height: 8.5%;
+    display: flex;
+    justify-content: baseline;
     align-items: center;
     position: fixed;
-    top: 140px; 
-    z-index: 990;
-    gap: 2px; /* Ajusta el margen entre los botones */
-    padding: 1px, 0;
-    box-sizing: border-box;
+    top: 140px;
+    z-index: 960;
 }
 
 .button-T {
     display: flex;
-    align-items:baseline;
-    width: 30px;
-    margin: 5px;
+    align-items: baseline;
     background-color: #c9c9c9;
     color: white;
     text-align: center;
@@ -189,53 +165,62 @@
     font-size: 14px;
 }
 
-.button-icon-T{
-    width: 200%;
-    height: auto;
-    z-index: 1000;
+.button-icon-T {
+    width: 70%;
+    margin-left: -10px;
 }
 
-.button-icon-T2{
+.button-icon-T2 {
     width: 60px;
     height: 40px;
 }
 
-.button-icon-T3{
+.button-icon-T3 {
     width: 67px;
     height: 52px;
 }
 
-.button-icon-T4{
+.button-icon-T4 {
     width: 70px;
     height: 50px;
-    margin-left: 25px;
-    z-index: 1000;
+    margin-left: 1px;
 }
 
-.button-icon-T5{
+.button-icon-T5 {
     width: 37px;
     height: 30px;
-    margin-left: 55px;
-    z-index: 1000;
+    margin-left: 25px;
 }
 
-.button-icon-T6{
-    width: 200%;
-    height: auto;
-    margin-left: 50px;
-    z-index: 1000;
+.button-icon-T6 {
+    width: 50px;
+    margin-left: 30px;
 }
 
-.button-icon-T7{
-    width: 67px;
-    height: 52px;
-    margin-left: 80px;
-    z-index: 1000;
+.button-icon-T7 {
+    width: 40px;
+    height: 30px;
+    margin-left: 30px;
 }
 
-.button-icon-T8{
+.button-icon-T8 {
     width: 35px;
     height: 22px;
-    margin-left: 95px;
-    z-index: 1000;
+    margin-left: 70px;
+}
+
+/* Estilo para el botón y el ícono seleccionados */
+.selected {
+    opacity: 0.5;
+}
+
+.selected .button-icon-T,
+.selected .button-icon-T2,
+.selected .button-icon-T3,
+.selected .button-icon-T4,
+.selected .button-icon-T5,
+.selected .button-icon-T6,
+.selected .button-icon-T7,
+.selected .button-icon-T8 {
+    filter: brightness(0) saturate(100%) invert(50%) sepia(100%) saturate(500%) hue-rotate(180deg);
 }

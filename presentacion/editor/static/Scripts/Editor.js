@@ -192,10 +192,14 @@ class Editor extends EditorListener {
 
 }
 
-
 // Inicializa el Editor cuando el DOM esté listo
 document.addEventListener("DOMContentLoaded", () => {
   let editor = new Editor('Editor');
   editor.config();
   editor.Editdraw();
+
+  document.getElementById('btn-SemiFusa'.addEventListener('click', function (){
+    editor.addCompas();
+    editor.Editdraw();
+  }))
 });
