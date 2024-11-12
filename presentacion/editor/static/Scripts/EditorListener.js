@@ -20,7 +20,7 @@ class EditorListener {
         this.rec = this.canvas.getBoundingClientRect();
         this.nota_selected = -1;
         this.compas_selected = -1;
-        this.key_selected = -1;
+        this.key_selected = '';
 
         this.compases = [];
 
@@ -37,8 +37,6 @@ class EditorListener {
             timeout = setTimeout(() => func.apply(this, args), delay);
         };
     }
-
-
 
     handleMov(event) {
         const x = event.pageX - this.rec.left;
@@ -151,13 +149,36 @@ class EditorListener {
             case 'l':
                 this.setArticulation('a@a');
                 break;
-            case '|':
+            case '-':
+                this.removeCompas();
                 break;
-            case 'z':
-                this.setCompasNum(6);
+            case '+':
+                this.addCompas();
                 break;
-            case 'x':
-                this.setCompasNum(4);
+            case 'Backspace':
+            case 'r':
+                this.setRest();
+                break;
+            case 't':
+                this.setDynamic('pp');
+                break;
+            case 'y':
+                this.setDynamic('p');
+                break;
+            case 'u':
+                this.setDynamic('mp');
+                break;
+            case 'i':
+                this.setDynamic('mf');
+                break;
+            case 'o':
+                this.setDynamic('f');
+                break;
+            case 'p':
+                this.setDynamic('ff');
+                break;
+            case 'q':
+                this.setText('xd');
                 break;
             default:
         }
@@ -177,7 +198,7 @@ class EditorListener {
             let compas = this.compases[this.compas_selected];
             if (!compas.notas[this.nota_selected].hasKey(this.temp_notas[this.nota_selected].getKeys()[0])) {
                 this.key_selected = compas.notas[this.nota_selected].addKey(this.temp_notas[this.nota_selected].getKeys()[0]);
-                this.compases[0].noSignSelected();
+                this.signDeselect();
                 this.formated = false;
                 this.Editdraw();
                 return;
@@ -194,16 +215,6 @@ class EditorListener {
             return;
         }
 
-        /*
-        if (this.compases[0].getTimeNumRec().collisionPoint(x, y)) {
-            this.compases[0].selectTime();
-            if (this.nota_selected !== -1) {
-                this.noteDeselect();
-            }
-            this.Editdraw();
-            return;
-        }*/
-
         if (this.compases[0].getKeySignatureRec().collisionPoint(x, y)) {
             this.compases[0].selectKeySign();
             if (this.nota_selected !== -1) {
@@ -213,7 +224,7 @@ class EditorListener {
             return;
         }
 
-        this.compases[0].noSignSelected();
+        this.signDeselect();
 
         if (this.nota_selected !== -1) {
             this.compases[this.compas_selected].notas[this.nota_selected].setSelected(-1);
@@ -226,7 +237,7 @@ class EditorListener {
 
 
         if (this.compas_selected === -1) {
-            this.compases[0].noSignSelected();
+            this.signDeselect();
             return;
         }
 
@@ -246,12 +257,9 @@ class EditorListener {
             }
         }
 
-        if (noteHeadRecs.length === 0) {
-            this.compases[this.compas_selected].notas[this.nota_selected].setSelected(-1);
-            this.nota_selected = -1;
-            this.compas_selected = -1;
-            this.key_selected = -1;
-            this.compases[0].noSignSelected();
+        if (noteHeadRecs.length == 0) {
+            this.noteDeselect();
+            this.signDeselect();
             this.Editdraw();
             return;
         }
@@ -262,16 +270,14 @@ class EditorListener {
             }
         }
 
-        if (this.key_selected === -1) {
-            this.compases[this.compas_selected].notas[this.nota_selected].setSelected(-1);
-            this.nota_selected = -1;
-            this.compas_selected = -1;
-            this.key_selected = -1;
-            this.compases[0].noSignSelected();
+        if (this.key_selected === '') {
+            this.noteDeselect();
+            this.signDeselect();
             this.Editdraw();
+            return;
         }
 
-        this.compases[this.compas_selected].notas[this.nota_selected].setSelected(this.key_selected);
+        this.key_selected = compas.notas[this.nota_selected].setSelected(this.key_selected);
         this.Editdraw();
     }
 
@@ -280,38 +286,28 @@ class EditorListener {
 
         if (inicial.clef_sel) {
             inicial.selectKeySign();
-            this.nota_selected = -1;
-            this.compas_selected = -1;
-            this.key_selected = -1;
+            this.noteDeselect();
             return;
         }
 
         if (inicial.keySignature_sel) {
-            inicial.selectTime();
-            this.nota_selected = -1;
-            this.compas_selected = -1;
-            this.key_selected = -1;
-            return;
-        }
-
-        if (inicial.timeSignature_sel) {
             inicial.noSignSelected();
             this.compas_selected = 0;
             this.nota_selected = 0;
-            this.key_selected = inicial.notas[0].setSelected(-2);
+            this.key_selected = inicial.notas[0].setSelected('inicio');
             return;
         }
 
         if (this.nota_selected !== -1) {
             if (this.nota_selected < this.compases[this.compas_selected].notas.length - 1) {
-                this.compases[this.compas_selected].notas[this.nota_selected++].setSelected(-1);
-                this.key_selected = this.compases[this.compas_selected].notas[this.nota_selected].setSelected(-2);
+                this.compases[this.compas_selected].notas[this.nota_selected++].setSelected('');
+                this.key_selected = this.compases[this.compas_selected].notas[this.nota_selected].setSelected('inicio');
                 return;
             }
             if (this.compas_selected < this.compases.length - 1) {
-                this.compases[this.compas_selected++].notas[this.nota_selected].setSelected(-1);
+                this.compases[this.compas_selected++].notas[this.nota_selected].setSelected('');
                 this.nota_selected = 0;
-                this.key_selected = this.compases[this.compas_selected].notas[this.nota_selected].setSelected(-2);
+                this.key_selected = this.compases[this.compas_selected].notas[this.nota_selected].setSelected('inicio');
                 return;
             }
 
@@ -328,39 +324,26 @@ class EditorListener {
 
         if (inicial.keySignature_sel) {
             inicial.selectClef();
-            this.nota_selected = -1;
-            this.compas_selected = -1;
-            this.key_selected = -1;
-            return;
-        }
-
-        if (inicial.timeSignature_sel) {
-            inicial.selectKeySign();
-            this.nota_selected = -1;
-            this.compas_selected = -1;
-            this.key_selected = -1;
+            this.noteDeselect();
             return;
         }
 
         if (this.nota_selected !== -1) {
             if (this.nota_selected > 0) {
-                this.compases[this.compas_selected].notas[this.nota_selected--].setSelected(-1);
-                this.key_selected = this.compases[this.compas_selected].notas[this.nota_selected].setSelected(-2);
+                this.compases[this.compas_selected].notas[this.nota_selected--].setSelected('');
+                this.key_selected = this.compases[this.compas_selected].notas[this.nota_selected].setSelected('inicio');
                 return;
             }
 
-            this.compases[this.compas_selected].notas[this.nota_selected].setSelected(-1);
+            this.compases[this.compas_selected].notas[this.nota_selected].setSelected('');
             if (this.compas_selected > 0) {
                 this.nota_selected = this.compases[--this.compas_selected].notas.length - 1;
-                this.key_selected = this.compases[this.compas_selected].notas[this.nota_selected].setSelected(-2);
+                this.key_selected = this.compases[this.compas_selected].notas[this.nota_selected].setSelected('inicio');
                 return;
             }
 
-            inicial.selectTime();
-            this.compases[this.compas_selected].notas[this.nota_selected].setSelected(-1);
-            this.nota_selected = -1;
-            this.compas_selected = -1;
-            this.key_selected = -1;
+            inicial.selectKeySign();
+            this.noteDeselect();
             return;
         }
 
@@ -368,13 +351,21 @@ class EditorListener {
     }
 
     noteDeselect() {
+        if (this.nota_selected === -1)
+            return;
+        this.temp_compas = null;
+        this.temp_notas = [];
+
         this.compases[this.compas_selected]
             .notas[this.nota_selected]
             .setSelected(-1);
-
         this.nota_selected = -1;
         this.compas_selected = -1;
-        this.key_selected = -1;
+        this.key_selected = '';
+    }
+
+    signDeselect() {
+        this.compases[0].noSignSelected();
     }
 
     switchPitch(switchP) {
@@ -382,7 +373,7 @@ class EditorListener {
             return;
 
         let nota = this.compases[this.compas_selected].notas[this.nota_selected];
-        let newKey = switchP(nota.keys[this.key_selected]);
+        let newKey = switchP(nota.key_selected);
         while (newKey !== null && nota.hasKey(newKey)) {
             newKey = switchP(newKey);
         }
@@ -391,6 +382,7 @@ class EditorListener {
             return;
 
         nota.setKey(newKey, this.key_selected);
+        this.key_selected = newKey;
     }
 
     keySignSwitch(switchKey) {
@@ -598,7 +590,7 @@ class EditorListener {
 
     }
 
-    cutCompases(numerator, denominator) {
+    cutCompas(numerator, denominator) {
         for (let i = 0; i < this.compases.length; i++) {
             let cutFrac = new Fraction(numerator, denominator);
             let compas = this.compases[i];
@@ -621,7 +613,7 @@ class EditorListener {
         }
     }
 
-    expandCompas(numerator, denominator) {
+    incresCompasNum(numerator, denominator) {
         let compas = this.compases[0];
         let extraNum = numerator - compas.getTimeNum();
 
@@ -644,22 +636,86 @@ class EditorListener {
         if (this.nota_selected !== -1)
             this.noteDeselect();
 
-        compas.noSignSelected();
-        this.formated = false;
+        this.signDeselect();
 
         if (prevNum > num)
-            this.cutCompases(num, compas.getTimeDen());
+            this.cutCompas(num, compas.getTimeDen());
         else
-            this.expandCompas(num, compas.getTimeDen());
-
+            this.incresCompasNum(num, compas.getTimeDen());
 
         compas.setTimeNum(num);
+        this.formated = false;
         this.Editdraw();
         return;
     }
 
-    setCompasDen(den) {
+    decreaseCompasDen(numerator, denominator) {
+        let prevDen = this.compases[0].getTimeDen();
 
+        for (let i = 0; i < this.compases.length; i++) {
+            let compas = this.compases[i];
+            let extraFrac = new Fraction(numerator, denominator);
+            extraFrac.subtract(new Fraction(numerator, prevDen));
+
+            while (extraFrac.numerator !== 0) {
+                extraFrac.simplify();
+                compas.addNota(['b/4'], String(extraFrac.denominator) + 'r');
+                extraFrac.subtract(new Fraction(1, extraFrac.denominator));
+            }
+        }
+    }
+
+    setCompasDen(den) {
+        let compas = this.compases[0];
+        let prevDen = compas.getTimeDen();
+
+        if (prevDen === den)
+            return;
+
+        if (this.nota_selected !== -1)
+            this.noteDeselect();
+
+        this.signDeselect();
+
+        if (prevDen > den)
+            this.decreaseCompasDen(compas.getTimeNum(), den);
+        else
+            this.cutCompas(compas.getTimeNum(), den);
+
+        compas.setTimeDen(den);
+        this.formated = false;
+        this.Editdraw();
+        return;
+    }
+
+    setRest() {
+        if (this.nota_selected === -1)
+            return;
+
+        let compas = this.compases[this.compas_selected];
+        if (compas.notas[this.nota_selected].isRest())
+            return;
+
+        compas.notas[this.nota_selected].convertToRest();
+        this.formated = false;
+        this.Editdraw();
+    }
+
+    setDynamic(dynamic) {
+        if (this.nota_selected === -1)
+            return;
+
+        this.compases[this.compas_selected].notas[this.nota_selected].setDynamic(dynamic);
+        this.Editdraw();
+    }
+
+    setText(text) {
+        if (this.nota_selected === -1)
+            return;
+
+        this.compases[this.compas_selected].notas[this.nota_selected].setText(text);
+        this.formated = false;
+        this.Editdraw();
     }
 }
 
