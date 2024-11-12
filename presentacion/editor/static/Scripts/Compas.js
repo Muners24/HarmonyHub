@@ -7,7 +7,6 @@ class Compas extends VexRec {
         super(0, 0, 0, 80);
         this.timeNum = timeNum;
         this.timeDen = timeDen;
-
         this.capacidad = 0;
         this.tempo = 120;
         this.notas = [];
