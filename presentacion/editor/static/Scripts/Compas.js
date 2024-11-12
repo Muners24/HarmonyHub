@@ -43,6 +43,18 @@ class Compas extends VexRec {
         return this.timeNum;
     }
 
+    setTimeNum(num) {
+        this.timeNum = num;
+        this.timeSignature = String(this.timeNum) + "/" + String(this.timeDen);
+        return this;
+    }
+
+    setTimeDen(den) {
+        this.timeDen = den; 
+        this.timeSignature = String(this.timeNum) + "/" + String(this.timeDen);
+        return this;
+    }
+
     initSilencios() {
 
         for (let i = 0; i < this.timeNum; i++) {
@@ -84,7 +96,7 @@ class Compas extends VexRec {
             } else if (mod[i] instanceof TimeSignature) {
                 if (this.timeSignature_sel)
 
-                    mod[i].setStyle({ fillStyle: 'rgba(0,100,200,1)' });
+                    mod[i].setStyle({ fillStyle: 'rgba(0,100,200,1)', strokeStyle: 'rgba(0,0,0,0.0)' });
 
             } else if (mod[i] instanceof KeySignature) {
                 if (this.keySignature_sel)
@@ -94,8 +106,8 @@ class Compas extends VexRec {
             } else if (mod[i] instanceof StaveTempo) {
                 mod[i].setX(
                     -this.getClefRec().getW()
-                    -this.getKeySignatureRec().getW()
-                    -this.getTimeNumRec().getW());
+                    - this.getKeySignatureRec().getW()
+                    - this.getTimeNumRec().getW());
             }
         }
 
@@ -115,7 +127,7 @@ class Compas extends VexRec {
 
         Formatter.FormatAndDraw(context, this.stave, this.staveNotes, { auto_beam: true });
 
-        
+
     }
 
     addClef(clef) {
@@ -287,12 +299,12 @@ class Compas extends VexRec {
         return this;
     }
 
-    getRec(){
+    getRec() {
         return new VexRec(
             this.getX(),
             this.getMinY(),
             this.getW(),
-            this.getFinalY()-this.getMinY()
+            this.getFinalY() - this.getMinY()
         );
     }
 }

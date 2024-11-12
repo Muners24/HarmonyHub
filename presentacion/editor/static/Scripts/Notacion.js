@@ -62,12 +62,14 @@ class Notacion {
 
         let i = this.keys.indexOf(key)
         if (i !== -1) {
-            if (i > 0)
-                i--;
+            i--
+
+            if(i < 0)
+                return null;
 
             return this.keys[i];
         }
-        return 'b/4';
+        return this.keys[0];
     }
 
     static getPreviusNote(key) {
@@ -77,12 +79,14 @@ class Notacion {
         let i = this.keys.indexOf(key);
 
         if (i !== -1) {
-            if (i < this.keys.length - 1)
-                i++;
+            i++;
+
+            if(i >= this.keys.length)
+                return null;
 
             return this.keys[i];
         }
-        return 'b/4';
+        return this.keys[this.keys.length-1];
     }
 
     static getKeySignatureW(key = 'C') {

@@ -73,13 +73,18 @@ class EditorListener {
                 if (compas.notas[i].isRest())
                     this.temp_notas.push(new StaveNote({ keys: ['b/4'], duration: compas.notas[i].getDuration() }));
                 else
-                    this.temp_notas.push(new StaveNote({ keys: ['b/4'], duration: compas.notas[i].getDuration()+'r' }));
+                    this.temp_notas.push(new StaveNote({ keys: ['b/4'], duration: compas.notas[i].getDuration() + 'r' }));
                 this.temp_notas[i].setStyle({ fillStyle: 'rgba(0,0,0,0.0)', strokeStyle: 'rgba(0,0,0,0.0)' });
             }
             else {
                 let key = Notacion.getNoteOnY(compas.getMinY() + compas.getOverY(), y);
-                this.temp_notas.push(new StaveNote({ keys: [key], duration: '4' }))
-                this.temp_notas[i].setStyle({ fillStyle: 'rgba(0,100,200,1)', strokeStyle: 'rgba(0,0,0,0.0)' });
+                let dur = parseInt(compas.notas[i].getDuration());
+                this.temp_notas.push(new StaveNote({ keys: [key], duration: String(dur) }))
+                this.temp_notas[i].setStyle({
+                    fillStyle: 'rgba(0,100,200,1)', strokeStyle: 'rgba(0,0,0,0.0)',
+                    shadowColor: 'rgba(0,0,0,0.0)', shadowBlur: 'rgba(0,0,0,0.0)'
+                });
+                this.temp_notas[i].setBeam();
             }
         }
         this.Editdraw();
@@ -111,12 +116,8 @@ class EditorListener {
                 this.Editdraw();
                 break;
             case '.':
-                if (this.addDot()) {
-                    this.formated = false;
-                    this.Editdraw();
-                }
+                this.addDot();
                 break;
-
             case 'v':
                 this.setAccidental('bb');
                 break;
@@ -152,18 +153,19 @@ class EditorListener {
                 break;
             case '|':
                 break;
+            case 'z':
+                this.setCompasNum(6);
+                break;
+            case 'x':
+                this.setCompasNum(4);
+                break;
             default:
         }
 
-        if (this.nota_selected !== -1) {
-            const durationRegex = /^[1-7]$/;
-            if (durationRegex.test(event.key)) {
-                let exp = parseInt(event.key) - 1;
-                if (this.setRithm(String(2 ** exp))) {
-                    this.formated = false;
-                    this.Editdraw();
-                }
-            }
+
+        const durationRegex = /^[1-7]$/;
+        if (durationRegex.test(event.key)) {
+            this.setRithm(event.key);
         }
 
     }
@@ -213,7 +215,7 @@ class EditorListener {
         }
 
         this.compases[0].noSignSelected();
-        
+
         if (this.nota_selected !== -1) {
             this.compases[this.compas_selected].notas[this.nota_selected].setSelected(-1);
         }
@@ -222,13 +224,13 @@ class EditorListener {
                 this.compas_selected = i;
         }
 
-        
+
 
         if (this.compas_selected === -1) {
             this.compases[0].noSignSelected();
             return;
         }
-        
+
 
 
         let noteHeadRecs = [];
@@ -381,7 +383,15 @@ class EditorListener {
             return;
 
         let nota = this.compases[this.compas_selected].notas[this.nota_selected];
-        nota.setKey(switchP(nota.keys[this.key_selected]), this.key_selected);
+        let newKey = switchP(nota.keys[this.key_selected]);
+        while (newKey !== null && nota.hasKey(newKey)) {
+            newKey = switchP(newKey);
+        }
+
+        if (newKey === null)
+            return;
+
+        nota.setKey(newKey, this.key_selected);
     }
 
     keySignSwitch(switchKey) {
@@ -399,9 +409,12 @@ class EditorListener {
         return;
     }
 
-    setRithm(duration) {
+    setRithm(durationNumber) {
         if (this.nota_selected === -1)
-            return false;
+            return;
+
+        let exp = parseInt(durationNumber) - 1;
+        let duration = String(2 ** exp);
 
         let compas = this.compases[this.compas_selected];
         let prevDuration = compas.notas[this.nota_selected].getDuration();
@@ -411,9 +424,10 @@ class EditorListener {
                 compas.notas[this.nota_selected].setDuration(duration + 'r');
             else
                 compas.notas[this.nota_selected].setDuration(duration);
-            return true;
+
+            this.formated = false;
+            this.Editdraw();
         }
-        return false;
     }
 
     //continuar con la division de notas:
@@ -522,16 +536,18 @@ class EditorListener {
         compas.notas.splice(i, 1);
     }
 
+
+
     //si el puntillo es valido, se acomoda todo el compas
     //usando los mismos metodos que al cambiar de ritmo
     //se debe diferenciar del metodo addDot de la clase Nota
     addDot() {
         if (this.nota_selected === -1)
-            return false;
+            return;
 
         let compas = this.compases[this.compas_selected];
         if (compas.notas[this.nota_selected].hasDot())
-            return false;
+            return;
 
         let resDuration = new Fraction(0, 1);
         for (let i = this.nota_selected + 1; i < compas.notas.length; i++) {
@@ -541,12 +557,14 @@ class EditorListener {
         let dotDuration = new Fraction(1, parseInt(compas.notas[this.nota_selected].getDuration()));
         dotDuration.divide(2);
         if (dotDuration.greaterThan(resDuration))
-            return false;
+            return;
 
         //cabe, entonces se sobrepone a las siguientes notas
         compas.notas[this.nota_selected].addDot();
         this.fixOverlapNotes(compas, this.nota_selected + 1, dotDuration);
-        return true;
+
+        this.formated = false;
+        this.Editdraw();
     }
 
     //remueve el puntillo y agrega un silencio en su lugar
@@ -578,6 +596,70 @@ class EditorListener {
     }
 
     addTie() {
+
+    }
+
+    cutCompases(numerator, denominator) {
+        for (let i = 0; i < this.compases.length; i++) {
+            let cutFrac = new Fraction(numerator, denominator);
+            let compas = this.compases[i];
+            for (let j = 0; j < compas.notas.length; j++) {
+                let currentDur = new Fraction(1, parseInt(compas.notas[j].getDuration()));
+                if (cutFrac.greaterThanEquals(currentDur)) {
+                    cutFrac.subtract(currentDur);
+                    continue;
+                }
+
+                if (cutFrac.numerator === 0) {
+                    compas.notas.splice(j, 1);
+                    j--;
+                    continue;
+                }
+
+                this.biteNote(compas, j, cutFrac);
+                cutFrac.subtract(cutFrac);
+            }
+        }
+    }
+
+    expandCompas(numerator, denominator) {
+        let compas = this.compases[0];
+        let extraNum = numerator - compas.getTimeNum();
+
+        for (let i = 0; i < this.compases.length; i++) {
+            let j = 0;
+            while (j < extraNum) {
+                this.compases[i].addNota(['b/4'], String(denominator) + 'r');
+                j++;
+            }
+        }
+    }
+
+    setCompasNum(num) {
+        let compas = this.compases[0];
+        let prevNum = compas.getTimeNum();
+
+        if (prevNum === num)
+            return;
+
+        if (this.nota_selected !== -1)
+            this.noteDeselect();
+
+        compas.noSignSelected();
+        this.formated = false;
+
+        if (prevNum > num)
+            this.cutCompases(num, compas.getTimeDen());
+        else
+            this.expandCompas(num, compas.getTimeDen());
+
+
+        compas.setTimeNum(num);
+        this.Editdraw();
+        return;
+    }
+
+    setCompasDen(den) {
 
     }
 }

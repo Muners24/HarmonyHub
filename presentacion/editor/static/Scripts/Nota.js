@@ -89,7 +89,7 @@ class Nota extends VexRec {
     }
 
     getRecs() {
-        this.keys = this.sortKeys();
+        //this.keys = this.sortKeys();
         let ys = this.nota.getYs();
         let recs = [];
         for (let i = 0; i < ys.length; i++) {

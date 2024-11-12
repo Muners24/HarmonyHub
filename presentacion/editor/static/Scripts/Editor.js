@@ -5,7 +5,7 @@ const { Renderer, Stave, StaveNote, Formatter,
   Fraction,
 
   Modifier, Articulation, Dot, Accidental, Annotation,
-
+  
   StaveModifier, StaveText, StaveTempo,
 } = Vex.Flow
 
@@ -49,7 +49,6 @@ class Editor extends EditorListener {
     this.addCompas();
     this.addCompas();
     this.addCompas();
-
   }
 
   formatCompas() {
@@ -138,7 +137,7 @@ class Editor extends EditorListener {
     this.drawKeySelected();
 
     if (this.temp_notas.length !== 0)
-      Formatter.FormatAndDraw(this.context, this.temp_compas, this.temp_notas, { auto_beam: true });
+      Formatter.FormatAndDraw(this.context, this.temp_compas, this.temp_notas);
 
     /*
     let notas = [];
@@ -179,15 +178,19 @@ class Editor extends EditorListener {
         if (compas.notas[i].isRest())
           temp_notas.push(new StaveNote({ keys: ['b/4'], duration: compas.notas[i].getDuration() }));
         else
-          temp_notas.push(new StaveNote({ keys: ['b/4'], duration: compas.notas[i].getDuration()+'r' }));
+          temp_notas.push(new StaveNote({ keys: ['b/4'], duration: compas.notas[i].getDuration() + 'r' }));
         temp_notas[i].setStyle({ fillStyle: 'rgba(0,0,0,0.0)', strokeStyle: 'rgba(0,0,0,0.0)' });
         continue;
       }
+
       let key = compas.notas[this.nota_selected].getKeyOfIndex(this.key_selected);
-      temp_notas.push(new StaveNote({ keys: [key], duration: '4' }))
+      let dur = parseInt(compas.notas[i].getDuration());
+      
+      temp_notas.push(new StaveNote({ keys: [key], duration: String(dur) }))
       temp_notas[i].setStyle({ fillStyle: 'rgba(0,100,200,1)', strokeStyle: 'rgba(0,0,0,0.0)' });
+      temp_notas[i].setBeam();
     }
-    Formatter.FormatAndDraw(this.context, temp_compas, temp_notas, { auto_beam: true });
+    Formatter.FormatAndDraw(this.context, temp_compas, temp_notas);
 
   }
 
