@@ -53,8 +53,8 @@ class Editor extends EditorListener {
   config() {
     this.addCompas(4, 4);
     this.compases[0]
-    .addClef('treble')
-    .addKeySignature('C');
+      .addClef('treble')
+      .addKeySignature('C');
     this.setTempo(120);
     this.formated = false;
     this.Editdraw();
@@ -148,8 +148,8 @@ class Editor extends EditorListener {
 
     this.drawKeySelected();
 
-    if (this.temp_notas.length !== 0)
-      Formatter.FormatAndDraw(this.context, this.temp_compas, this.temp_notas);
+    if (this.temp_nota !== null)
+      Formatter.FormatAndDraw(this.context, this.temp_compas, [this.temp_nota]);
 
     /*
     let notas = [];
@@ -177,30 +177,23 @@ class Editor extends EditorListener {
     if (compas.notas[this.nota_selected].isRest())
       return;
 
-    let temp_compas = new Stave(compas.getX(), compas.getY(), compas.getW());
-    if (this.compas_selected === 0) {
-      temp_compas.addClef(compas.getClef());
-      temp_compas.addKeySignature(compas.getKeySignature());
-      temp_compas.addTimeSignature(compas.getTimeSignature());
-    }
+    let nota = compas.notas[this.nota_selected];
+    let temp_compas = new Stave(
+      nota.getX()-17,
+      compas.getY(),
+      nota.getW());
+    
+    let temp_nota = new StaveNote({ keys: [this.key_selected], duration: nota.getDuration() });
 
-    let temp_notas = [];
-    for (let i = 0; i < compas.staveNotes.length; i++) {
-      if (i !== this.nota_selected) {
-        if (compas.notas[i].isRest())
-          temp_notas.push(new StaveNote({ keys: ['b/4'], duration: compas.notas[i].getDuration() }));
-        else
-          temp_notas.push(new StaveNote({ keys: ['b/4'], duration: compas.notas[i].getDuration() + 'r' }));
-        temp_notas[i].setStyle({ fillStyle: 'rgba(0,0,0,0.0)', strokeStyle: 'rgba(0,0,0,0.0)' });
-        continue;
-      }
+    if (nota.hasDot())
+      temp_nota.addDotToAll();
 
-      let dur = parseInt(compas.notas[i].getDuration());
-      temp_notas.push(new StaveNote({ keys: [this.key_selected], duration: String(dur) }))
-      temp_notas[i].setStyle({ fillStyle: 'rgba(0,100,200,1)', strokeStyle: 'rgba(0,0,0,0.0)' });
-      temp_notas[i].setBeam();
-    }
-    Formatter.FormatAndDraw(this.context, temp_compas, temp_notas);
+    temp_nota.setStyle({
+      fillStyle: 'rgba(0,100,200,1)', strokeStyle: 'rgba(0,0,0,0.0)'});
+
+    temp_nota.setBeam();
+
+    Formatter.FormatAndDraw(this.context, temp_compas, [temp_nota]);
 
   }
 
