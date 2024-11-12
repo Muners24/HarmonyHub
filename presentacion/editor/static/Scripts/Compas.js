@@ -17,7 +17,6 @@ class Compas extends VexRec {
         this.keySignature = '';
         this.clef = '';
 
-        this.timeSignature_sel = false;
         this.keySignature_sel = false;
         this.clef_sel = false;
 
@@ -50,13 +49,12 @@ class Compas extends VexRec {
     }
 
     setTimeDen(den) {
-        this.timeDen = den; 
+        this.timeDen = den;
         this.timeSignature = String(this.timeNum) + "/" + String(this.timeDen);
         return this;
     }
 
     initSilencios() {
-
         for (let i = 0; i < this.timeNum; i++) {
             this.addNota(['b/4'], this.timeDen.toString() + 'r');
         }
@@ -93,11 +91,6 @@ class Compas extends VexRec {
             if (mod[i] instanceof Clef) {
                 if (this.clef_sel && this.clef != 'C')
                     mod[i].setStyle({ fillStyle: 'rgba(0,100,200,1)' });
-            } else if (mod[i] instanceof TimeSignature) {
-                if (this.timeSignature_sel)
-
-                    mod[i].setStyle({ fillStyle: 'rgba(0,100,200,1)', strokeStyle: 'rgba(0,0,0,0.0)' });
-
             } else if (mod[i] instanceof KeySignature) {
                 if (this.keySignature_sel)
                     mod[i].setStyle({ fillStyle: 'rgba(0,100,200,1)' });
@@ -105,7 +98,7 @@ class Compas extends VexRec {
                     mod[i].setStyle({ fillStyle: 'rgba(0,0,0,0)' });
             } else if (mod[i] instanceof StaveTempo) {
                 mod[i].setX(
-                    -this.getClefRec().getW()
+                    - this.getClefRec().getW()
                     - this.getKeySignatureRec().getW()
                     - this.getTimeNumRec().getW());
             }
@@ -271,25 +264,21 @@ class Compas extends VexRec {
     }
 
     selectClef() {
-        this.timeSignature_sel = false;
         this.keySignature_sel = false;
         this.clef_sel = true;
     }
 
     selectTime() {
-        this.timeSignature_sel = true;
         this.keySignature_sel = false;
         this.clef_sel = false;
     }
 
     selectKeySign() {
-        this.timeSignature_sel = false;
         this.keySignature_sel = true;
         this.clef_sel = false;
     }
 
     noSignSelected() {
-        this.timeSignature_sel = false;
         this.keySignature_sel = false;
         this.clef_sel = false;
     }

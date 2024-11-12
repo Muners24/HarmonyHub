@@ -38,8 +38,6 @@ class EditorListener {
         };
     }
 
-
-
     handleMov(event) {
         const x = event.pageX - this.rec.left;
         const y = event.pageY - this.rec.top;
@@ -158,6 +156,12 @@ class EditorListener {
                 break;
             case 'x':
                 this.setCompasNum(4);
+                break;
+            case '-':
+                this.setCompasDen(2);
+                break;
+            case '+':
+                this.setCompasDen(8);
                 break;
             default:
         }
@@ -288,14 +292,6 @@ class EditorListener {
         }
 
         if (inicial.keySignature_sel) {
-            inicial.selectTime();
-            this.nota_selected = -1;
-            this.compas_selected = -1;
-            this.key_selected = -1;
-            return;
-        }
-
-        if (inicial.timeSignature_sel) {
             inicial.noSignSelected();
             this.compas_selected = 0;
             this.nota_selected = 0;
@@ -335,14 +331,6 @@ class EditorListener {
             return;
         }
 
-        if (inicial.timeSignature_sel) {
-            inicial.selectKeySign();
-            this.nota_selected = -1;
-            this.compas_selected = -1;
-            this.key_selected = -1;
-            return;
-        }
-
         if (this.nota_selected !== -1) {
             if (this.nota_selected > 0) {
                 this.compases[this.compas_selected].notas[this.nota_selected--].setSelected(-1);
@@ -357,8 +345,7 @@ class EditorListener {
                 return;
             }
 
-            inicial.selectTime();
-            this.compases[this.compas_selected].notas[this.nota_selected].setSelected(-1);
+            inicial.selectKeySign();
             this.nota_selected = -1;
             this.compas_selected = -1;
             this.key_selected = -1;
@@ -599,7 +586,7 @@ class EditorListener {
 
     }
 
-    cutCompases(numerator, denominator) {
+    cutCompas(numerator, denominator) {
         for (let i = 0; i < this.compases.length; i++) {
             let cutFrac = new Fraction(numerator, denominator);
             let compas = this.compases[i];
@@ -622,7 +609,7 @@ class EditorListener {
         }
     }
 
-    expandCompas(numerator, denominator) {
+    incresCompasNum(numerator, denominator) {
         let compas = this.compases[0];
         let extraNum = numerator - compas.getTimeNum();
 
@@ -649,18 +636,52 @@ class EditorListener {
         this.formated = false;
 
         if (prevNum > num)
-            this.cutCompases(num, compas.getTimeDen());
+            this.cutCompas(num, compas.getTimeDen());
         else
-            this.expandCompas(num, compas.getTimeDen());
-
+            this.incresCompasNum(num, compas.getTimeDen());
 
         compas.setTimeNum(num);
         this.Editdraw();
         return;
     }
 
-    setCompasDen(den) {
+    decreaseCompasDen(numerator, denominator) {
+        let prevDen = this.compases[0].getTimeDen();
 
+        for (let i = 0; i < this.compases.length; i++) {
+            let compas = this.compases[i];
+            let extraFrac = new Fraction(numerator, denominator);
+            extraFrac.subtract(new Fraction(numerator, prevDen));
+
+            while (extraFrac.numerator !== 0) {
+                extraFrac.simplify();
+                compas.addNota(['b/4'], String(extraFrac.denominator) + 'r');
+                extraFrac.subtract(new Fraction(1, extraFrac.denominator));
+            }
+        }
+    }
+
+    setCompasDen(den) {
+        let compas = this.compases[0];
+        let prevDen = compas.getTimeDen();
+
+        if (prevDen === den)
+            return;
+
+        if (this.nota_selected !== -1)
+            this.noteDeselect();
+
+        compas.noSignSelected();
+        this.formated = false;
+
+        if (prevDen > den)
+            this.decreaseCompasDen(compas.getTimeNum(), den);
+        else
+            this.cutCompas(compas.getTimeNum(), den);
+
+        compas.setTimeDen(den);
+        this.Editdraw();
+        return;
     }
 }
 
