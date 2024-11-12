@@ -92,8 +92,8 @@
       <div id="plusDropdown" class="dropdown-content-plus">
 
           <div>
-              <label for="tempoInput">Tempo:</label>
-              <input type="text" id="tempoInput" placeholder="Ingrese el tempo">
+            <input type="text" id="tempoInput" placeholder="Introduce el tempo" />
+            <button id="updateTempoButton">Actualizar Tempo</button>         
           </div>
           
           <!-- Campo de texto para Anotar texto -->
@@ -126,12 +126,29 @@
             <img src="{% static 'images/Symbols/fermata.png' %}" alt="Option A" class="dropdown-option">
           </a>
 
-          <img src="{% static 'images/Symbols/pp.PNG' %}" alt="Option A" class="dropdown-option">
-          <img src="{% static 'images/Symbols/p.PNG' %}" alt="Option B" class="dropdown-option">
-          <img src="{% static 'images/Symbols/mp.PNG' %}" alt="Option C" class="dropdown-option">
-          <img src="{% static 'images/Symbols/mf.PNG' %}" alt="Option D" class="dropdown-option">
-          <img src="{% static 'images/Symbols/f.PNG' %}" alt="Option E" class="dropdown-option">
-          <img src="{% static 'images/Symbols/ff.PNG' %}" alt="Option E" class="dropdown-option">
+          <a title="Pianissimo (t)" onClick="editor.setDynamic('pp')">
+            <img src="{% static 'images/Symbols/pp.PNG' %}" alt="Option A" class="dropdown-option">
+          </a>
+
+          <a title="Piano (y)" onClick="editor.setDynamic('p')">
+            <img src="{% static 'images/Symbols/p.PNG' %}" alt="Option B" class="dropdown-option">
+          </a>
+          
+          <a title="Mezzopiano (u)" onClick="editor.setDynamic('mp')">
+            <img src="{% static 'images/Symbols/mp.PNG' %}" alt="Option C" class="dropdown-option">
+          </a>
+          
+          <a title="Mezzoforte (i)" onClick="editor.setDynamic('mf')">
+            <img src="{% static 'images/Symbols/mf.PNG' %}" alt="Option D" class="dropdown-option">
+          </a>
+          
+          <a title="Forte (o)" onClick="editor.setDynamic('f')">
+            <img src="{% static 'images/Symbols/f.PNG' %}" alt="Option E" class="dropdown-option">
+          </a>
+          
+          <a title="Fortissimo (p)" onClick="editor.setDynamic('ff')">
+            <img src="{% static 'images/Symbols/ff.PNG' %}" alt="Option E" class="dropdown-option">
+          </a>  
           
           <!-- Campo de texto para Tempo -->
           
@@ -153,9 +170,13 @@
         </div>
     </div>
 
-  <a class="button-icon-p" title="Agregar más compases" onClick="editor.addCompas()">
+  <a class="button-icon-p" title="Agregar compás (+)" onClick="editor.addCompas()">
     <img src={% static 'images/Symbols/plus.png'%} class="button-icon-p">
   </a>
+
+  <a class="button-r" title="Quitar compás (-)" onClick="editor.removeCompas()">
+    <img src="{% static 'images/Symbols/tenuto.png' %}" class="button-icon-r">
+  </a>  
 
 </body>
 

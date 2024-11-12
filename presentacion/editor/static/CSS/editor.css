@@ -102,3 +102,16 @@
   bottom: 80px;
   align-items: baseline;
 }
+
+.button-r {
+  position: fixed;
+}
+
+.button-icon-r {
+  width: 40px;
+  height: 40px;
+  position: fixed;  /* Hacemos que el icono se posicione de forma absoluta dentro del contenedor */
+  right: 25px;  /* Lo coloca en la parte izquierda */
+  bottom: 20px;
+  align-items: baseline;
+}
