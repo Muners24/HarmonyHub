@@ -6,12 +6,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const importarDropdown = document.getElementById("importarDropdown");
     const exportarButton = document.getElementById("exportarButton");
     const exportarDropdown = document.getElementById("exportarDropdown");
+    const plusButton = document.getElementById("plusButton");
+    const plusDropdown = document.getElementById("plusDropdown");
 
     // Función para cerrar todos los dropdowns
     function closeAllDropdowns() {
         archivoDropdown.classList.remove("show");
         importarDropdown.classList.remove("show");
         exportarDropdown.classList.remove("show");
+        plusDropdown.classList.remove("show");
     }
 
     // Evento de clic para abrir/cerrar los dropdowns al hacer clic en sus botones
@@ -23,18 +26,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     importarButton.addEventListener("click", function (event) {
         event.preventDefault();
+        closeAllDropdowns(); // Cierra otros dropdowns al abrir "Importar"
         importarDropdown.classList.toggle("show");
-
-        // Cierra el dropdown de "Exportar" si está abierto al abrir "Importar"
-        exportarDropdown.classList.remove("show");
     });
 
     exportarButton.addEventListener("click", function (event) {
         event.preventDefault();
+        closeAllDropdowns(); // Cierra otros dropdowns al abrir "Exportar"
         exportarDropdown.classList.toggle("show");
+    });
 
-        // Cierra el dropdown de "Importar" si está abierto al abrir "Exportar"
-        importarDropdown.classList.remove("show");
+    plusButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        closeAllDropdowns(); // Cierra otros dropdowns al abrir "Plus"
+        plusDropdown.classList.toggle("show");
     });
 
     // Cerrar los dropdowns cuando se hace clic fuera de ellos
@@ -43,9 +48,11 @@ document.addEventListener("DOMContentLoaded", function () {
             !archivoButton.contains(event.target) &&
             !importarButton.contains(event.target) &&
             !exportarButton.contains(event.target) &&
+            !plusButton.contains(event.target) &&
             !archivoDropdown.contains(event.target) &&
             !importarDropdown.contains(event.target) &&
-            !exportarDropdown.contains(event.target)
+            !exportarDropdown.contains(event.target) &&
+            !plusDropdown.contains(event.target)
         ) {
             closeAllDropdowns();
         }

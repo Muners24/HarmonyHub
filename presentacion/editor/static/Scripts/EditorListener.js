@@ -162,7 +162,6 @@ class EditorListener {
             default:
         }
 
-
         const durationRegex = /^[1-7]$/;
         if (durationRegex.test(event.key)) {
             this.setRithm(event.key);

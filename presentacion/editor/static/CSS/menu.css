@@ -224,3 +224,54 @@
 .selected .button-icon-T8 {
     filter: brightness(0) saturate(100%) invert(50%) sepia(100%) saturate(500%) hue-rotate(180deg);
 }
+
+
+.dropdown-content-plus {
+    display: none; 
+    position: absolute;
+    right: 0;      
+    top: 100%;     
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    padding: 10px;
+    gap: 10px;        
+    flex-wrap: wrap;    
+}
+
+/* Estilo para las imágenes dentro del dropdown */
+.dropdown-option {
+    width: 50px;        /* Ajusta el tamaño de las imágenes según sea necesario */
+    height: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.dropdown-option:hover {
+    transform: scale(1.1);  /* Efecto al pasar el cursor sobre la imagen */
+}
+
+/* Estilos para los campos de texto */
+.dropdown-content-plus div {
+    display: flex;
+    align-items:center
+}
+
+.dropdown-content-plus input {
+    margin-top: 4px;
+    padding: 6px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+/* Mostrar el dropdown cuando tiene la clase 'show' */
+.dropdown-content-plus.show {
+    display: flex;
+}
+
+.note-label {
+    font-size: 24px;   /* Tamaño grande */
+    font-weight: bold; /* Negritas */
+    margin-right: 8px; /* Espacio entre la letra y el campo de entrada */
+    color: #333;       /* Color personalizado, ajusta según tu preferencia */
+}

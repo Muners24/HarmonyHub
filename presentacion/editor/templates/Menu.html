@@ -71,85 +71,7 @@
             Practicar
         </a>
     </div>
-
-    <div class="toolbar">
-        <p class="button-T" id="btn-SemiFusa" onClick="selectButton('SemiFusa', event)">
-            <img src="{% static 'images/Symbols/Semifusa_Logo.png' %}" alt="SemiFusa" class="button-icon-T" id="img-SemiFusa">
-        </p>
-        
-        <a class="button-T" id="btn-Fusa" onClick="selectButton('Fusa', event)">
-            <img src="{% static 'images/Symbols/Fusa_Logo.png' %}" alt="Fusa" class="button-icon-T" id="img-Fusa">
-        </a>
-        
-        <a class="button-T" id="btn-SemiCorchea" onClick="selectButton('SemiCorchea', event)">
-            <img src="{% static 'images/Symbols/SemiCorchea_Logo.png' %}" alt="SemiCorchea" class="button-icon-T" id="img-SemiCorchea">
-        </a>
-        
-        <a class="button-T" id="btn-Corchea" onClick="selectButton('Corchea', event)">
-            <img src="{% static 'images/Symbols/Corchea_Logo.png' %}" alt="Corchea" class="button-icon-T" id="img-Corchea">
-        </a>
-        
-        <a class="button-T" id="btn-Negra" onClick="selectButton('Negra', event)">
-            <img src="{% static 'images/Symbols/Negra_Logo.png' %}" alt="Negra" class="button-icon-T" id="img-Negra">
-        </a>
-        
-        <a class="button-T" id="btn-Blanca" onClick="selectButton('Blanca', event)">
-            <img src="{% static 'images/Symbols/Blanca_Logo.png' %}" alt="Blanca" class="button-icon-T" id="img-Blanca">
-        </a>
-        
-        <a class="button-T" id="btn-Redonda" onClick="selectButton('Redonda', event)">
-            <img src="{% static 'images/Symbols/Redonda_Logo.png' %}" alt="Redonda" class="button-icon-T" id="img-Redonda">
-        </a>
-        
-        <a class="button-T" id="btn-Puntillo" onClick="selectButton('Puntillo', event)">
-            <img src="{% static 'images/Symbols/Puntillo.png' %}" alt="Puntillo" class="button-icon-T" id="img-Puntillo">
-        </a>
-        
-        <a class="button-T" id="btn-Silencio" onClick="selectButton('Silencio', event)">
-            <img src="{% static 'images/Symbols/Silencio.png' %}" alt="Silencio" class="button-icon-T" id="img-Silencio">
-        </a>
-        
-        <a class="button-T" id="btn-Doble" onClick="selectButton('Doble', event)">
-            <img src="{% static 'images/Symbols/Doble.png' %}" alt="Doble" class="button-icon-T2" id="img-Doble">
-        </a>
-        
-        <a class="button-T" id="btn-Bemol" onClick="selectButton('Bemol', event)">
-            <img src="{% static 'images/Symbols/Bemol.png' %}" alt="Bemol" class="button-icon-T3" id="img-Bemol">
-        </a>
-        
-        <a class="button-T" id="btn-Natural" onClick="selectButton('Natural', event)">
-            <img src="{% static 'images/Symbols/Natural.png' %}" alt="Natural" class="button-icon-T3" id="img-Natural">
-        </a>
-        
-        <a class="button-T" id="btn-Sostenido" onClick="selectButton('Sostenido', event)">
-            <img src="{% static 'images/Symbols/Sostenido.png' %}" alt="Sostenido" class="button-icon-T3" id="img-Sostenido">
-        </a>
-        
-        <a class="button-T" id="btn-DobleSostenido" onClick="selectButton('DobleSostenido', event)">
-            <img src="{% static 'images/Symbols/DobleSostenido.png' %}" alt="DobleSostenido" class="button-icon-T3" id="img-DobleSostenido">
-        </a>
-        
-        <a class="button-T" id="btn-Levato" onClick="selectButton('Levato', event)">
-            <img src="{% static 'images/Symbols/Levato.png' %}" alt="Levato" class="button-icon-T4" id="img-Levato">
-        </a>
-        
-        <a class="button-T" id="btn-Crecendo" onClick="selectButton('Crecendo', event)">
-            <img src="{% static 'images/Symbols/Crecendo.png' %}" alt="Crecendo" class="button-icon-T5" id="img-Crecendo">
-        </a>
-        
-        <a class="button-T" id="btn-Diminuendo" onClick="selectButton('Diminuendo', event)">
-            <img src="{% static 'images/Symbols/Diminuendo.png' %}" alt="Diminuendo" class="button-icon-T5" id="img-Diminuendo">
-        </a>
-        
-        <a class="button-T" id="btn-Triplet" onClick="selectButton('Triplet', event)">
-            <img src="{% static 'images/Symbols/Triplet.png' %}" alt="Triplet" class="button-icon-T6" id="img-Triplet">
-        </a>
-        
-        <a class="button-T" onClick="selectButton('Plus', event)">
-            <img src="{% static 'images/Symbols/Plus.png'%}" alt="Plus" class="button-icon-T7">
-        </a>
-
-    </div>
+    
 
     <!-- Contenedor de contenido -->
     <div class="contenido-container" id="contenido-container" style="margin-top: 210px;">
@@ -160,6 +82,7 @@
 
     <script src="{% static 'Scripts/DropDown.js' %}"></script>
     <script src="{% static 'Scripts/SelectButton.js.'%}"></script>
+
     <script>
         function moverContenido(movimiento) {
             const contenedor = document.getElementById('contenido-container');

@@ -10,6 +10,135 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'CSS/editor.css' %}">
 
+    <div class="toolbar">
+      <p class="button-T" title="SemiFusa (7)" onClick="selectButton('SemiFusa', event); editor.setRithm(7)">
+          <img src="{% static 'images/Symbols/Semifusa_Logo.png' %}" alt="SemiFusa" class="button-icon-T" id="img-SemiFusa">
+      </p>
+      
+      <a class="button-T" title="Fusa (6)" onClick="selectButton('Fusa', event); editor.setRithm(6)">
+          <img src="{% static 'images/Symbols/Fusa_Logo.png' %}" alt="Fusa" class="button-icon-T" id="img-Fusa">
+      </a>
+      
+      <a class="button-T" title="SemiCorchea (5)" onClick="selectButton('SemiCorchea', event); editor.setRithm(5)">
+          <img src="{% static 'images/Symbols/SemiCorchea_Logo.png' %}" alt="SemiCorchea" class="button-icon-T" id="img-SemiCorchea">
+      </a>
+      
+      <a class="button-T" title="Corchea (4)" onClick="selectButton('Corchea', event); editor.setRithm(4)">
+          <img src="{% static 'images/Symbols/Corchea_Logo.png' %}" alt="Corchea" class="button-icon-T" id="img-Corchea">
+      </a>
+      
+      <a class="button-T" title="Negra (3)" onClick="selectButton('Negra', event); editor.setRithm(3)">
+          <img src="{% static 'images/Symbols/Negra_Logo.png' %}" alt="Negra" class="button-icon-T" id="img-Negra">
+      </a>
+      
+      <a class="button-T" title="Blanca (2)" onClick="selectButton('Blanca', event); editor.setRithm(2)">
+          <img src="{% static 'images/Symbols/Blanca_Logo.png' %}" alt="Blanca" class="button-icon-T" id="img-Blanca">
+      </a>
+      
+      <a class="button-T" title="Redonda (1)" onClick="selectButton('Redonda', event); editor.setRithm(1)">
+          <img src="{% static 'images/Symbols/Redonda_Logo.png' %}" alt="Redonda" class="button-icon-T" id="img-Redonda">
+      </a>
+      
+      <a class="button-T" title="Puntillo (.)" onClick="selectButton('Puntillo', event); editor.addDot()">
+          <img src="{% static 'images/Symbols/Puntillo.png' %}" alt="Puntillo" class="button-icon-T" id="img-Puntillo">
+      </a>
+      
+      <a class="button-T" title="Silencio ()" onClick="selectButton('Silencio', event); editor.addCompas()">
+          <img src="{% static 'images/Symbols/Silencio.png' %}" alt="Silencio" class="button-icon-T" id="img-Silencio">
+      </a>
+      
+      <a class="button-T" title="Doble Bemol (v)" onClick="selectButton('Doble', event); editor.setAccidental('bb')">
+          <img src="{% static 'images/Symbols/Doble.png' %}" alt="Doble" class="button-icon-T2" id="img-Doble">
+      </a>
+      
+      <a class="button-T" title="Bemol (b)" onClick="selectButton('Bemol', event); editor.setAccidental('b')">
+          <img src="{% static 'images/Symbols/Bemol.png' %}" alt="Bemol" class="button-icon-T3" id="img-Bemol">
+      </a>
+      
+      <a class="button-T" title="Natural (n)" onClick="selectButton('Natural', event), editor.setAccidental('n')">
+          <img src="{% static 'images/Symbols/Natural.png' %}" alt="Natural" class="button-icon-T3" id="img-Natural">
+      </a>
+      
+      <a class="button-T" title="Sostenido (m)" onClick="selectButton('Sostenido', event); editor.setAccidental('#')">
+          <img src="{% static 'images/Symbols/Sostenido.png' %}" alt="Sostenido" class="button-icon-T3" id="img-Sostenido">
+      </a>
+      
+      <a class="button-T" title="Doble Sostenido (,)" onClick="selectButton('DobleSostenido', event); editor.setAccidental('##')">
+          <img src="{% static 'images/Symbols/DobleSostenido.png' %}" alt="DobleSostenido" class="button-icon-T3" id="img-DobleSostenido">
+      </a>
+      
+      <a class="button-T" id="btn-Levato" onClick="selectButton('Levato', event)">
+          <img src="{% static 'images/Symbols/Levato.png' %}" alt="Levato" class="button-icon-T4" id="img-Levato">
+      </a>
+      
+      <a class="button-T" id="btn-Crecendo" onClick="selectButton('Crecendo', event)">
+          <img src="{% static 'images/Symbols/Crecendo.png' %}" alt="Crecendo" class="button-icon-T5" id="img-Crecendo">
+      </a>
+      
+      <a class="button-T" id="btn-Diminuendo" onClick="selectButton('Diminuendo', event)">
+          <img src="{% static 'images/Symbols/Diminuendo.png' %}" alt="Diminuendo" class="button-icon-T5" id="img-Diminuendo">
+      </a>
+      
+      <a class="button-T" id="btn-Triplet" onClick="selectButton('Triplet', event)">
+          <img src="{% static 'images/Symbols/Triplet.png' %}" alt="Triplet" class="button-icon-T6" id="img-Triplet">
+      </a>
+      
+              <!-- Botón para desplegar el dropdown -->
+      <a id="plusButton" title="Más opciones" class="button-T">
+          <img src="{% static 'images/Symbols/Plus.png' %}" alt="Plus" class="button-icon-T7">
+      </a>
+
+      <!-- Dropdown para el botón Plus -->
+      <div id="plusDropdown" class="dropdown-content-plus">
+
+          <div>
+              <label for="tempoInput">Tempo:</label>
+              <input type="text" id="tempoInput" placeholder="Ingrese el tempo">
+          </div>
+          
+          <!-- Campo de texto para Anotar texto -->
+          <div>
+              <label for="noteInput" class="note-label">T</label>
+              <input type="text" id="noteInput" placeholder="Enter note">
+          </div>
+          
+          <a title="Staccato (f)" onClick="editor.setArticulation('a.')">
+            <img src="{% static 'images/Symbols/staccato.png' %}" alt="Option A" class="dropdown-option">
+          </a>
+
+          <a title="Staccatissimo (g)" onClick="editor.setArticulation('av')">
+            <img src="{% static 'images/Symbols/staccatissimo.png' %}" alt="Option A" class="dropdown-option">
+          </a>
+
+          <a title="Marcato (h)" onClick="editor.setArticulation('a^')">
+            <img src="{% static 'images/Symbols/marcato.png' %}" alt="Option A" class="dropdown-option">
+          </a>
+          
+          <a title="Acento (j)" onClick="editor.setArticulation('a>')">
+            <img src="{% static 'images/Symbols/acento.png' %}" alt="Option A" class="dropdown-option">
+          </a>
+
+          <a title="Tenuto (k)" onClick="editor.setArticulation('a-')">
+            <img src="{% static 'images/Symbols/tenuto.png' %}" alt="Option A" class="dropdown-option">
+          </a>
+
+          <a title="Fermata (l)" onClick="editor.setArticulation('a@a')">
+            <img src="{% static 'images/Symbols/fermata.png' %}" alt="Option A" class="dropdown-option">
+          </a>
+
+          <img src="{% static 'images/Symbols/pp.PNG' %}" alt="Option A" class="dropdown-option">
+          <img src="{% static 'images/Symbols/p.PNG' %}" alt="Option B" class="dropdown-option">
+          <img src="{% static 'images/Symbols/mp.PNG' %}" alt="Option C" class="dropdown-option">
+          <img src="{% static 'images/Symbols/mf.PNG' %}" alt="Option D" class="dropdown-option">
+          <img src="{% static 'images/Symbols/f.PNG' %}" alt="Option E" class="dropdown-option">
+          <img src="{% static 'images/Symbols/ff.PNG' %}" alt="Option E" class="dropdown-option">
+          
+          <!-- Campo de texto para Tempo -->
+          
+      </div>
+
+  </div>
+
     <div class="content">
         <!-- Estilo para el campo de Título -->
         <div class="input-container titulo-container">
@@ -23,6 +152,11 @@
             <label class="input-label" for="compositor"></label>
         </div>
     </div>
+
+  <a class="button-icon-p" title="Agregar más compases" onClick="editor.addCompas()">
+    <img src={% static 'images/Symbols/plus.png'%} class="button-icon-p">
+  </a>
+
 </body>
 
 
@@ -47,6 +181,9 @@
     <script src="{% static 'Scripts/Nota.js' %}" defer></script>
     <script src="{% static 'Scripts/Vex.js' %}" defer></script>
     <script src="{% static 'Scripts/Partitura.js' %}" defer></script>
+
+    <script src="{% static 'Scripts/DropDown.js' %}"></script>
+    <script src="{% static 'Scripts/SelectButton.js.'%}"></script>
 
     <style>
       .ml-100 {
