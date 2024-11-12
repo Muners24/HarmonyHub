@@ -374,7 +374,7 @@ class EditorListener {
             return;
 
         let nota = this.compases[this.compas_selected].notas[this.nota_selected];
-        let newKey = switchP(nota.key_selected);
+        let newKey = switchP(this.key_selected);
         while (newKey !== null && nota.hasKey(newKey)) {
             newKey = switchP(newKey);
         }
