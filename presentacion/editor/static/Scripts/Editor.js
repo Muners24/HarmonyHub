@@ -17,6 +17,8 @@ class Editor extends EditorListener {
   }
 
   addCompas(timeNum = 4, timeDen = 4) {
+    this.noteDeselect();
+
     if (this.compases.length == 0) {
       this.compases.push(new Compas(timeNum, timeDen));
       this.compases[0].addTimeSignature(timeNum, timeDen);
@@ -42,8 +44,8 @@ class Editor extends EditorListener {
     if (this.compases.length === 1)
       return;
 
+    this.noteDeselect();
     this.compases.pop();
-
     this.formated = false;
     this.Editdraw();
     this.Editdraw();
@@ -51,8 +53,8 @@ class Editor extends EditorListener {
   config() {
     this.addCompas(4, 4);
     this.compases[0]
-      .addClef('treble')
-      .addKeySignature('C');
+    .addClef('treble')
+    .addKeySignature('C');
     this.setTempo(120);
     this.formated = false;
     this.Editdraw();
@@ -131,6 +133,7 @@ class Editor extends EditorListener {
   }
 
   drawCompases() {
+
     this.formatCompas();
     this.formated = true;
     this.context.clearRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight);
@@ -167,7 +170,7 @@ class Editor extends EditorListener {
   }
 
   drawKeySelected() {
-    if (this.key_selected === -1)
+    if (this.key_selected === '')
       return;
 
     let compas = this.compases[this.compas_selected];
@@ -192,10 +195,8 @@ class Editor extends EditorListener {
         continue;
       }
 
-      let key = compas.notas[this.nota_selected].getKeyOfIndex(this.key_selected);
       let dur = parseInt(compas.notas[i].getDuration());
-
-      temp_notas.push(new StaveNote({ keys: [key], duration: String(dur) }))
+      temp_notas.push(new StaveNote({ keys: [this.key_selected], duration: String(dur) }))
       temp_notas[i].setStyle({ fillStyle: 'rgba(0,100,200,1)', strokeStyle: 'rgba(0,0,0,0.0)' });
       temp_notas[i].setBeam();
     }

@@ -113,10 +113,10 @@ class Compas extends VexRec {
 
     draw(context, is_final) {
         this.updateStave();
-
+        
         if (is_final)
             this.stave.setEndBarType(Barline.type.END);
-
+        
         let notasDynamic = [];
         this.stave.setContext(context).draw();
         this.staveNotes = [];

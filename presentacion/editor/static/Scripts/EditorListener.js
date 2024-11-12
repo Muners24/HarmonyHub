@@ -20,7 +20,7 @@ class EditorListener {
         this.rec = this.canvas.getBoundingClientRect();
         this.nota_selected = -1;
         this.compas_selected = -1;
-        this.key_selected = -1;
+        this.key_selected = '';
 
         this.compases = [];
 
@@ -149,8 +149,6 @@ class EditorListener {
             case 'l':
                 this.setArticulation('a@a');
                 break;
-            case '|':
-                break;
             case '-':
                 this.removeCompas();
                 break;
@@ -178,6 +176,9 @@ class EditorListener {
                 break;
             case 'p':
                 this.setDynamic('ff');
+                break;
+            case 'q':
+                this.setText('xd');
                 break;
             default:
         }
@@ -270,14 +271,14 @@ class EditorListener {
             }
         }
 
-        if (this.key_selected === -1) {
+        if (this.key_selected === '') {
             this.noteDeselect();
             this.signDeselect();
             this.Editdraw();
             return;
         }
 
-        this.compases[this.compas_selected].notas[this.nota_selected].setSelected(this.key_selected);
+        this.key_selected = compas.notas[this.nota_selected].setSelected(this.key_selected);
         this.Editdraw();
     }
 
@@ -294,20 +295,20 @@ class EditorListener {
             inicial.noSignSelected();
             this.compas_selected = 0;
             this.nota_selected = 0;
-            this.key_selected = inicial.notas[0].setSelected(-2);
+            this.key_selected = inicial.notas[0].setSelected('inicio');
             return;
         }
 
         if (this.nota_selected !== -1) {
             if (this.nota_selected < this.compases[this.compas_selected].notas.length - 1) {
-                this.compases[this.compas_selected].notas[this.nota_selected++].setSelected(-1);
-                this.key_selected = this.compases[this.compas_selected].notas[this.nota_selected].setSelected(-2);
+                this.compases[this.compas_selected].notas[this.nota_selected++].setSelected('');
+                this.key_selected = this.compases[this.compas_selected].notas[this.nota_selected].setSelected('inicio');
                 return;
             }
             if (this.compas_selected < this.compases.length - 1) {
-                this.compases[this.compas_selected++].notas[this.nota_selected].setSelected(-1);
+                this.compases[this.compas_selected++].notas[this.nota_selected].setSelected('');
                 this.nota_selected = 0;
-                this.key_selected = this.compases[this.compas_selected].notas[this.nota_selected].setSelected(-2);
+                this.key_selected = this.compases[this.compas_selected].notas[this.nota_selected].setSelected('inicio');
                 return;
             }
 
@@ -330,15 +331,15 @@ class EditorListener {
 
         if (this.nota_selected !== -1) {
             if (this.nota_selected > 0) {
-                this.compases[this.compas_selected].notas[this.nota_selected--].setSelected(-1);
-                this.key_selected = this.compases[this.compas_selected].notas[this.nota_selected].setSelected(-2);
+                this.compases[this.compas_selected].notas[this.nota_selected--].setSelected('');
+                this.key_selected = this.compases[this.compas_selected].notas[this.nota_selected].setSelected('inicio');
                 return;
             }
 
-            this.compases[this.compas_selected].notas[this.nota_selected].setSelected(-1);
+            this.compases[this.compas_selected].notas[this.nota_selected].setSelected('');
             if (this.compas_selected > 0) {
                 this.nota_selected = this.compases[--this.compas_selected].notas.length - 1;
-                this.key_selected = this.compases[this.compas_selected].notas[this.nota_selected].setSelected(-2);
+                this.key_selected = this.compases[this.compas_selected].notas[this.nota_selected].setSelected('inicio');
                 return;
             }
 
@@ -351,18 +352,20 @@ class EditorListener {
     }
 
     noteDeselect() {
-        if(this.nota_selected === -1)
+        if (this.nota_selected === -1)
             return;
+        this.temp_compas = null;
+        this.temp_notas = [];
 
         this.compases[this.compas_selected]
             .notas[this.nota_selected]
             .setSelected(-1);
         this.nota_selected = -1;
         this.compas_selected = -1;
-        this.key_selected = -1;
+        this.key_selected = '';
     }
 
-    signDeselect(){
+    signDeselect() {
         this.compases[0].noSignSelected();
     }
 
@@ -371,7 +374,7 @@ class EditorListener {
             return;
 
         let nota = this.compases[this.compas_selected].notas[this.nota_selected];
-        let newKey = switchP(nota.keys[this.key_selected]);
+        let newKey = switchP(nota.key_selected);
         while (newKey !== null && nota.hasKey(newKey)) {
             newKey = switchP(newKey);
         }
@@ -380,6 +383,7 @@ class EditorListener {
             return;
 
         nota.setKey(newKey, this.key_selected);
+        this.key_selected = newKey;
     }
 
     keySignSwitch(switchKey) {
@@ -706,8 +710,14 @@ class EditorListener {
         this.Editdraw();
     }
 
+    setText(text) {
+        if (this.nota_selected === -1)
+            return;
 
-
+        this.compases[this.compas_selected].notas[this.nota_selected].setText(text);
+        this.formated = false;
+        this.Editdraw();
+    }
 }
 
 

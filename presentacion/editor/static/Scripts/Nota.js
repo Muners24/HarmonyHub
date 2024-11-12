@@ -7,12 +7,12 @@ class Nota extends VexRec {
         super(0, 0, 0, 10);
         this.keys = keys;
         this.duracion = duracion;
-        this.accidental = '';
+        this.accidentals = [];
         this.articulations = [];
 
         this.doted = false;
         this.selected = false;
-        this.key_selected = -1;
+        this.key_selected = '';
 
         this.stem_dir = 1;
 
@@ -20,23 +20,19 @@ class Nota extends VexRec {
         this.rec;
         this.dynamic = ''
 
+        this.text = '';
         this.notas_order = { 'c': 0, 'd': 1, 'e': 2, 'f': 3, 'g': 4, 'a': 5, 'b': 6 };
     }
 
     updateStaveNote() {
+
         this.nota = new StaveNote({ keys: this.keys, duration: this.duracion });
         if (this.doted)
             this.nota.addDotToAll();
-        
-        
 
         if (this.selected && this.isRest())
             this.nota.setStyle({ fillStyle: 'rgba(0,100,200,1)' });
-
-
-        if (this.accidental != '')
-            this.nota.addModifier(0, new Accidental(this.accidental));
-
+        
         let count = 0;
         for (let i = 0; i < this.keys.length; i++) {
             if (this.keys[i].split('/')[1] > 4)
@@ -50,8 +46,19 @@ class Nota extends VexRec {
         else
             this.stem_dir = 1;
 
+
+        for(let i = 0;i<this.accidentals;i++){
+            this.nota.addModifier(0, new Accidental(this.accidentals[i]));
+        }
+
+
+        if (this.text !== '')
+            this.nota.addModifier(0, new Annotation(this.text));
+
         this.nota.setStemDirection(this.stem_dir);
+
         for (let i = 0; i < this.articulations.length; i++) {
+
             let dir;
             if (this.articulations[i] !== 'a@a') {
                 if (this.stem_dir === 1) {
@@ -69,11 +76,6 @@ class Nota extends VexRec {
             this.nota.addModifier(0, new Articulation(this.articulations[i])
                 .setPosition(dir));
         }
-
-        
-
-        //anotacion
-        //this.nota.addModifier(0,new Annotation('a'));
 
     }
 
@@ -97,9 +99,10 @@ class Nota extends VexRec {
         //this.keys = this.sortKeys();
         let ys = this.nota.getYs();
         let recs = [];
-        for (let i = 0; i < ys.length; i++) {
+        let keys = this.sortKeys();
+        for (let i = ys.length - 1; i >= 0; i--) {
             this.calculaRec(ys[i]);
-            recs.push([i,new VexRec(
+            recs.push([keys[i], new VexRec(
                 this.x,
                 this.y,
                 this.w,
@@ -164,28 +167,34 @@ class Nota extends VexRec {
         return keys;
     }
 
-    setSelected(key_index) {
-        if(key_index === -2){
+    setSelected(key) {
+        if (key === 'inicio') {
+            let keys = this.sortKeys();
+            this.key_selected = keys[0];
             this.selected = true;
-            let key = this.sortKeys();
-            this.key_selected = this.keys.indexOf(key[0]);
-            return this.key_selected;
+            return keys[0];
         }
 
-        this.key_selected = key_index;
-        this.selected = key_index !== -1;
-        return key_index;
+        if (this.keys.indexOf(key) === -1) {
+            this.key_selected = '';
+            this.selected = false;
+            return ''
+        }
+
+        this.selected = true;
+        return key;
     }
 
     isSelected() {
         return this.selected;
     }
 
-    setKey(key, index) {
+    setKey(newKey, prevKey) {
         if (this.isRest())
             this.duracion = this.duracion.replace('r', '');
 
-        this.keys[index] = key;
+        this.key_selected = newKey;
+        this.keys[this.keys.indexOf(prevKey)] = newKey;
         return this;
     }
 
@@ -206,22 +215,21 @@ class Nota extends VexRec {
         if (this.isRest())
             return false;
 
-        if (this.accidental === accidental) {
+        if (this.accidentals.indexOf(accidental) !== -1) {
             if (accidental === 'n') {
-                this.accidental = '';
+                this.accidentals = [];
                 return true;
             }
             return false;
         }
 
-        this.accidental = accidental;
+        this.accidentals.push(accidental);
         return true;
     }
 
     setArticulation(newArticulation) {
         if (this.isRest())
             return;
-
         let acumulables = [];
         acumulables.push('a-');
         acumulables.push('a>');
@@ -246,6 +254,7 @@ class Nota extends VexRec {
         acortadores.push(this.articulations.indexOf('av'));
         acortadores.push(this.articulations.indexOf('a^'));
 
+
         if (index !== -1) {
             this.articulations.splice(index, 1);
             return;
@@ -260,12 +269,13 @@ class Nota extends VexRec {
             this.articulations.splice(this.articulations.length - 1, 0, newArticulation);
             return;
         }
+
         this.articulations.push(newArticulation);
     }
 
     addKey(key) {
         if (this.keys.indexOf(key) !== -1) {
-            return -1;
+            return '';
         }
 
         if (this.isRest()) {
@@ -274,8 +284,7 @@ class Nota extends VexRec {
         }
 
         this.keys.push(key);
-        this.keys = this.sortKeys();
-        return this.keys.indexOf(key);
+        return key;
     }
 
     hasKey(key) {
@@ -286,14 +295,14 @@ class Nota extends VexRec {
         return this.keys[index];
     }
 
-    convertToRest(){
+    convertToRest() {
         this.keys = [];
         this.keys.push('b/4');
         this.duracion += 'r';
     }
 
-    setDynamic(dynamic){
-        if(this.dynamic === dynamic){
+    setDynamic(dynamic) {
+        if (this.dynamic === dynamic) {
             this.dynamic = '';
             return;
         }
@@ -301,12 +310,17 @@ class Nota extends VexRec {
         this.dynamic = dynamic;
     }
 
-    getDynamic(){
+    getDynamic() {
         return this.dynamic;
     }
 
-    hasDynamic(){
+    hasDynamic() {
         return this.dynamic !== -1;
+    }
+
+    setText(text) {
+        this.text = text;
+        return this;
     }
 };
 
