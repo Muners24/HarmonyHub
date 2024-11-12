@@ -27,7 +27,7 @@ class EditorListener {
         this.formated = false;
 
         this.temp_compas = null;
-        this.temp_notas = [];
+        this.temp_nota = null;
     }
 
     debounce(func, delay) {
@@ -53,38 +53,35 @@ class EditorListener {
 
         if (!rec.collisionPoint(x, y)) {
             this.temp_compas = null;
-            this.temp_notas = [];
+            this.temp_nota = null;
             this.Editdraw();
             return;
         }
 
-        this.temp_compas = new Stave(compas.getX(), compas.getY(), compas.getW());
-        if (this.compas_selected === 0) {
-            this.temp_compas.addClef(compas.getClef());
-            this.temp_compas.addKeySignature(compas.getKeySignature());
-            this.temp_compas.addTimeSignature(compas.getTimeSignature());
-        }
+        let nota = compas.notas[this.nota_selected];
 
-        this.temp_notas = [];
-        for (let i = 0; i < compas.staveNotes.length; i++) {
-            if (i !== this.nota_selected) {
-                if (compas.notas[i].isRest())
-                    this.temp_notas.push(new StaveNote({ keys: ['b/4'], duration: compas.notas[i].getDuration() }));
-                else
-                    this.temp_notas.push(new StaveNote({ keys: ['b/4'], duration: compas.notas[i].getDuration() + 'r' }));
-                this.temp_notas[i].setStyle({ fillStyle: 'rgba(0,0,0,0.0)', strokeStyle: 'rgba(0,0,0,0.0)' });
-            }
-            else {
-                let key = Notacion.getNoteOnY(compas.getMinY() + compas.getOverY(), y);
-                let dur = parseInt(compas.notas[i].getDuration());
-                this.temp_notas.push(new StaveNote({ keys: [key], duration: String(dur) }))
-                this.temp_notas[i].setStyle({
-                    fillStyle: 'rgba(0,100,200,1)', strokeStyle: 'rgba(0,0,0,0.0)',
-                    shadowColor: 'rgba(0,0,0,0.0)', shadowBlur: 'rgba(0,0,0,0.0)'
-                });
-                this.temp_notas[i].setBeam();
-            }
-        }
+        this.temp_compas = new Stave(
+            nota.getX() - 17,
+            compas.getY(),
+            nota.getW());
+
+        let key = Notacion.getNoteOnY(compas.getMinY() + compas.getOverY(), y);
+        let dur = parseInt(nota.getDuration());
+        this.temp_nota = new StaveNote({ keys: [key], duration: String(dur) });
+        this.temp_nota.setStyle({
+            fillStyle: 'rgba(0,100,200,1)', strokeStyle: 'rgba(0,0,0,0.0)',
+            shadowColor: 'rgba(0,0,0,0.0)', shadowBlur: 'rgba(0,0,0,0.0)'
+        });
+
+        if (nota.hasDot())
+            this.temp_nota.addDotToAll();
+
+        this.temp_nota.setStyle({
+            fillStyle: 'rgba(0,100,200,1)', strokeStyle: 'rgba(0,0,0,0.0)'
+        });
+
+        this.temp_nota.setBeam();
+
         this.Editdraw();
 
     }
@@ -194,10 +191,10 @@ class EditorListener {
         const x = event.pageX - this.rec.left;
         const y = event.pageY - this.rec.top;
 
-        if (this.temp_notas.length !== 0) {
+        if (this.temp_nota !== null) {
             let compas = this.compases[this.compas_selected];
-            if (!compas.notas[this.nota_selected].hasKey(this.temp_notas[this.nota_selected].getKeys()[0])) {
-                this.key_selected = compas.notas[this.nota_selected].addKey(this.temp_notas[this.nota_selected].getKeys()[0]);
+            if (!compas.notas[this.nota_selected].hasKey(this.temp_nota.getKeys()[0])) {
+                this.key_selected = compas.notas[this.nota_selected].addKey(this.temp_nota.getKeys()[0]);
                 this.signDeselect();
                 this.formated = false;
                 this.Editdraw();
@@ -282,6 +279,9 @@ class EditorListener {
     }
 
     selectRight() {
+        this.temp_compas = null;
+        this.temp_nota = null;
+
         let inicial = this.compases[0];
 
         if (inicial.clef_sel) {
@@ -354,7 +354,7 @@ class EditorListener {
         if (this.nota_selected === -1)
             return;
         this.temp_compas = null;
-        this.temp_notas = [];
+        this.temp_nota = null;
 
         this.compases[this.compas_selected]
             .notas[this.nota_selected]
@@ -373,7 +373,7 @@ class EditorListener {
             return;
 
         let nota = this.compases[this.compas_selected].notas[this.nota_selected];
-        let newKey = switchP(nota.key_selected);
+        let newKey = switchP(this.key_selected);
         while (newKey !== null && nota.hasKey(newKey)) {
             newKey = switchP(newKey);
         }
@@ -381,7 +381,7 @@ class EditorListener {
         if (newKey === null)
             return;
 
-        nota.setKey(newKey, this.key_selected);
+        nota.setKey(newKey);
         this.key_selected = newKey;
     }
 
@@ -581,7 +581,6 @@ class EditorListener {
     setArticulation(articulation) {
         if (this.nota_selected === -1)
             return;
-
         this.compases[this.compas_selected].notas[this.nota_selected].setArticulation(articulation);
         this.Editdraw();
     }
