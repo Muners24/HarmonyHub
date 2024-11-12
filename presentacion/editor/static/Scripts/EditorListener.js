@@ -163,6 +163,9 @@ class EditorListener {
             case '+':
                 this.setCompasDen(8);
                 break;
+            case 'r':
+                this.setRest();
+                break;
             default:
         }
 
@@ -198,16 +201,6 @@ class EditorListener {
             this.Editdraw();
             return;
         }
-
-        /*
-        if (this.compases[0].getTimeNumRec().collisionPoint(x, y)) {
-            this.compases[0].selectTime();
-            if (this.nota_selected !== -1) {
-                this.noteDeselect();
-            }
-            this.Editdraw();
-            return;
-        }*/
 
         if (this.compases[0].getKeySignatureRec().collisionPoint(x, y)) {
             this.compases[0].selectKeySign();
@@ -633,7 +626,6 @@ class EditorListener {
             this.noteDeselect();
 
         compas.noSignSelected();
-        this.formated = false;
 
         if (prevNum > num)
             this.cutCompas(num, compas.getTimeDen());
@@ -641,6 +633,7 @@ class EditorListener {
             this.incresCompasNum(num, compas.getTimeDen());
 
         compas.setTimeNum(num);
+        this.formated = false;
         this.Editdraw();
         return;
     }
@@ -672,7 +665,6 @@ class EditorListener {
             this.noteDeselect();
 
         compas.noSignSelected();
-        this.formated = false;
 
         if (prevDen > den)
             this.decreaseCompasDen(compas.getTimeNum(), den);
@@ -680,9 +672,23 @@ class EditorListener {
             this.cutCompas(compas.getTimeNum(), den);
 
         compas.setTimeDen(den);
+        this.formated = false;
         this.Editdraw();
         return;
     }
+
+    setRest(){
+        if(this.nota_selected === -1)
+            return;
+
+        let compas = this.compases[this.compas_selected];
+        if(compas.notas[this.nota_selected].isRest())
+            return;
+        
+        compas.notas[this.nota_selected].convertToRest();
+        this.formated = false;
+        this.Editdraw();
+    }   
 }
 
 

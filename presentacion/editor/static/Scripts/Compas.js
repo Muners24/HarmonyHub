@@ -103,7 +103,6 @@ class Compas extends VexRec {
                     - this.getTimeNumRec().getW());
             }
         }
-
     }
 
     draw(context, is_final) {

@@ -280,6 +280,12 @@ class Nota extends VexRec {
     getKeyOfIndex(index) {
         return this.keys[index];
     }
+
+    convertToRest(){
+        this.keys = [];
+        this.keys.push('b/4');
+        this.duracion += 'r';
+    }
 };
 
 //1 redonda
