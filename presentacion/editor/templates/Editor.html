@@ -43,7 +43,7 @@
           <img src="{% static 'images/Symbols/Puntillo.png' %}" alt="Puntillo" class="button-icon-T" id="img-Puntillo">
       </a>
       
-      <a class="button-T" title="Silencio ()" onClick="selectButton('Silencio', event); editor.addCompas()">
+      <a class="button-T" title="Silencio (r)" onClick="selectButton('Silencio', event); editor.setRest()">
           <img src="{% static 'images/Symbols/Silencio.png' %}" alt="Silencio" class="button-icon-T" id="img-Silencio">
       </a>
       
@@ -92,14 +92,14 @@
       <div id="plusDropdown" class="dropdown-content-plus">
 
           <div>
-            <input type="text" id="tempoInput" placeholder="Introduce el tempo" />
-            <button id="updateTempoButton">Actualizar Tempo</button>         
+            <button class="button-T" id="updateTempoButton" onClick="editor.setTempo(20)">Actualizar Tempo</button>         
           </div>
           
           <!-- Campo de texto para Anotar texto -->
           <div>
-              <label for="noteInput" class="note-label">T</label>
-              <input type="text" id="noteInput" placeholder="Enter note">
+            <input type="text" id="myTextbox" placeholder="Ingresa un texto" />
+            <button onclick="actualizarTexto()">Actualizar Texto</button>
+            
           </div>
           
           <a title="Staccato (f)" onClick="editor.setArticulation('a.')">
@@ -173,6 +173,28 @@
   <a class="button-r" title="Quitar compás (-)" onClick="editor.removeCompas()">
     <img src="{% static 'images/Symbols/tenuto.png' %}" class="button-icon-r">
   </a>  
+
+  <script>
+
+    function actualizarTexto() {
+      // Obtiene el valor del textbox
+      const texto = document.getElementById("myTextbox").value;
+  
+      // Llama a setText y pasa el valor del textbox como argumento
+      editor.setText(texto);
+      }
+
+      document.getElementById("myTextbox").addEventListener("keydown", function(event) {
+        flag = 0;
+        const teclasBloqueadas = ["Enter", "ArrowLeft", "ArrowRight", "Backspace"];
+        
+        if()
+
+        if (teclasBloqueadas.includes(event.key) && document.activeElement.id !== "myTextbox") {
+          event.preventDefault(); // Bloquea la tecla
+      }});
+  
+  </script>
 
 </body>
 

@@ -247,7 +247,6 @@ class Editor extends EditorListener {
   }
 }
 
-
 var editor;
 
 // Inicializa el Editor cuando el DOM esté listo
