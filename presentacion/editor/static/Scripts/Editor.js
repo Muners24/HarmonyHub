@@ -52,12 +52,12 @@ class Editor extends EditorListener {
     this.Editdraw();
   }
 
-  config() {
-    this.addCompas(4, 4);
+  config(clef = 'treble', keySignature = 'C', tempo = 120, numerator = 4, denominator = 4) {
+    this.addCompas(numerator, denominator);
     this.compases[0]
-      .addClef('treble')
-      .addKeySignature('C');
-    this.setTempo(120);
+      .addClef(clef)
+      .addKeySignature(keySignature);
+    this.setTempo(tempo);
     this.formated = false;
     this.Editdraw();
   }
@@ -176,7 +176,7 @@ class Editor extends EditorListener {
     tie.setContext(this.context).draw();
 
     */
-    this.drawHitBox();
+    //this.drawHitBox();
   }
 
   drawCrescendos() {
@@ -294,16 +294,44 @@ class Editor extends EditorListener {
     this.compases[0].setTempo(tempo);
   }
 
-  getTempo(){
+  getTempo() {
     return this.compases[0].getTempo();
   }
 
-  getCompas(){
-    
-  }
 
   getH() {
     return this.canvas.height;
+  }
+
+  reinit() {
+    this.rec = this.canvas.getBoundingClientRect();
+    this.nota_selected = -1;
+    this.compas_selected = -1;
+    this.penta_selected = -1;
+    this.key_selected = '';
+
+    this.compases = [];
+
+    this.formated = false;
+
+    this.temp_compas = null;
+    this.temp_nota = null;
+
+    this.prevCompas_selected = -1;
+    this.prevNota_selected = -1;
+    this.prevPenta_selected = -1;
+    this.cresc = false;
+
+    this.pentagramas = [];
+    this.crescendos = new Map();
+  }
+
+  getCompasNum() {
+    return this.compases[0].getTimeNum();
+  }
+
+  getCompasDen() {
+    return this.compases[0].getTimeDen();
   }
 }
 
