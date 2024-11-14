@@ -297,7 +297,11 @@ class Editor extends EditorListener {
   getTempo(){
     return this.compases[0].getTempo();
   }
-  
+
+  getCompas(){
+    
+  }
+
   getH() {
     return this.canvas.height;
   }

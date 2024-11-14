@@ -1,8 +1,7 @@
 
 
-// Función para exportar los datos MIDI
-function exportMidi() {
-    const midiData = obtenerDatosMidiDelEditor(); // Esta función debería extraer los datos del editor
+function exportMidi(path) {
+    const midiData = editorData(path);
 
     fetch('/exportMidi/', {
         method: 'POST',
@@ -12,14 +11,6 @@ function exportMidi() {
         body: JSON.stringify(midiData),
     })
     .then(response => response.json())
-    .then(data => {
-        if (data.file) {
-            console.log('Archivo MIDI exportado:', data.file);
-            // Aquí puedes hacer algo con el archivo exportado, como ofrecer una descarga
-        } else {
-            console.error('Error al exportar MIDI:', data.error);
-        }
-    })
     .catch(error => {
         console.error('Error:', error);
     });
@@ -27,7 +18,8 @@ function exportMidi() {
 
 
 
-function obtenerDatosMidiDelEditor() {
+function editorData(path) {
+    alert(path);
     let notas = [];
 
     for(let i=0;i<editor.pentagramas.length;i++){
@@ -37,17 +29,18 @@ function obtenerDatosMidiDelEditor() {
             for(let k=0;k<compas.notas.length;k++){
                 let nota = compas.notas[k];
                 notas.push({
-                    keys : notas.getKeys(),
-                    dur: notas.getDuration()
-                });
+                    keys : nota.getKeys(),
+                    dur: nota.getDuration()
+                });     
             }
         }
     }
-    let x = [125,1235,1235,1235,1235];
-    
-    return { 
+
+    return {
+        path: path,
         tempo: editor.getTempo(),
-        compas: editor.getCompas(),
+        numerator: editor.compases[0].getTimeNum(),
+        denominator: editor.compases[0].getTimeDen(),
         notas: notas
     };
 }
