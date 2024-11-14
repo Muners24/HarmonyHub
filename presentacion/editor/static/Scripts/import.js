@@ -19,6 +19,12 @@ function importMidi() {
         });
 }
 
+<<<<<<< HEAD
+// Función ficticia para cargar la partitura en el editor
+function cargarPartitura(midiData) {
+    console.log('Cargando partitura...', midiData);
+    // Aquí implementa la lógica para visualizar los datos MIDI en tu editor
+=======
 function cargarPartitura(data) {
     editor.reinit()
     editor.config();
@@ -54,4 +60,5 @@ function cargarPartitura(data) {
     
    editor.formated = false;
    editor.Editdraw();
+>>>>>>> c0a91961e4eda638094465f019c5b6b463daaf40
 }

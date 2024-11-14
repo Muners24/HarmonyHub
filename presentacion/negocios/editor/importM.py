@@ -182,3 +182,7 @@ def importMidi(archivo_midi):
     }
     
     return resultado
+
+file = open('C:/midi/stw.mid','rb')
+
+importMidi(file)

@@ -60,7 +60,6 @@ class Editor extends EditorListener {
     this.setTempo(tempo);
     this.formated = false;
     this.Editdraw();
-    alert("sldfjsdlkjf")
   }
 
   formatCompas() {
