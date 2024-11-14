@@ -178,7 +178,7 @@ class Editor extends EditorListener {
     tie.setContext(this.context).draw();
 
     */
-    this.drawHitBox();
+    //this.drawHitBox();
   }
 
   drawCrescendos() {
