@@ -98,8 +98,6 @@
           <!-- Campo de texto para Anotar texto -->
           <div>
             <input type="text" id="myTextbox" placeholder="Ingresa un texto" />
-            <button onclick="actualizarTexto()">Actualizar Texto</button>
-            
           </div>
           
           <a title="Staccato (f)" onClick="editor.setArticulation('a.')">
@@ -178,21 +176,50 @@
 
     function actualizarTexto() {
       // Obtiene el valor del textbox
-      const texto = document.getElementById("myTextbox").value;
+      let texto = document.getElementById("myTextbox").value;
   
-      // Llama a setText y pasa el valor del textbox como argumento
+      // Divide el texto en líneas de hasta 30 caracteres
+      texto = texto.match(/.{1,30}/g).join("\n");
+  
+      // Llama a setText y pasa el valor del textbox con saltos de línea como argumento
       editor.setText(texto);
-      }
+    }
+    
+    let isTyping = false;// Bandera para indicar si el usuario está escribiendo
+    let typingTimer; 
+    const typingDelay = 1000; 
+    
+    const textbox = document.getElementById('myTextbox');
+    const status = document.getElementById('status');
 
-      document.getElementById("myTextbox").addEventListener("keydown", function(event) {
-        flag = 0;
-        const teclasBloqueadas = ["Enter", "ArrowLeft", "ArrowRight", "Backspace"];
-        
-        if()
+    textbox.addEventListener('keydown', function(event) {
+        event.stopPropagation(); 
+        if (!isTyping) {
+            isTyping = true;
+            status.textContent = "Está escribiendo...";
+        }
+        clearTimeout(typingTimer);
+    });
 
-        if (teclasBloqueadas.includes(event.key) && document.activeElement.id !== "myTextbox") {
-          event.preventDefault(); // Bloquea la tecla
-      }});
+    textbox.addEventListener('keyup', function(event) {
+        event.stopPropagation();
+        console.log('Tecla liberada:', event.key);  
+        clearTimeout(typingTimer);
+
+        if (event.key === "Enter") {
+            actualizarTexto();
+        }
+
+        typingTimer = setTimeout(function() {
+            if (textbox.value === "") {
+                isTyping = false;
+                status.textContent = "No se está escribiendo.";
+            } else {
+                isTyping = false;
+                status.textContent = "Escritura finalizada.";
+            }
+        }, typingDelay);
+    });
   
   </script>
 
