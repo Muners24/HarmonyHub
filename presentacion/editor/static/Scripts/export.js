@@ -1,8 +1,6 @@
+function exportMidi(path) {
+    const midiData = editorData(path);
 
-function exportMidi(titulo) {
-    const midiData = editorData();
-
-    titulo += '.mid'
     fetch('/exportMidi/', {
         method: 'POST',
         headers: {
@@ -10,29 +8,14 @@ function exportMidi(titulo) {
         },
         body: JSON.stringify(midiData),
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Error al procesar la solicitud');
-        }
-        return response.blob();
-    })
-    .then(blob => {
-        const url = window.URL.createObjectURL(blob);
-
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = titulo;
-        document.body.appendChild(a);
-        a.click();
-
-        window.URL.revokeObjectURL(url);
-    })
+    .then(response => response.json())
     .catch(error => {
         console.error('Error:', error);
     });
 }
 
-function editorData() {
+function editorData(path) {
+    alert(path);
     let notas = [];
 
     for(let i=0;i<editor.pentagramas.length;i++){
@@ -50,6 +33,7 @@ function editorData() {
     }
 
     return {
+        path: path,
         tempo: editor.getTempo(),
         numerator: editor.compases[0].getTimeNum(),
         denominator: editor.compases[0].getTimeDen(),

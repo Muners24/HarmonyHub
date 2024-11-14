@@ -338,17 +338,11 @@ class EditorListener {
                 return;
             }
 
-            pentagrama = this.pentagramas[this.penta_selected];
-            if (pentagrama < this.pentagramas.length - 1) {
-                this.penta_selected++;
-                this.compas_selected = 0;
-                this.nota_selected = 0;
-                let newCompas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
-                this.key_selected = newCompas.notas[this.nota_selected].setSelected('inicio');
-                return;
-            }
-            
-            Editdraw();
+            this.penta_selected++;
+            this.compas_selected = 0;
+            this.nota_selected = 0;
+            let newCompas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
+            this.key_selected = newCompas.notas[this.nota_selected].setSelected('inicio');
             return;
         }
 
@@ -621,7 +615,7 @@ class EditorListener {
             return;
 
         let compas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
-        if (compas.notas[this.nota_selected].setAccidental(accidental, this.key_selected)) {
+        if (compas.notas[this.nota_selected].setAccidental(accidental,this.key_selected)) {
             this.formated = false;
             this.Editdraw();
         }
@@ -831,7 +825,7 @@ class EditorListener {
                 this.prevNota_selected,
                 this.compas_selected,
                 this.nota_selected,
-                this.crescendos);
+            this.crescendos);
             this.deselectPrevNote();
             this.Editdraw();
             return;
