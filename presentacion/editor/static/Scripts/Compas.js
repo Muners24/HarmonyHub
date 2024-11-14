@@ -22,15 +22,9 @@ class Compas extends VexRec {
         this.stave;
         this.initSilencios();
         this.updateSize();
-    }
 
-    updateCpacity() {
-        this.capacidad = this.timeNum / this.timeDen;
-    }
+        this.tuplets = [];
 
-    getCapacity() {
-        this.updateCpacity();
-        return this.capacidad;
     }
 
     getTimeDen() {
@@ -112,20 +106,26 @@ class Compas extends VexRec {
 
     draw(context, is_final) {
         this.updateStave();
-        
+
         if (is_final)
             this.stave.setEndBarType(Barline.type.END);
-        
+
         let notasDynamic = [];
         this.stave.setContext(context).draw();
         this.staveNotes = [];
+
         for (let i = 0; i < this.notas.length; i++) {
             this.staveNotes.push(this.notas[i].getStaveNote());
             if (this.notas[i].hasDynamic())
                 notasDynamic.push(this.notas[i]);
+
         }
 
         Formatter.FormatAndDraw(context, this.stave, this.staveNotes, { auto_beam: true });
+  
+        for (let i = 0; i < this.tuplets.length; i++) {
+            this.tuplets[i].draw(context);
+        }
 
         if (notasDynamic.length !== 0) {
             for (let i = 0; i < notasDynamic.length; i++) {
@@ -321,5 +321,19 @@ class Compas extends VexRec {
     setClef(clef) {
         this.clef = clef;
         return this;
+    }
+
+    removeTuplet(index) {
+        let noteIndex = this.notas.indexOf(this.tuplets[index].getFirstNoteIndex());
+        let nota = this.notas[noteIndex];
+        nota.setDuration(String(parseInt(nota.getDuration()) / 2));
+        this.notas.splice(noteIndex + 1, 2);
+        this.tuplets.splice(index, 1);
+        nota.inTuplet = false;
+        return nota.getKeyOfIndex(0);
+    }
+
+    getTempo(){
+        return this.tempo;
     }
 }

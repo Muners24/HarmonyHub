@@ -20,6 +20,7 @@ class EditorListener {
         this.rec = this.canvas.getBoundingClientRect();
         this.nota_selected = -1;
         this.compas_selected = -1;
+        this.penta_selected = -1;
         this.key_selected = '';
 
         this.compases = [];
@@ -28,6 +29,14 @@ class EditorListener {
 
         this.temp_compas = null;
         this.temp_nota = null;
+
+        this.prevCompas_selected = -1;
+        this.prevNota_selected = -1;
+        this.prevPenta_selected = -1;
+        this.cresc = false;
+
+        this.pentagramas = [];
+        this.crescendos = new Map();
     }
 
     debounce(func, delay) {
@@ -41,7 +50,7 @@ class EditorListener {
     handleMov(event) {
         const x = event.pageX - this.rec.left;
         const y = event.pageY - this.rec.top;
-        let compas = this.compases[this.compas_selected];
+        let compas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
 
         this.context.setFillStyle('rgba(0,0,0,0.5)');
         let rec = new VexRec(
@@ -87,6 +96,8 @@ class EditorListener {
     }
 
     handleKeydown(event) {
+        this.temp_compas = null;
+        this.temp_nota = null;
         switch (event.key) {
             case 'a':
                 this.selectLeft();
@@ -175,8 +186,15 @@ class EditorListener {
                 this.setDynamic('ff');
                 break;
             case 'q':
-                this.setText('xd');
+                this.setText('xd\n\n\n\nxd');
                 break;
+            case '0':
+                this.setTriplet();
+                break;
+            case '8':
+                this.setCrescendo();
+                break;
+
             default:
         }
 
@@ -192,7 +210,7 @@ class EditorListener {
         const y = event.pageY - this.rec.top;
 
         if (this.temp_nota !== null) {
-            let compas = this.compases[this.compas_selected];
+            let compas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
             if (!compas.notas[this.nota_selected].hasKey(this.temp_nota.getKeys()[0])) {
                 this.key_selected = compas.notas[this.nota_selected].addKey(this.temp_nota.getKeys()[0]);
                 this.signDeselect();
@@ -224,24 +242,27 @@ class EditorListener {
         this.signDeselect();
 
         if (this.nota_selected !== -1) {
-            this.compases[this.compas_selected].notas[this.nota_selected].setSelected(-1);
-        }
-        for (let i = 0; i < this.compases.length; i++) {
-            if (this.compases[i].getRec().collisionPoint(x, y))
-                this.compas_selected = i;
+            let compas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
+            compas.notas[this.nota_selected].setSelected(-1);
         }
 
-
+        for (let i = 0; i < this.pentagramas.length; i++) {
+            let pentagrama = this.pentagramas[i];
+            for (let j = 0; j < pentagrama.compases.length; j++) {
+                if (pentagrama.compases[j].getRec().collisionPoint(x, y)) {
+                    this.compas_selected = j;
+                    this.penta_selected = i;
+                }
+            }
+        }
 
         if (this.compas_selected === -1) {
             this.signDeselect();
             return;
         }
 
-
-
         let noteHeadRecs = [];
-        let compas = this.compases[this.compas_selected];
+        let compas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
         for (let i = 0; i < compas.notas.length; i++) {
             if (new VexRec(
                 compas.notas[i].getX(),
@@ -294,23 +315,34 @@ class EditorListener {
             inicial.noSignSelected();
             this.compas_selected = 0;
             this.nota_selected = 0;
+            this.penta_selected = 0;
             this.key_selected = inicial.notas[0].setSelected('inicio');
             return;
         }
 
         if (this.nota_selected !== -1) {
-            if (this.nota_selected < this.compases[this.compas_selected].notas.length - 1) {
-                this.compases[this.compas_selected].notas[this.nota_selected++].setSelected('');
-                this.key_selected = this.compases[this.compas_selected].notas[this.nota_selected].setSelected('inicio');
-                return;
-            }
-            if (this.compas_selected < this.compases.length - 1) {
-                this.compases[this.compas_selected++].notas[this.nota_selected].setSelected('');
-                this.nota_selected = 0;
-                this.key_selected = this.compases[this.compas_selected].notas[this.nota_selected].setSelected('inicio');
+            let compas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
+            compas.notas[this.nota_selected].setSelected('');
+            if (this.nota_selected < compas.notas.length - 1) {
+                this.nota_selected++;
+                this.key_selected = compas.notas[this.nota_selected].setSelected('inicio');
                 return;
             }
 
+            let pentagrama = this.pentagramas[this.penta_selected];
+            if (this.compas_selected < pentagrama.compases.length - 1) {
+                this.compas_selected++;
+                this.nota_selected = 0;
+                let newCompas = pentagrama.compases[this.compas_selected];
+                this.key_selected = newCompas.notas[this.nota_selected].setSelected('inicio');
+                return;
+            }
+
+            this.penta_selected++;
+            this.compas_selected = 0;
+            this.nota_selected = 0;
+            let newCompas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
+            this.key_selected = newCompas.notas[this.nota_selected].setSelected('inicio');
             return;
         }
 
@@ -329,16 +361,29 @@ class EditorListener {
         }
 
         if (this.nota_selected !== -1) {
+            let compas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
+            compas.notas[this.nota_selected].setSelected('');
             if (this.nota_selected > 0) {
-                this.compases[this.compas_selected].notas[this.nota_selected--].setSelected('');
-                this.key_selected = this.compases[this.compas_selected].notas[this.nota_selected].setSelected('inicio');
+                this.nota_selected--;
+                this.key_selected = compas.notas[this.nota_selected].setSelected('inicio');
                 return;
             }
 
-            this.compases[this.compas_selected].notas[this.nota_selected].setSelected('');
             if (this.compas_selected > 0) {
-                this.nota_selected = this.compases[--this.compas_selected].notas.length - 1;
-                this.key_selected = this.compases[this.compas_selected].notas[this.nota_selected].setSelected('inicio');
+                this.compas_selected--;
+                let newCompas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
+                this.nota_selected = newCompas.notas.length - 1;
+                this.key_selected = newCompas.notas[this.nota_selected].setSelected('inicio');
+                return;
+            }
+
+            if (this.penta_selected > 0) {
+                this.penta_selected--;
+                let newPenta = this.pentagramas[this.penta_selected];
+                this.compas_selected = newPenta.compases.length - 1;
+                let newCompas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
+                this.nota_selected = newCompas.notas.length - 1;
+                this.key_selected = newCompas.notas[this.nota_selected].setSelected('inicio');
                 return;
             }
 
@@ -356,11 +401,11 @@ class EditorListener {
         this.temp_compas = null;
         this.temp_nota = null;
 
-        this.compases[this.compas_selected]
-            .notas[this.nota_selected]
-            .setSelected(-1);
+        let compas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
+        compas.notas[this.nota_selected].setSelected(-1);
         this.nota_selected = -1;
         this.compas_selected = -1;
+        this.penta_selected = -1;
         this.key_selected = '';
     }
 
@@ -371,8 +416,8 @@ class EditorListener {
     switchPitch(switchP) {
         if (this.nota_selected === -1)
             return;
-
-        let nota = this.compases[this.compas_selected].notas[this.nota_selected];
+        let compas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
+        let nota = compas.notas[this.nota_selected];
         let newKey = switchP(this.key_selected);
         while (newKey !== null && nota.hasKey(newKey)) {
             newKey = switchP(newKey);
@@ -407,7 +452,7 @@ class EditorListener {
         let exp = parseInt(durationNumber) - 1;
         let duration = String(2 ** exp);
 
-        let compas = this.compases[this.compas_selected];
+        let compas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
         let prevDuration = compas.notas[this.nota_selected].getDuration();
 
         if (this.compasAdjustRithm(compas, duration, prevDuration)) {
@@ -415,10 +460,9 @@ class EditorListener {
                 compas.notas[this.nota_selected].setDuration(duration + 'r');
             else
                 compas.notas[this.nota_selected].setDuration(duration);
-
-            this.formated = false;
-            this.Editdraw();
         }
+        this.formated = false;
+        this.Editdraw();
     }
 
     //continuar con la division de notas:
@@ -436,7 +480,7 @@ class EditorListener {
         }
 
         //si la duracion es mayor a la capacidad del compas se anula el cambio
-        if (1 / intDuration > compas.getCapacity())
+        if (1 / intDuration > compas.getTimeNum() / compas.getTimeDen())
             return false;
 
         //si la duracion es menor a la duracion anterior se dividira
@@ -527,8 +571,6 @@ class EditorListener {
         compas.notas.splice(i, 1);
     }
 
-
-
     //si el puntillo es valido, se acomoda todo el compas
     //usando los mismos metodos que al cambiar de ritmo
     //se debe diferenciar del metodo addDot de la clase Nota
@@ -536,7 +578,7 @@ class EditorListener {
         if (this.nota_selected === -1)
             return;
 
-        let compas = this.compases[this.compas_selected];
+        let compas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
         if (compas.notas[this.nota_selected].hasDot())
             return;
 
@@ -562,7 +604,7 @@ class EditorListener {
     //se usa cuando el ritmo de la nota cambia o cuando se elimina el puntillo
     //se debe diferenciar del metodo removeDot de la clase Nota
     removeDot() {
-        let compas = this.compases[this.compas_selected];
+        let compas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
         compas.notas[this.nota_selected].removeDot();
         let duration = parseInt(compas.notas[this.nota_selected].getDuration()) * 2;
         compas.notas.splice(this.nota_selected + 1, 0, new Nota(['b/4'], String(duration) + 'r'))
@@ -572,7 +614,8 @@ class EditorListener {
         if (this.nota_selected === -1)
             return;
 
-        if (this.compases[this.compas_selected].notas[this.nota_selected].setAccidental(accidental)) {
+        let compas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
+        if (compas.notas[this.nota_selected].setAccidental(accidental,this.key_selected)) {
             this.formated = false;
             this.Editdraw();
         }
@@ -581,7 +624,8 @@ class EditorListener {
     setArticulation(articulation) {
         if (this.nota_selected === -1)
             return;
-        this.compases[this.compas_selected].notas[this.nota_selected].setArticulation(articulation);
+        let compas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
+        compas.notas[this.nota_selected].setArticulation(articulation);
         this.Editdraw();
     }
 
@@ -691,7 +735,7 @@ class EditorListener {
         if (this.nota_selected === -1)
             return;
 
-        let compas = this.compases[this.compas_selected];
+        let compas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
         if (compas.notas[this.nota_selected].isRest())
             return;
 
@@ -703,18 +747,99 @@ class EditorListener {
     setDynamic(dynamic) {
         if (this.nota_selected === -1)
             return;
-
-        this.compases[this.compas_selected].notas[this.nota_selected].setDynamic(dynamic);
+        let compas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
+        compas.notas[this.nota_selected].setDynamic(dynamic);
         this.Editdraw();
     }
 
     setText(text) {
         if (this.nota_selected === -1)
             return;
-
-        this.compases[this.compas_selected].notas[this.nota_selected].setText(text);
+        let compas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
+        compas.notas[this.nota_selected].setText(text);
         this.formated = false;
         this.Editdraw();
+    }
+
+    setTriplet() {
+        if (this.nota_selected === -1)
+            return;
+
+        let compas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
+        let nota = compas.notas[this.nota_selected];
+
+        if (nota.isInTuplet()) {
+            for (let i = 0; i < compas.tuplets.length; i++) {
+                if (compas.tuplets[i].hasNote(nota)) {
+                    this.key_selected = compas.removeTuplet(i);
+                    this.nota_selected = i
+                    break;
+                }
+            }
+            this.formated = false;
+            this.Editdraw();
+            return;
+        }
+
+        if (nota.isRest())
+            return;
+
+        let dur = parseInt(nota.getDuration());
+        dur *= 2;
+
+        nota.setDuration(String(dur));
+
+        let nuevosSilencios = Array.from({ length: 2 }, () => new Nota(['b/4'], String(dur) + 'r'));
+        compas.notas.splice(this.nota_selected + 1, 0, ...nuevosSilencios);
+
+        compas.tuplets.push(new VexTuplet(compas.notas.slice(this.nota_selected, this.nota_selected + 3)));
+
+        this.formated = false;
+        this.Editdraw();
+    }
+
+    setCrescendo() {
+        if (this.nota_selected === -1)
+            return;
+
+        if (this.prevNota_selected === -1) {
+            this.cresc = true;
+            this.prevPenta_selected = this.penta_selected;
+            this.prevCompas_selected = this.compas_selected;
+            this.prevNota_selected = this.nota_selected;
+            this.Editdraw();
+            return;
+        }
+
+        if (this.nota_selected === this.prevNota_selected) {
+            this.deselectPrevNote();
+            this.Editdraw();
+            return;
+        }
+
+
+        if (this.penta_selected === this.prevPenta_selected) {
+            let pentagrama = this.pentagramas[this.penta_selected];
+            pentagrama.addCrescendo(
+                this.prevCompas_selected,
+                this.prevNota_selected,
+                this.compas_selected,
+                this.nota_selected,
+            this.crescendos);
+            this.deselectPrevNote();
+            this.Editdraw();
+            return;
+        }
+
+        this.deselectPrevNote();
+        this.Editdraw();
+
+    }
+
+    deselectPrevNote() {
+        this.prevPenta_selected = -1;
+        this.prevCompas_selected = -1;
+        this.prevNota_selected = -1;
     }
 }
 
