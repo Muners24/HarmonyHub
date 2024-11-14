@@ -47,8 +47,6 @@ function cargarPartitura(data) {
             editor.addCompas();
             i++;
         }
-
-        
     }
     
    editor.formated = false;

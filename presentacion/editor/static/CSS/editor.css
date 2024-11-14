@@ -1,0 +1,113 @@
+.content {
+  display: flex;
+  justify-content: center; /* Alinea el contenedor al lado derecho */
+  align-items: center;
+  gap: 1rem; /* Espacio entre los inputs */
+  width: 100%;
+  height: 13vh;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.input-container {
+  --c-text: rgb(50, 50, 80);
+  --c-bg: rgb(252, 252, 252);
+  --c-outline: rgb(55, 45, 190);
+  display: grid;
+  position: relative;
+  max-width: 200px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 18px;
+  color: black;
+}
+
+/* Estilos específicos para el campo de Título */
+.titulo-field {
+  padding: 0.75em 1em;
+  border-radius: 0.2em;
+  border: 1px solid #4CAF50; /* Borde verde para el Título */
+  color: #333;
+  margin-left: 100px;
+  font-size: 1.25rem;
+  letter-spacing: 0.1ch;
+  width: 100%;
+  text-align: center;
+  background-color: #f0f8ff; /* Fondo azul claro */
+}
+
+.compositor-field {
+  padding: 0.75em 1em;
+  border-radius: 0.2em;
+  border: 1px solid #FF6347; /* Borde rojo tomate para el Compositor */
+  color: #333;
+  font-size: 1.25rem;
+  letter-spacing: 0.1ch;
+  margin-left: 300px;
+  width: 100%;
+  text-align: center;
+  background-color: #f5f5f5; /* Fondo gris claro */
+}
+
+.input-field:not(:placeholder-shown) + .input-label {
+  transform: translateY(-220%);
+  opacity: 1;
+}
+
+/* Estilos para el borde y texto en caso de entrada no válida */
+.input-field:invalid {
+  --c-border: rgb(230, 85, 60);
+  --c-text: rgb(230, 85, 60);
+  --c-outline: rgb(230, 85, 60);
+}
+
+/* Estilos para campos desactivados o solo lectura */
+.input-field:is(:disabled, :read-only) {
+  --c-border: rgb(150, 150, 150);
+  --c-text: rgb(170, 170, 170);
+}
+
+/* Estilos para el campo de entrada cuando está enfocado */
+.input-field:is(:focus, :focus-visible) {
+  outline: 2px solid var(--c-outline);
+  outline-offset: 2px;
+}
+
+/* Estilos para la etiqueta */
+.input-label {
+  --timing: 200ms ease-in;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transition: transform var(--timing), opacity var(--timing);
+  transform: translateY(-50%);
+  opacity: 0;
+  color: var(--c-text);
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.button-p {
+  position: fixed; /* Asegura que el contenedor tenga una referencia para la posición absoluta */
+}
+
+.button-icon-p {
+  width: 30px;
+  height: 30px;
+  position: fixed;  /* Hacemos que el icono se posicione de forma absoluta dentro del contenedor */
+  right: 30px;  /* Lo coloca en la parte izquierda */
+  bottom: 80px;
+  align-items: baseline;
+}
+
+.button-r {
+  position: fixed;
+}
+
+.button-icon-r {
+  width: 40px;
+  height: 40px;
+  position: fixed;  /* Hacemos que el icono se posicione de forma absoluta dentro del contenedor */
+  right: 25px;  /* Lo coloca en la parte izquierda */
+  bottom: 20px;
+  align-items: baseline;
+}

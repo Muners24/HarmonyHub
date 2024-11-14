@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/menu.css' %}">
+
+    <style>
+        .contenido-container {
+            transition: margin-top 0.5s ease;
+        }
+    </style>
+    <script src="{% static 'Scripts/EditorListener.js' %}" defer></script>
+    <script src="{% static 'Scripts/VexRec.js' %}" defer></script>
+    <script src="{% static 'Scripts/Notacion.js' %}" defer></script>
+    <script src="{% static 'Scripts/Editor.js' %}" defer></script>
+    <script src="{% static 'Scripts/Compas.js' %}" defer></script>
+    <script src="{% static 'Scripts/Nota.js' %}" defer></script>
+    <script src="{% static 'Scripts/Vex.js' %}" defer></script>
+    <script src="{% static 'Scripts/Partitura.js' %}" defer></script>
+    <script src="{% static 'Scripts/VexTuplet.js' %}" defer></script>
+    <script src="{% static 'Scripts/Pentagrama.js' %}" defer></script>
+    <script src="{% static 'Scripts/export.js' %}" defer></script>
+    <script src="{% static 'Scripts/import.js' %}" defer></script>
+
+</head>
+<body>
+    <!-- Primer menu -->
+    <div class="menu">
+        <img src="{% static 'images/Logo.png' %}" alt="Logo de la página" class="logo">
+        <a href="/" class="button">
+            <img src="{% static 'images/Inicio_logo.png' %}" alt="Inicio" class="button-icon">
+            Inicio
+        </a>
+        <a href="" class="button">
+            <img src="{% static 'images/Info_logo.png' %}" alt="Estadísticas" class="button-icon">
+            Estadísticas
+        </a>
+        <a href="" class="button">
+            <img src="{% static 'images/Comunidad_Logo.png' %}" alt="Comunidad" class="button-icon">
+            Comunidad
+        </a>
+        <a href="" class="button">
+            <img src="{% static 'images/Mensajes_Logo.png' %}" alt="Mensajes" class="button-icon">
+            Mensajes
+        </a>
+    </div>
+
+    <!-- Segundo menu -->
+    <div class="menu-second">
+        <!-- Botón 'Archivo' -->
+        <a href="#" class="button" id="archivoButton">
+            <img src="{% static 'images/Archivo_Logo.png' %}" alt="Archivo" class="button-icon-S">
+            Archivo
+            <div id="archivoDropdown" class="dropdown-content">
+                <a href="#">Nuevo</a>
+                <a href="#">Abrir</a>
+                <a href="#">Guardar</a>
+
+                <a href="#" id="importarButton">Importar</a>
+                <div id="importarDropdown" class="dropdown-content-imp">
+                    <input id="inputMidi" type="file" onchange="importMidi()">
+                    <a  >MIDI</a>
+                </div>
+
+                <a href="#" id="exportarButton">Exportar</a>
+                <div id ="exportarDropdown" class="dropdown-content-exp">
+                    <a onClick="exportMidi()">MIDI</a>
+                </div>
+            </div>
+        </a>
+
+        <a href="/" class="button">
+            <img src="{% static 'images/Reproducir_Logo.png' %}" alt="Reproducir" class="button-icon-S">
+            Reproducir
+        </a>
+        <a href="/" class="button">
+            <img src="{% static 'images/Compartir_Logo.png' %}" alt="Compartir" class="button-icon-S">
+            Compartir
+        </a>
+        <a href="/" class="button">
+            <img src="{% static 'images/Practica_Logo.png' %}" alt="Practicar" class="button-icon-S">
+            Practicar
+        </a>
+    </div>
+    
+
+    <!-- Contenedor de contenido -->
+    <div class="contenido-container" id="contenido-container" style="margin-top: 210px;">
+        {% block content %}
+        <p id="confirmationMessage" style="font-weight: bold; color: green;"></p>
+        {% endblock %}
+    </div>
+
+    <script src="{% static 'Scripts/DropDown.js' %}"></script>
+    <script src="{% static 'Scripts/SelectButton.js.'%}"></script>
+
+    <script>
+        function moverContenido(movimiento) {
+            const contenedor = document.getElementById('contenido-container');
+            contenedor.style.marginTop = movimiento + "px";
+        } 
+    </script>
+</body>
+</html>
