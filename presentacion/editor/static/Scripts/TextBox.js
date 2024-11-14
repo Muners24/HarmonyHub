@@ -6,10 +6,8 @@ function actualizarTexto() {
 function setTempoFromInput() {
     const tempoInput = document.getElementById('tempoInput');
     const tempoValue = parseInt(tempoInput.value, 10);
-    const errorMessage = document.getElementById('errorMessage');
-  
-    // Validación: solo valores entre 1 y 150
-    if (!isNaN(tempoValue) && tempoValue >= 1 && tempoValue <= 150) {
+
+    if (!isNaN(tempoValue) && tempoValue >= 1 && tempoValue <= 500) {
         editor.setTempo(tempoValue);
         tempoInput.style.borderColor = ''; 
     } else {
@@ -31,8 +29,62 @@ document.getElementById('tempoInput').addEventListener('input', function(event) 
 document.getElementById('tempoInput').addEventListener('blur', setTempoFromInput);
 
 
+function setCompasNumFromInput() {
+    const compasNumInput = document.getElementById('compasInputNum');
+    const compasValue = parseInt(compasNumInput.value, 10);
 
-let isTypingTempo = false;
+    if (!isNaN(compasValue) && compasValue >= 1 && compasValue <= 50) {
+        editor.setCompasNum(compasValue);
+        compasNumInput.style.borderColor = ''; 
+    } else {
+        compasNumInput.style.borderColor = 'red';
+        alert("Valor fuera del rango permitido\n valores entre 1 y 50");
+    }
+}
+
+document.getElementById('compasInputNum').addEventListener('input', function(event) {
+    const numInput = event.target;
+
+    input.value = input.value.replace(/[^0-9]/g, '');
+
+    if (input.value.length > 3) {
+        input.value = input.value.slice(0, 3);
+    }
+});
+
+document.getElementById('compasInputNum').addEventListener('blur', setCompasNumFromInput);
+
+
+function setCompasDenFromInput() {
+    const compasDenInput = document.getElementById('compasInputDen');
+    const compasValue = parseInt(compasDenInput.value, 10);
+
+    const validValues = [1, 2, 4, 8, 16, 32, 64];
+
+    if (!isNaN(compasValue) && validValues.includes(compasValue)) {
+        editor.setCompasDen(compasValue);
+        compasDenInput.style.borderColor = ''; 
+    } else {
+        compasDenInput.style.borderColor = 'red';
+        alert("Valor fuera del rango permitido. Solo se permiten los siguientes valores: 1, 2, 4, 8, 16, 32, 64");
+    }
+}
+
+document.getElementById('compasInputDen').addEventListener('input', function(event) {
+    const denInput = event.target;
+
+    denInput.value = denInput.value.replace(/[^0-9]/g, '');
+
+    if (denInput.value.length > 2) {
+        denInput.value = denInput.value.slice(0, 2);
+    }
+});
+
+document.getElementById('compasInputDen').addEventListener('blur', setCompasDenFromInput);
+
+
+
+
 
 let isTyping = false;
 let typingTimer;
@@ -40,7 +92,6 @@ const typingDelay = 1000;
 
 const textbox = document.getElementById('myTextbox');
 const status = document.getElementById('status');
-const tempoInput = document.getElementById('tempoInput'); // Selección del input de tempo
 
 const maxChars = 15;
 
