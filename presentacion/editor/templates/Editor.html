@@ -93,11 +93,12 @@
           </div>
 
           <div>
-            <input type="text" class ="small-textbox" id="compasInputNum" value="4">
+            <input type="text" class ="small-textbox" id="compas-num" value="4">
+            <button class="button-r" onClick="compas.setTimeNum("8")"></button>
           </div>
 
           <div>
-            <input type="text" class ="small-textbox" id="compasInputDen" value="4">
+            <input type="text" class ="small-textbox" id="compas-den" value="4">
           </div>
 
           <div>
@@ -166,6 +167,8 @@
           
       </div>
 
+      
+
   </div>
 
     <div class="content">
@@ -224,7 +227,6 @@
     <script src="{% static 'Scripts/export.js' %}" defer></script>
     <script src="{% static 'Scripts/import.js' %}" defer></script>
     <script src="{% static 'Scripts/TextBox.js' %}" defer></script>
-    {% comment %} <script src="{% static 'Scripts/Compas_Num_Den.js' %}" defer></script> {% endcomment %}
     <script src="{% static 'Scripts/hola.js' %}" defer></script>
 
     <style>
