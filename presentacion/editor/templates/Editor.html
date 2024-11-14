@@ -71,15 +71,11 @@
           <img src="{% static 'images/Symbols/Levato.png' %}" alt="Levato" class="button-icon-T4" id="img-Levato">
       </a>
       
-      <a class="button-T" id="btn-Crecendo" onClick="selectButton('Crecendo', event)">
+      <a class="button-T" title="Crecendo (8)" onClick="selectButton('Crecendo', event); editor.setCrescendo()">
           <img src="{% static 'images/Symbols/Crecendo.png' %}" alt="Crecendo" class="button-icon-T5" id="img-Crecendo">
       </a>
       
-      <a class="button-T" id="btn-Diminuendo" onClick="selectButton('Diminuendo', event)">
-          <img src="{% static 'images/Symbols/Diminuendo.png' %}" alt="Diminuendo" class="button-icon-T5" id="img-Diminuendo">
-      </a>
-      
-      <a class="button-T" id="btn-Triplet" onClick="selectButton('Triplet', event)">
+      <a class="button-T" title="Triplet (0)" onClick="selectButton('Triplet', event); editor.setTriplet()">
           <img src="{% static 'images/Symbols/Triplet.png' %}" alt="Triplet" class="button-icon-T6" id="img-Triplet">
       </a>
       
@@ -91,11 +87,31 @@
       <!-- Dropdown para el botón Plus -->
       <div id="plusDropdown" class="dropdown-content-plus">
 
+          
           <div>
-            <button class="button-T" id="updateTempoButton" onClick="editor.setTempo(20)">Actualizar Tempo</button>         
+            <p style="font-size: 15px; font-weight: lighter;">Compás</p>
+          </div>
+
+          <div>
+            <input type="text" class ="small-textbox" id="compas-num" value="4">
+          </div>
+
+          <div>
+            <input type="text" class ="small-textbox" id="compas-den" value="4">
+          </div>
+
+          <div>
+            <p style="font-size: 15px; font-weight: lighter;">Tempo</p>
+          </div>
+
+          <div>
+            <input type="text" class ="small-textbox" id="tempoInput" value="120">
           </div>
           
-          <!-- Campo de texto para Anotar texto -->
+          <div>
+            <p style="font-size: 20px; font-weight: bold;">T</p>
+          </div>
+          
           <div>
             <input type="text" id="myTextbox" placeholder="Ingresa un texto" />
           </div>
@@ -150,6 +166,8 @@
           
       </div>
 
+      
+
   </div>
 
     <div class="content">
@@ -172,67 +190,6 @@
     <img src="{% static 'images/Symbols/tenuto.png' %}" class="button-icon-r">
   </a>  
 
-  <script>
-
-    function actualizarTexto() {
-      // Obtiene el valor del textbox
-      let texto = document.getElementById("myTextbox").value;
-  
-      // Divide el texto en líneas de hasta 30 caracteres
-      texto = texto.match(/.{1,30}/g);
-  
-      editor.setText(texto);
-    }
-    
-    let isTyping = false; // Bandera para indicar si el usuario está escribiendo
-    let typingTimer;
-    const typingDelay = 1000;
-    
-    const textbox = document.getElementById('myTextbox');
-    const status = document.getElementById('status');
-    
-    // Limite de caracteres
-    const maxChars = 15;
-    
-    textbox.addEventListener('keydown', function(event) {
-        event.stopPropagation();
-    
-        // Limitar la entrada de caracteres a 15
-        if (textbox.value.length >= maxChars && event.key !== "Backspace" && event.key !== "Delete" && event.key.length === 1) {
-            event.preventDefault();
-            return;
-        }
-    
-        if (!isTyping) {
-            isTyping = true;
-            status.textContent = "Está escribiendo...";
-        }
-        clearTimeout(typingTimer);
-    });
-    
-    textbox.addEventListener('keyup', function(event) {
-        event.stopPropagation();
-        console.log('Tecla liberada:', event.key);
-        clearTimeout(typingTimer);
-    
-        if (event.key === "Enter") {
-            actualizarTexto();
-        }
-    
-        typingTimer = setTimeout(function() {
-            if (textbox.value === "") {
-                isTyping = false;
-                status.textContent = "No se está escribiendo.";
-            } else {
-                isTyping = false;
-                status.textContent = "Escritura finalizada.";
-            }
-        }, typingDelay);
-    });
-  
-  
-  </script>
-
 </body>
 
   <head>
@@ -244,11 +201,19 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+
+    <script>
+      // Función que toma el valor del textbox y lo pasa a la función setTempo del objeto Editor
+      function setTempoFromInput() {
+        const tempoValue = document.getElementById('tempoInput').value;
+        editor.setTempo(tempoValue);  // Llamada al método setTempo del objeto editor
+      }
+    </script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.6.0/math.min.js"></script>
 
     {% load static %}
-        <script src="{% static 'Scripts/EditorListener.js' %}" defer></script>
+    <script src="{% static 'Scripts/EditorListener.js' %}" defer></script>
     <script src="{% static 'Scripts/VexRec.js' %}" defer></script>
     <script src="{% static 'Scripts/Notacion.js' %}" defer></script>
     <script src="{% static 'Scripts/Editor.js' %}" defer></script>
@@ -260,6 +225,8 @@
     <script src="{% static 'Scripts/Pentagrama.js' %}" defer></script>
     <script src="{% static 'Scripts/export.js' %}" defer></script>
     <script src="{% static 'Scripts/import.js' %}" defer></script>
+    <script src="{% static 'Scripts/TextBox.js' %}" defer></script>
+    <script src="{% static 'Scripts/UploadFile.js' %}" defer></script>
 
     <style>
       .ml-100 {

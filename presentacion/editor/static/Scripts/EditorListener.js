@@ -186,7 +186,7 @@ class EditorListener {
                 this.setDynamic('ff');
                 break;
             case 'q':
-                this.setText('xd\n\n\n\nxd');
+                this.setText('');
                 break;
             case '0':
                 this.setTriplet();

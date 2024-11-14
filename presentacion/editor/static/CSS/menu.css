@@ -234,16 +234,19 @@
     background-color: #f9f9f9;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
-    padding: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
     gap: 10px;        
     flex-wrap: wrap;    
 }
 
 /* Estilo para las imágenes dentro del dropdown */
 .dropdown-option {
-    width: 50px;        /* Ajusta el tamaño de las imágenes según sea necesario */
-    height: 50px;
+    width: 40px;        /* Ajusta el tamaño de las imágenes según sea necesario */
+    height: 40px;
     cursor: pointer;
+    margin-top: 12px;
+
     transition: transform 0.3s ease;
 }
 
@@ -251,7 +254,6 @@
     transform: scale(1.1);  /* Efecto al pasar el cursor sobre la imagen */
 }
 
-/* Estilos para los campos de texto */
 .dropdown-content-plus div {
     display: flex;
     align-items:center
@@ -264,14 +266,17 @@
     border: 1px solid #ccc;
 }
 
-/* Mostrar el dropdown cuando tiene la clase 'show' */
 .dropdown-content-plus.show {
     display: flex;
 }
 
-.note-label {
-    font-size: 24px;   /* Tamaño grande */
-    font-weight: bold; /* Negritas */
-    margin-right: 8px; /* Espacio entre la letra y el campo de entrada */
-    color: #333;       /* Color personalizado, ajusta según tu preferencia */
+
+.small-textbox {
+    width: 25px; /* Ancho del textbox */
+    height: auto; /* Alto del textbox */
+}
+
+.small-textbox-compas {
+    width: 10px; /* Ancho del textbox */
+    height: auto; /* Alto del textbox */
 }
