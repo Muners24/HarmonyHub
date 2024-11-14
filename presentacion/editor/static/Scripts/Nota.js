@@ -22,6 +22,8 @@ class Nota extends VexRec {
         this.dynamic = ''
         this.text = '';
 
+        this.inTuplet = false;
+
         this.notas_order = { 'c': 0, 'd': 1, 'e': 2, 'f': 3, 'g': 4, 'a': 5, 'b': 6 };
     }
 
@@ -50,7 +52,9 @@ class Nota extends VexRec {
         let keys = this.sortKeys();
         const accidentalArray = Array.from(this.accidentals.keys());
         for (let i = 0; i < accidentalArray.length; i++) {
-            this.nota.addModifier(keys.indexOf(accidentalArray[i]), new Accidental(this.accidentals.get(accidentalArray[i])));
+            let key = this.getKeyOfIndex(accidentalArray[i]);
+            let index = keys.indexOf(key);
+            this.nota.addModifier(index, new Accidental(this.accidentals.get(accidentalArray[i])));
         }
 
 
@@ -85,10 +89,15 @@ class Nota extends VexRec {
 
     }
 
+    updateX(){
+        this.x = this.nota.getNoteHeadBeginX();
+        this.w = this.nota.getNoteHeadEndX() - this.x;
+    }
+
     calculaRec(y) {
         let bound = this.nota.getBoundingBox();
         this.x = this.nota.getNoteHeadBeginX();
-        this.w = this.nota.getNoteHeadEndX() - this.x;
+        this.updateX();
 
         if (this.isRest()) {
             this.h = bound.getH();
@@ -219,6 +228,7 @@ class Nota extends VexRec {
     }
 
     setDuration(duration) {
+        this.removeDot();
         this.duracion = duration;
         return this;
     }
@@ -231,22 +241,23 @@ class Nota extends VexRec {
         return this.duracion.includes('r');
     }
 
-    setAccidental(accidental) {
+    setAccidental(accidental,key) {
         if (this.isRest())
             return false;
-
-        if (!this.accidentals.has(this.key_selected)) {
-            this.accidentals.set(this.key_selected,accidental);
+        
+        let index = this.keys.indexOf(key);
+        if (!this.accidentals.has(index)) {
+            this.accidentals.set(index,accidental);
             return true;
         }
 
-        let prevAccidental = this.accidentals.get(this.key_selected);
+        let prevAccidental = this.accidentals.get(index);
         if(prevAccidental === accidental){
-            this.accidentals.delete(this.key_selected);
+            this.accidentals.delete(index);
             return true;
         }
         
-        this.accidentals.set(this.key_selected,accidental);
+        this.accidentals.set(index,accidental);
         return true;
     }
 
@@ -351,6 +362,22 @@ class Nota extends VexRec {
 
     getModifiers() {
         return [...this.nota.getModifiers()];
+    }
+
+    isInTuplet(){
+        return this.inTuplet;
+    }
+
+    getVexNote(){
+        return this.nota;
+    }
+
+    getCopyNote(){
+        return {...this.nota};
+    }
+
+    getKeys(){
+        return [...this.keys];
     }
 };
 

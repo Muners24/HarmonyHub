@@ -21,6 +21,10 @@
     <script src="{% static 'Scripts/Nota.js' %}" defer></script>
     <script src="{% static 'Scripts/Vex.js' %}" defer></script>
     <script src="{% static 'Scripts/Partitura.js' %}" defer></script>
+    <script src="{% static 'Scripts/VexTuplet.js' %}" defer></script>
+    <script src="{% static 'Scripts/Pentagrama.js' %}" defer></script>
+    <script src="{% static 'Scripts/export.js' %}" defer></script>
+    <script src="{% static 'Scripts/import.js' %}" defer></script>
 
     <style>
       .ml-100 {
@@ -33,6 +37,8 @@
 
   <body>
     <p>{{ var }} </p>
+    <button id ='boton' onclick="exportMidi()">Boton</button>
+
     <!-- 
     <div class="col">
       <div contenedor menu >
