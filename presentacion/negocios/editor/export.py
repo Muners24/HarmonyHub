@@ -19,7 +19,6 @@ class midoNote:
     def isRest(self):
         return "r" in self.duration
 
-
 def load_notes_from_json(json_path):
     try:
         with open(json_path, "r") as f:
@@ -29,19 +28,17 @@ def load_notes_from_json(json_path):
         print(f"Error al cargar el archivo JSON: {e}")
         return {}
 
-
 def vexNotesToMidoNotes(data):
     note_mappings = load_notes_from_json("negocios\editor\\notas.json")
     notas = data["notas"]
     midoNotes_bit = []
-
+    
     for nota in notas:
         print(nota)
         midi_notes = [note_mappings.get(key, None) for key in nota["keys"]]
         midoNotes_bit.append(midoNote(midi_notes, nota["dur"]))
 
     return midoNotes_bit
-
 
 def exportMidi(data):
 

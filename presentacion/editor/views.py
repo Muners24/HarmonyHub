@@ -26,21 +26,21 @@ def exportMidi(request):
             path = export.exportMidi(data)
             file = open(path, 'rb')
             return FileResponse(file,filename='midi.mid')
-        
+
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
     else:
         return JsonResponse({"error": "Método no permitido"}, status=405)
 
-
 @csrf_exempt
 def importMidi(request):
     if request.method == "POST":
         try:
-            path = json.loads(request.body.decode("utf-8"))
-            importM.importMidi(path)
-            print(f"Datos recibidos: {path}")
-            return JsonResponse({"status": "success", "received_data": path})
+            file = request.FILES['file']
+            datos = importM.importMidi(file)
+            print(datos)
+            return JsonResponse(datos)
+        
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
     else:

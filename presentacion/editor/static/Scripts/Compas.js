@@ -7,24 +7,22 @@ class Compas extends VexRec {
         super(0, 0, 0, 80);
         this.timeNum = timeNum;
         this.timeDen = timeDen;
-
-        this.capacidad = 0;
         this.tempo = 120;
+        this.capacidad = 0;
+
         this.notas = [];
         this.staveNotes = [];
+        this.tuplets = [];
+        this.keySignature_sel = false;
+        this.clef_sel = false;
 
         this.timeSignature = '';
         this.keySignature = '';
         this.clef = '';
 
-        this.keySignature_sel = false;
-        this.clef_sel = false;
-
         this.stave;
         this.initSilencios();
         this.updateSize();
-
-        this.tuplets = [];
 
     }
 
@@ -336,5 +334,13 @@ class Compas extends VexRec {
 
     getTempo(){
         return this.tempo;
+    }
+
+    empty(){
+        this.notas = [];
+        this.staveNotes = [];
+        this.tuplets = [];
+        this.keySignature_sel = false;
+        this.clef_sel = false;
     }
 }
