@@ -1,6 +1,7 @@
 function importarMidi() {
     const input = document.getElementById('importar-midi');
     const formData = new FormData();
+    input.click();
     formData.append('file', input.files[0]);
 
     fetch('/importar-midi/', {
@@ -21,8 +22,8 @@ function importarMidi() {
     });
 }
 
-// Estas son funciones ficticias que debes implementar según tu editor
+// Función ficticia para cargar la partitura en el editor
 function cargarPartitura(midiData) {
-    // Aquí deberías cargar los datos MIDI en tu editor (puedes tener un formato específico para ello)
     console.log('Cargando partitura...', midiData);
+    // Aquí implementa la lógica para visualizar los datos MIDI en tu editor
 }

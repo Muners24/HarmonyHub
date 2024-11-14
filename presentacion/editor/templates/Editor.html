@@ -94,6 +94,7 @@
 
           <div>
             <input type="text" class ="small-textbox" id="compas-num" value="4">
+            <button class="button-r" onClick="compas.setTimeNum("8")"></button>
           </div>
 
           <div>
@@ -226,7 +227,7 @@
     <script src="{% static 'Scripts/export.js' %}" defer></script>
     <script src="{% static 'Scripts/import.js' %}" defer></script>
     <script src="{% static 'Scripts/TextBox.js' %}" defer></script>
-    <script src="{% static 'Scripts/UploadFile.js' %}" defer></script>
+    <script src="{% static 'Scripts/hola.js' %}" defer></script>
 
     <style>
       .ml-100 {
@@ -238,11 +239,6 @@
   </head>
 
   <body>
-<<<<<<< HEAD
-=======
-    <p>{{ var }} </p>
-    <button id ='boton' onclick="exportMidi('C:/midi/midi.mid')">Boton</button>
->>>>>>> d3b58583309153e2c7437ddad1901c147903c5d0
 
     <canvas id="Editor" class="ml-100" width="0" height="0"></canvas>
 

@@ -48,12 +48,13 @@
 
                 <a href="#" id="importarButton">Importar</a>
                 <div id="importarDropdown" class="dropdown-content-imp">
-                    <a href="#">MIDI</a>
+                    <input type="file" id="importar-midi" style="display: none;">
+                    <a onClick="importarMidi()">MIDI</a>
                 </div>
 
                 <a href="#" id="exportarButton">Exportar</a>
                 <div id ="exportarDropdown" class="dropdown-content-exp">
-                    <a href="">MIDI</a>
+                    <a onClick="guardarArchivo()">MIDI</a>
                 </div>
             </div>
         </a>

@@ -79,5 +79,4 @@ textbox.addEventListener('keyup', function(event) {
     }, typingDelay);
 });
 
-// Agregar un evento para el input de tempo
 tempoInput.addEventListener('change', setTempoFromInput);

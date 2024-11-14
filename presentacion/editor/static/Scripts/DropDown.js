@@ -25,14 +25,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     importarButton.addEventListener("click", function (event) {
+        event.stopPropagation(); // Evita que el clic se propague y cierre el dropdown principal
         event.preventDefault();
-        closeAllDropdowns(); // Cierra otros dropdowns al abrir "Importar"
         importarDropdown.classList.toggle("show");
     });
 
     exportarButton.addEventListener("click", function (event) {
+        event.stopPropagation(); // Evita que el clic se propague y cierre el dropdown principal
         event.preventDefault();
-        closeAllDropdowns(); // Cierra otros dropdowns al abrir "Exportar"
         exportarDropdown.classList.toggle("show");
     });
 

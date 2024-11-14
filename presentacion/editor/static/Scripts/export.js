@@ -1,5 +1,3 @@
-
-
 function exportMidi(path) {
     const midiData = editorData(path);
 
@@ -15,8 +13,6 @@ function exportMidi(path) {
         console.error('Error:', error);
     });
 }
-
-
 
 function editorData(path) {
     alert(path);

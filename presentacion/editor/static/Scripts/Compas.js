@@ -1,7 +1,3 @@
-//Stave
-
-//clefs:
-//treble  bass  alto  tenor  percussion
 class Compas extends VexRec {
     constructor(timeNum = 4, timeDen = 4) {
         super(0, 0, 0, 80);
