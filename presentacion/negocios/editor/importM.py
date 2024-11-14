@@ -18,15 +18,15 @@ k = {
     "c/9": 120, "d/9": 122, "e/9": 124, "f/9": 125, "g/9": 127, "a/9": 129, "b/9": 131,
     
     # Sostenidos
-    "c/1": 25, "d/1": 27, "f/1": 30, "g/1": 32, "a/1": 34, "b/1": 36,
-    "c/2": 37, "d/2": 39, "f/2": 42, "g/2": 44, "a/2": 46, "b/2": 48,
-    "c/3": 49, "d/3": 51, "f/3": 54, "g/3": 56, "a/3": 58, "b/3": 60,
-    "c/4": 61, "d/4": 63, "f/4": 66, "g/4": 68, "a/4": 70, "b/4": 72,
-    "c/5": 73, "d/5": 75, "f/5": 78, "g/5": 80, "a/5": 82, "b/5": 84,
-    "c/6": 85, "d/6": 87, "f/6": 90, "g/6": 92, "a/6": 94, "b/6": 96,
-    "c/7": 97, "d/7": 99, "f/7": 102, "g/7": 104, "a/7": 106, "b/7": 108,
-    "c/8": 109, "d/8": 111, "f/8": 114, "g/8": 116, "a/8": 118, "b/8": 120,
-    "c/9": 121, "d/9": 123, "f/9": 126, "g/9": 128, "a/9": 130, "b/9": 132,
+    "c#/1": 25, "d#/1": 27, "f#/1": 30, "g#/1": 32, "a#/1": 34, "b#/1": 36,
+    "c#/2": 37, "d#/2": 39, "f#/2": 42, "g#/2": 44, "a#/2": 46, "b#/2": 48,
+    "c#/3": 49, "d#/3": 51, "f#/3": 54, "g#/3": 56, "a#/3": 58, "b#/3": 60,
+    "c#/4": 61, "d#/4": 63, "f#/4": 66, "g#/4": 68, "a#/4": 70, "b#/4": 72,
+    "c#/5": 73, "d#/5": 75, "f#/5": 78, "g#/5": 80, "a#/5": 82, "b#/5": 84,
+    "c#/6": 85, "d#/6": 87, "f#/6": 90, "g#/6": 92, "a#/6": 94, "b#/6": 96,
+    "c#/7": 97, "d#/7": 99, "f#/7": 102, "g#/7": 104, "a#/7": 106, "b#/7": 108,
+    "c#/8": 109, "d#/8": 111, "f#/8": 114, "g#/8": 116, "a#/8": 118, "b#/8": 120,
+    "c#/9": 121, "d#/9": 123, "f#/9": 126, "g#/9": 128, "a#/9": 130, "b#/9": 132,
 
     # Bemoles
     "db/1": 25, "eb/1": 27, "gb/1": 30, "ab/1": 32, "bb/1": 34, "cb/1": 36,
@@ -64,7 +64,18 @@ def midoNotesToVexNotes(eventosNota,denCompas):
             if(evento['nota'] == 0):
                 continue
             
-            keys.append(note_mappings.get(evento['nota'], None))
+            key = note_mappings.get(evento['nota'], None)
+        
+            if '#' in key:
+                key = key.replace('#','')
+            
+            if key.count('b') == 2:
+                key = key.replace('b', '') 
+
+            elif 'b' in key and any(letter.isalpha() for letter in key.replace('b', '')):
+                key = key.replace('b', '') 
+            
+            keys.append(key)
             
         
         if evento['tipo'] == 'note_off':
@@ -103,6 +114,7 @@ def importMidi(archivo_midi):
 
     for track in midi.tracks:
         for mensaje in track:
+            print(mensaje.type,end = ' ')
             if mensaje.type == 'time_signature':
                 compas = f"{mensaje.numerator}/{mensaje.denominator}"
                 numerator = mensaje.numerator
@@ -168,8 +180,6 @@ def importMidi(archivo_midi):
         "tempo": tempo,
         "notas": vexNotas
     }
-    
-    print(resultado)
     
     return resultado
 
