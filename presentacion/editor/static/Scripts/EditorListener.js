@@ -338,11 +338,16 @@ class EditorListener {
                 return;
             }
 
-            this.penta_selected++;
-            this.compas_selected = 0;
-            this.nota_selected = 0;
-            let newCompas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
-            this.key_selected = newCompas.notas[this.nota_selected].setSelected('inicio');
+            if (this.penta_selected < this.pentagramas.length - 1) {
+                this.penta_selected++;
+                this.compas_selected = 0;
+                this.nota_selected = 0;
+                let newCompas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
+                this.key_selected = newCompas.notas[this.nota_selected].setSelected('inicio');
+                return;
+            }
+
+            Editdraw();
             return;
         }
 
