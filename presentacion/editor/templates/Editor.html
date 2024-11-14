@@ -179,37 +179,46 @@
       let texto = document.getElementById("myTextbox").value;
   
       // Divide el texto en líneas de hasta 30 caracteres
-      texto = texto.match(/.{1,30}/g).join("\n");
+      texto = texto.match(/.{1,30}/g);
   
-      // Llama a setText y pasa el valor del textbox con saltos de línea como argumento
       editor.setText(texto);
     }
     
-    let isTyping = false;// Bandera para indicar si el usuario está escribiendo
-    let typingTimer; 
-    const typingDelay = 1000; 
+    let isTyping = false; // Bandera para indicar si el usuario está escribiendo
+    let typingTimer;
+    const typingDelay = 1000;
     
     const textbox = document.getElementById('myTextbox');
     const status = document.getElementById('status');
-
+    
+    // Limite de caracteres
+    const maxChars = 15;
+    
     textbox.addEventListener('keydown', function(event) {
-        event.stopPropagation(); 
+        event.stopPropagation();
+    
+        // Limitar la entrada de caracteres a 15
+        if (textbox.value.length >= maxChars && event.key !== "Backspace" && event.key !== "Delete" && event.key.length === 1) {
+            event.preventDefault();
+            return;
+        }
+    
         if (!isTyping) {
             isTyping = true;
             status.textContent = "Está escribiendo...";
         }
         clearTimeout(typingTimer);
     });
-
+    
     textbox.addEventListener('keyup', function(event) {
         event.stopPropagation();
-        console.log('Tecla liberada:', event.key);  
+        console.log('Tecla liberada:', event.key);
         clearTimeout(typingTimer);
-
+    
         if (event.key === "Enter") {
             actualizarTexto();
         }
-
+    
         typingTimer = setTimeout(function() {
             if (textbox.value === "") {
                 isTyping = false;
@@ -221,10 +230,10 @@
         }, typingDelay);
     });
   
+  
   </script>
 
 </body>
-
 
   <head>
     
@@ -239,7 +248,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.6.0/math.min.js"></script>
 
     {% load static %}
-    <script src="{% static 'Scripts/EditorListener.js' %}" defer></script>
+        <script src="{% static 'Scripts/EditorListener.js' %}" defer></script>
     <script src="{% static 'Scripts/VexRec.js' %}" defer></script>
     <script src="{% static 'Scripts/Notacion.js' %}" defer></script>
     <script src="{% static 'Scripts/Editor.js' %}" defer></script>
@@ -247,9 +256,10 @@
     <script src="{% static 'Scripts/Nota.js' %}" defer></script>
     <script src="{% static 'Scripts/Vex.js' %}" defer></script>
     <script src="{% static 'Scripts/Partitura.js' %}" defer></script>
-
-    <script src="{% static 'Scripts/DropDown.js' %}"></script>
-    <script src="{% static 'Scripts/SelectButton.js.'%}"></script>
+    <script src="{% static 'Scripts/VexTuplet.js' %}" defer></script>
+    <script src="{% static 'Scripts/Pentagrama.js' %}" defer></script>
+    <script src="{% static 'Scripts/export.js' %}" defer></script>
+    <script src="{% static 'Scripts/import.js' %}" defer></script>
 
     <style>
       .ml-100 {
