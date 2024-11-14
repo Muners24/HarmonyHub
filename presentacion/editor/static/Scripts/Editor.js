@@ -150,8 +150,10 @@ class Editor extends EditorListener {
     this.context.clearRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight);
     this.context.setFillStyle('rgba(0,0,0,1)');
 
+    let is_final = false
     for (let i = 0; i < this.pentagramas.length; i++) {
-      this.pentagramas[i].draw(this.context);
+      is_final = i == this.pentagramas.length - 1;
+      this.pentagramas[i].draw(this.context,is_final);
     }
 
     this.drawCrescendos();
@@ -176,7 +178,7 @@ class Editor extends EditorListener {
     tie.setContext(this.context).draw();
 
     */
-    //this.drawHitBox();
+    this.drawHitBox();
   }
 
   drawCrescendos() {

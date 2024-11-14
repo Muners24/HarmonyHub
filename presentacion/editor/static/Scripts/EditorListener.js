@@ -339,8 +339,7 @@ class EditorListener {
                 return;
             }
 
-            pentagrama = this.pentagramas[this.penta_selected];
-            if (pentagrama < this.pentagramas.length - 1) {
+            if (this.penta_selected < this.pentagramas.length - 1) {
                 this.penta_selected++;
                 this.compas_selected = 0;
                 this.nota_selected = 0;
@@ -348,7 +347,7 @@ class EditorListener {
                 this.key_selected = newCompas.notas[this.nota_selected].setSelected('inicio');
                 return;
             }
-            
+
             Editdraw();
             return;
         }

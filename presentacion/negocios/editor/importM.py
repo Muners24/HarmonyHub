@@ -45,10 +45,16 @@ k = {
 def invert_note_mappings(note_mappings):
     return {v: k for k, v in note_mappings.items()}
 
-def calculateVexDuration(denCompas,time):
-    return 480*denCompas/time
+def calculateVexDuration(denCompas,time,tempo):
+    dur = denCompas*(tempo/time)
+    
+    print(f'\n{dur}\n\n')
+    if dur < 1:
+        dur = 8
+        
+    return dur
 
-def midoNotesToVexNotes(eventosNota,denCompas):
+def midoNotesToVexNotes(eventosNota,denCompas,tempo):
     note_mappings = k
     note_mappings = invert_note_mappings(note_mappings)
     
@@ -70,7 +76,7 @@ def midoNotesToVexNotes(eventosNota,denCompas):
                 key = key.replace('#','')
             
             if key.count('b') == 2:
-                key = key.replace('b', '') 
+                key = key.replace('b', '', 1)
 
             elif 'b' in key and any(letter.isalpha() for letter in key.replace('b', '')):
                 key = key.replace('b', '') 
@@ -83,14 +89,14 @@ def midoNotesToVexNotes(eventosNota,denCompas):
                 if i != 0 and eventosNota[i-1]['tipo'] == 'note_off':
                     vexNotes.append({
                         "keys":['b/4'],
-                        "dur": str(int(calculateVexDuration(denCompas,evento['tiempo'])))+'r'
+                        "dur": str(calculateVexDuration(denCompas,evento['tiempo']),tempo)+'r'
                     })
                     continue
                     
             
                 vexNotes.append({
                     "keys": keys,
-                    "dur": str(int(calculateVexDuration(denCompas,evento['tiempo'])))
+                    "dur": str(calculateVexDuration(denCompas,evento['tiempo'],tempo))
                 })
             
             keys = []
@@ -114,7 +120,6 @@ def importMidi(archivo_midi):
 
     for track in midi.tracks:
         for mensaje in track:
-            print(mensaje.type,end = ' ')
             if mensaje.type == 'time_signature':
                 compas = f"{mensaje.numerator}/{mensaje.denominator}"
                 numerator = mensaje.numerator
@@ -171,7 +176,7 @@ def importMidi(archivo_midi):
     else:
         tempo = bpm
     
-    vexNotas = midoNotesToVexNotes(eventos,denominator)
+    vexNotas = midoNotesToVexNotes(eventos,denominator,tempo)
     
     resultado = {
         "tempo": tempo,
@@ -181,8 +186,9 @@ def importMidi(archivo_midi):
         "notas": vexNotas
     }
     
+    print(resultado)
     return resultado
 
-file = open('C:/midi/stw.mid','rb')
+file = open('C:/midi/w.mid','rb')
 
 importMidi(file)

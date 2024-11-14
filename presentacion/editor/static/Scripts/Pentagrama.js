@@ -29,12 +29,14 @@ class Pentagrama {
         crescendos.set(newKey, crescendo);
     }
 
-    draw(context) {
-        let is_final = false;
+    draw(context,is_final=false) {
+
+        let final_comp = false;
         for (let i = 0; i < this.compases.length; i++) {
-            if (i == this.compases.length - 1)
-                is_final = true;
-            this.compases[i].draw(context, is_final);
+            if(is_final)
+                final_comp = i == this.compases.length - 1;
+
+            this.compases[i].draw(context, final_comp);
             this.compases[i].getRec();
         }
     }
