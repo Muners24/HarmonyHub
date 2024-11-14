@@ -299,7 +299,7 @@ class Editor extends EditorListener {
   }
 
   getCompas(){
-    
+
   }
 
   getH() {

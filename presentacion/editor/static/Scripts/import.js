@@ -1,9 +1,9 @@
 function importarMidi() {
-    const input = document.getElementById('importar-midi');
+    const input = document.getElementById('importMidi');
     const formData = new FormData();
     formData.append('file', input.files[0]);
 
-    fetch('/importar-midi/', {
+    fetch('/importMidi/', {
         method: 'POST',
         body: formData,
     })
