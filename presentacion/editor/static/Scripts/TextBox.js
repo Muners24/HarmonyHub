@@ -12,7 +12,7 @@ function setTempoFromInput() {
         tempoInput.style.borderColor = ''; 
     } else {
         tempoInput.style.borderColor = 'red';
-        alert("Valor fuera del rango permitido\n valores entre 1 y 500");
+        alert("Valor fuera del rango permitido\n valores entre 1 y 150");
     }
 }
 
