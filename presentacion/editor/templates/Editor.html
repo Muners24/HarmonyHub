@@ -1,5 +1,5 @@
 
-{% extends 'MainMenu.html' %} 
+{% include "MainMenu.html" %}
 
 {% block content %}
 
@@ -39,8 +39,25 @@
 
   <body class="htmlContent">
     
+    <div class="content">
+      <div class="col mx-0 d-flex justify-content-center my-0">
+        <div>
+          <input id="tbTitulo" type="text" placeholder="Titulo" name="titulo" class="input-field titulo-field" autocomplete="off">
+          <label class="input-label" for="titulo"></label>
+        </div>
+
+        <div class="input-container compositor-container">
+            <input id="tbCompositor" type="text" placeholder="Compositor" name="compositor"  class="input-field compositor-field" autocomplete="off">
+            <label class="input-label" for="compositor"></label>
+        </div>
+      </div>
+      
+      <!-- Canvas editor -->
+      <canvas id="Editor" class="ml-100" width="0" height="0"></canvas>
+    </div>
+
     <!-- Contenido fijo en la cabecera -->
-    <div>
+    <div class="topContent">
       <!-- Menu editor -->
       <div class="col mx-0 d-flex justify-content-center my-0" >
         <div class="dropdown-down"> 
@@ -131,23 +148,6 @@
         </div>
     </div>
 
-    <div class="content">
-      <div class="col mx-0 d-flex justify-content-center my-0">
-        <div>
-          <input id="tbTitulo" type="text" placeholder="Titulo" name="titulo" class="input-field titulo-field" autocomplete="off">
-          <label class="input-label" for="titulo"></label>
-        </div>
-
-        <div class="input-container compositor-container">
-            <input id="tbCompositor" type="text" placeholder="Compositor" name="compositor"  class="input-field compositor-field" autocomplete="off">
-            <label class="input-label" for="compositor"></label>
-        </div>
-      </div>
-      
-      <!-- Canvas editor -->
-      <canvas id="Editor" class="ml-100" width="0" height="0"></canvas>
-    </div>
-
     <!-- Botones compases-->
     <div>
       <a title="Agregar compás (+)" onClick="editor.addCompas()">
@@ -158,6 +158,7 @@
         <img src="{% static 'img/Symbols/tenuto.png' %}" class="button-icon-r">
       </a>
     </div> 
+
 </body>
 </html>
 

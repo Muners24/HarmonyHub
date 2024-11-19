@@ -398,13 +398,14 @@
     padding-top: 105px;
 }
 
-.topContent{
-    position: fixed; 
-    top: 105px; 
-    left: 0; 
-    right: 0; 
-    z-index: 1000; 
+.topContent {
+    position: fixed;
+    top: 105px;
+    left: 0;
+    right: 0;
+    z-index: 1000;
     background-color: white;
+    width: 100%;
 }
 
 /* Estilo del botón */
