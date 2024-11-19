@@ -400,7 +400,7 @@
 
 .topContent {
     position: fixed;
-    top: 105px;
+    top: 122px;
     left: 0;
     right: 0;
     z-index: 1000;
@@ -442,4 +442,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.dropdown-itm-M{
+    width: 200px;
+    max-width: 200px;
+    height: 60px;
+    font-size: 16px;
+    color: #000000;
+    background-color: #ffffff;
+    border: 2px solid #969696;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    text-align: center;
+    line-height: 60px;
+    box-sizing: border-box;
 }

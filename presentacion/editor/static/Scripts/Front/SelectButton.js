@@ -1,5 +1,4 @@
 function selectButton(noteType, event) {
-    alert('x');
     alert(noteType);
     // Obtener todos los botones
     const buttons = document.querySelectorAll('.button-T');

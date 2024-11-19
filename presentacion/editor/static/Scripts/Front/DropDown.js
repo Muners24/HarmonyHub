@@ -1,4 +1,3 @@
-var ddArchivo;
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -69,19 +68,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-
-function toggleArchivo(){
-    ddArchivo = !ddArchivo;
-    if(ddArchivo){
-        document.getElementById("ddItemsArchivo").style.display = '';
+function toggleDD(id){
+    let element = document.getElementById(id);
+    
+    if (element.style.display === 'none'){
+        element.style.display = '';
         return;
-    }    
-    document.getElementById("ddItemsArchivo").style.display = 'none';
+    }
+
+    element.style.display = 'none';
 }
 
 function closeArchivo(){
     document.getElementById("ddItemsArchivo").style.display = 'none';
-    ddArchivo = false;
     hideImportItems();
     hideExportItems();
 }
@@ -108,7 +107,7 @@ function hideExportItems(){
     }, 120);
 }
 
-function toggleDD() {
+function toggleDDPlus() {
     const ddPlus = document.getElementById('ddPlus');
     ddPlus.style.display = ddPlus.style.display === 'none' ? '' : 'none';
     document.getElementById('Plus.png').style.filter = 'none';

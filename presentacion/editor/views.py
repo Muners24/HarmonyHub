@@ -30,7 +30,7 @@ def editor(request):
         {'title': 'Levato', 'img': 'Legato.png', 'onclick': 'editor.setLevato()'},
         {'title': 'Crecendo (8)', 'img': 'Crecendo.png', 'onclick': 'editor.setCrescendo()'},
         {'title': 'Triplet (0)', 'img': 'Triplet.png', 'onclick': 'editor.setTriplet()'},
-        {'title': 'Más opciones', 'img': 'Plus.png', 'onclick': 'toggleDD()'},
+        {'title': 'Más opciones', 'img': 'Plus.png', 'onclick': 'toggleDDPlus()'},
     ]
     
     dd_buttons = [

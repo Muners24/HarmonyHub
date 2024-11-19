@@ -1,5 +1,5 @@
 
-{% include "MainMenu.html" %}
+{% extends "MainMenu.html" %}
 
 {% block content %}
 
@@ -62,7 +62,7 @@
       <div class="col mx-0 d-flex justify-content-center my-0" >
         <div class="dropdown-down"> 
 
-          <button id="archivoButtons" class="editorBtn" onclick="toggleArchivo()">
+          <button id="archivoButtons" class="editorBtn" onclick="toggleDD('ddItemsArchivo')">
             <img src="{% static 'img/Archivo.png' %}" class="button-icon">
             Archivo
           </button> 
