@@ -1,2 +1,0 @@
-const Vex = require('vexflow');
-
