@@ -68,16 +68,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-function toggleDD(id){
-    let element = document.getElementById(id);
-    
-    if (element.style.display === 'none'){
-        element.style.display = '';
-        return;
-    }
-
-    element.style.display = 'none';
-}
 
 function closeArchivo(){
     document.getElementById("ddItemsArchivo").style.display = 'none';

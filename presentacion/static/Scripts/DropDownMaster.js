@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded',function () {
     });
 });
 
-function toggleDDM(id){
+function toggleDD(id){
     let element = document.getElementById(id);
     
     if (element.style.display === 'none'){

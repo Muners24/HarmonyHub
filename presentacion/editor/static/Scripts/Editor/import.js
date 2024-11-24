@@ -5,7 +5,7 @@ function importMidi() {
     const formData = new FormData();
     formData.append('file', input.files[0]);
 
-    fetch('/importMidi/', {
+    fetch('importMidi/', {
         method: 'POST',
         body: formData,
     })

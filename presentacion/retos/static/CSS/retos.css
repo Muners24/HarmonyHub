@@ -1,0 +1,68 @@
+.dd-categorias{
+    width: 300px;
+    height: 50px;
+    border: 2px solid #000000;
+    border-radius: 6px;
+    font-size: 20px;
+    box-shadow: none;
+    padding: 0 10px;
+    outline: none;
+    text-align: left;
+}
+
+.drop-icon{
+    position: relative;
+    left: 160px;
+    bottom: 5px;
+    width: 20px;
+    height: 20px;
+}
+
+.dropdown-itm-categorias{
+    width: 300px;
+    height: 50px;
+    font-size: 20px;
+    color: #000000;
+    background-color: #ffffff;
+    border: 2px solid #969696;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    text-align: center;
+    line-height: 50px;
+    box-sizing: border-box;
+}
+
+/*******/
+
+.reto-img{
+    width: 400px;
+    height: 150px;
+}
+
+.reto-titulo{
+    padding-top: 10px;
+    padding-left: 50px;
+    font-size: 50px;
+}
+
+.reto-categoria{
+    padding-left: 50px;
+    font-size: 30px;
+    position: relative;
+}
+
+.reto-containter{
+    padding-left: 0px;
+    height: 156px;
+    margin-left: 10%;
+    width: 80%;
+    border: 3px solid #000000;
+    display: flex;
+}
+
+.reto-text{
+    padding-top: 10px;
+    font-size: 50px;
+    text-align: center;
+}

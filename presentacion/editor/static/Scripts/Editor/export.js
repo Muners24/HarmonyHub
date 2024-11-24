@@ -4,7 +4,7 @@ function exportMidi() {
 
     let titulo = document.getElementById('tbTitulo').value;
     titulo += '.midi'
-    fetch('/exportMidi/', {
+    fetch('exportMidi/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
