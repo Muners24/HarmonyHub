@@ -110,6 +110,12 @@ document.getElementById('tbAnotacion').addEventListener('keydown', function(even
     }
 });
 
+//StopPropagation
+document.getElementById('tbTitulo').addEventListener('keydown', function(event) {
+    event.stopPropagation();
+});
 
-
+document.getElementById('tbCompositor').addEventListener('keydown', function(event) {
+    event.stopPropagation();
+});
 

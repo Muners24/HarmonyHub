@@ -25,7 +25,7 @@ class Registro:
         
         usuario.Password = self.encriptarPassword(usuario.Password) 
         self.DU.registrarUsuario(usuario)
-    
+
         return self.DU.buscarUsuarioPorCorreo(usuario.Correo)[0].IdUsuario
     
     def registrarPerfil(self,perfil):

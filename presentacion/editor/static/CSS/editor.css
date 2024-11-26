@@ -220,7 +220,7 @@
 }
 
 .tbToolBarContainer {
-  background-color: #d2d3ce; /* Gris claro */
+  background-color: #d2d3ce;
   display: flex;
   align-items: center;
   justify-content: center;

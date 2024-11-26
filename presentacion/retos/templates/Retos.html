@@ -20,61 +20,43 @@
       href="{% static 'CSS/master.css' %}"
     />
     <script src="{% static 'Scripts/DropDownMaster.js' %}" defer></script>
-    <script src="{% static 'Scripts/SelectCat.js' %}" defer></script>
+    <script src="{% static 'Scripts/SelectReto.js' %}" defer></script>
 
     <title></title>
   </head>
 
   <body class="htmlContent">
-    <!-- 
-    <div class="row mx-5 mt-3">
-      <div class="col mx-5 d-flex align-items-center justify-content-end">
 
-        <div class="dropdown-down">
-          <button class="dd-categorias" onclick="toggleDD('ddItemsCategorias')">
-            Categoría
-            <img src="asdf" class="drop-icon" />
-          </button>
-
-          <div id="ddItemsCategorias" class="dropdown-container-down">
-            <button id="ritmico" class="dropdown-itm-categorias" onclick="selectCat()">Rítimico</button>
-            <button id="melodico" class="dropdown-itm-categorias" onclick="selectCat()">Melódico</button>
-            <button id="armonico" class="dropdown-itm-categorias" onclick="selectCat()">Armónico</button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-    -->
-    <h1 class="reto-text">Retos</h1>
-
+    <h1 class="reto-text">Retos semanales</h1>
     <div class="row mx-0 my-5">
-        <div class="reto-containter" >
-            <img src="{% static 'img/LogoFondo.png' %}" class="reto-img">
-            <div class="row my-0">
-              <h1 class="reto-titulo">{{'Titulo'}}</h1>
-              <h1 class="reto-categoria">Rítmico</h1>
-            </div>
-          </div>
+      {% for reto in retos%}
+        <div class="reto-containter">
       
-          <div class="reto-containter">
-            <img src="{% static 'img/LogoFondo.png' %}" class="reto-img">
-            <div class="row my-0">
-              <h1 class="reto-titulo">{{'Titulo'}}</h1>
-              <h1 class="reto-categoria">Melódico</h1>
-            </div>
-          </div>
-      
-          <div class="reto-containter">
-            <img src="{% static 'img/LogoFondo.png' %}" class="reto-img">
-            <div class="row my-0">
-              <h1 class="reto-titulo">{{'Titulo'}}</h1>
-              <h1 class="reto-categoria">Armónico</h1>
-            </div>
-          </div>
-    </div>
-    
+          {% if reto.tipo == 'Armónico' %}
+            <img src="{% static 'img/LogoFondo.png' %}" class="reto-img" />
+          {% endif %}
 
+          {% if reto.tipo == 'Melódico' %}
+            <img src="{% static 'img/LogoFondo.png' %}" class="reto-img" />
+          {% endif %}
+
+          {% if reto.tipo == 'Rítmico' %}
+            <img src="{% static 'img/LogoFondo.png' %}" class="reto-img" />
+          {% endif %}
+
+          <div class="row my-0">
+            <h1 class="reto-titulo">{{reto.titulo}}</h1>
+            <h1 class="reto-categoria">{{reto.tipo}}</h1>
+          </div>  
+          
+          <a class="edit-panel" onclick="selectReto({{reto.id}})">
+            <img src="asdfa" class="img-edit" />
+          </a>
+        </div>
+      {% endfor %}
+
+     
+    </div>
   </body>
 </html>
 

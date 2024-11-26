@@ -33,13 +33,3 @@ class D_Perfil(Conexion):
         finally:
             self.cerrarConexion()
             
-def crear_archivo_binario_simulado():
-    # Creamos un "archivo" en memoria
-    archivo_binario = b"Este es un archivo binario simulado..."
-    return archivo_binario
-
-dp = D_Perfil()
-
-dp.registrarPerfil(E_Perfil(idUsuario=5,idNivel=1,progreso=0,descripcion='descripcion',foto=crear_archivo_binario_simulado()))
-
-

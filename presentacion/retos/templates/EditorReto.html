@@ -1,4 +1,5 @@
 
+
 {% extends "MainMenu.html" %}
 
 {% block content %}
@@ -29,8 +30,13 @@
     <script src="{% static 'Scripts/Front/TextBox.js' %}" defer></script>
     <script src="{% static 'Scripts/Front/DD_Plus.js' %}" defer></script>
     <script src="{% static 'Scripts/Front/DropDown.js' %}" defer></script>
+
+    <script type="text/javascript">
+        var partitura = {{ partitura|safe }};
+    </script>
     
-    <script src="{% static 'Scripts/EditorOnLoad.js' %}" defer></script>
+    <script src="{% static 'Scripts/RetosOnLoad.js' %}" defer></script>
+    
 
     <title></title>
   </head>
@@ -67,18 +73,6 @@
 
           <!-- Dropdown-archivo -->
           <div id="ddItemsArchivo" class="dropdown-container-down">
-            <a href="/editor"><button class="dropdown-itm">Nuevo</button></a>
-            
-            <!-- Dropdown-import -->
-            <div  class="dropdown-right">
-              <div id="ddItemsImport" class="dropdown-container-down">
-                <button class="dropdown-itm" onclick="loadFile('inputMidi')">MIDI</button>
-                <input id="inputMidi" type="file" style="display: none;" onchange="importMidi()">
-
-              </div> 
-            </div>
-            <button class="dropdown-itm" onfocus="showImportItems()" onblur="hideImportItems()">Importar</button>
-            
             <!-- Dropdown-export -->
             <div  class="dropdown-right">
               <div id="ddItemsExport" class="dropdown-container-down">
@@ -96,13 +90,10 @@
             Reproducir
         </button>
         
-        <!-- 
-
         <button class="editorBtn">
-            <img src="{% static 'img/Compartir.png' %}" class="button-icon">
-            Compartir
+            <img src="{% static 'img/Enviar.png' %}" class="button-icon">
+            Enviar
         </button>
-        -->
 
       </div>
 
@@ -157,3 +148,5 @@
 </html>
 
 {% endblock %}
+
+
