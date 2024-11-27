@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="CSS/register.css">
+
+    <!-- JavaScripts -->
+    <script src="{% static 'Scripts/ShowSection.js' %}" defer></script>
+
+    <script src="{% static 'Scripts/ShowImage.js' %}" defer></script>
+
+</head>
+<body class="bg-light">
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="row shadow-lg rounded-3 overflow-hidden" style="max-width: 900px; width: 100%; background-color: #f7f3ec;">
+            <!-- Sección izquierda con logo y texto -->
+            <div class="col-md-6 d-flex flex-column align-items-center justify-content-center text-center bg-light p-4">
+                <h1 class="mb-4 fw-bold">Harmony Hub</h1>
+                <img src="{% static 'images/Logo.png' %}" alt="Harmony Hub Logo" class="img-fluid" style="max-width: 600px;">
+            </div>
+            <!-- Sección del formulario -->
+            <div class="col-md-6 p-5">
+                <h2 class="text-center mb-4 fw-bold">Regístrate</h2>
+                {% if error_message %}
+                    <p class="text-danger text-center">{{ error_message }}</p>
+                {% endif %}
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- Primera sección del formulario (Correo y Contraseña) -->
+                    <div id="section1">
+
+                        <!-- Campo Correo -->
+                        <div class="mb-3">
+                            <label for="correo" class="form-label">Correo Electrónico</label>
+                            <input type="email" name="correo" id="correo" class="form-control" value="{{ usuario_form.correo.value }}">
+                        </div>
+                        
+                        <!-- Campo Contraseña -->
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña</label>
+                            <input type="password" name="password" id="password" class="form-control" value="{{ usuario_form.password.value }}">
+                        </div>
+
+                        <!-- Campo Confirmar Contraseña -->
+                        <div class="mb-3">
+                            <label for="confirm_password" class="form-label">Confirmar Contraseña</label>
+                            <input type="password" name="confirm_password" id="confirm_password" class="form-control" value="{{ usuario_form.confirm_password.value }}">
+                        </div>
+
+                        <!-- Contenedor para el mensaje de error -->
+                        <div id="password-error" class="text-danger mb-3" style="display: none;">
+                            Las contraseñas no coinciden.
+                        </div>
+
+                        <!-- Botón para continuar a la siguiente sección -->
+                        <button type="button" class="btn btn-primary w-100 py-2" onclick="validatePasswords()">Continuar</button>
+
+                    </div>
+
+                    <!-- Segunda sección del formulario (Nivel, Nombre de Usuario, Descripción y Foto) -->
+                    <div id="section2" style="display:none;">
+                        
+                        <!-- Campo Foto Personalizado -->
+                        <div class="mb-3 text-center">
+                            <!-- Contenedor para la foto seleccionada (actúa como botón) -->
+                            <div id="preview-container" class="border rounded-circle overflow-hidden mx-auto mb-3" style="width: 150px; height: 150px; background-color: #f0f0f0; display: flex; justify-content: center; align-items: center; cursor: pointer;">
+                                <img id="preview-image" src="#" alt="Vista previa" style="display: none; width: 100%; height: 100%; object-fit: cover;">
+                                <span id="placeholder-text" style="font-size: 20px; color: #888;">+</span> <!-- Texto de marcador -->
+                            </div>
+                        
+                            <!-- Input de archivo (oculto) -->
+                            <input type="file" name="foto" id="foto" class="form-control d-none" accept="image/*">
+                        </div>
+
+                        
+                        <!-- Campo Nombre de Usuario -->
+                        <div class="mb-3">
+                            <label for="userName" class="form-label">Nombre de Usuario</label>
+                            <input type="text" name="userName" id="userName" class="form-control" value="{{ perfil_form.userName.value }}">
+                        </div>
+                        
+                        <!-- Campo Nivel -->
+                        <div class="mb-3">
+                            <label for="nivel" class="form-label">Nivel</label>
+                            <select name="nivel" id="nivel" class="form-control">
+                                {% for choice in perfil_form.nivel.field.choices %}
+                                    <option value="{{ choice.0 }}" {% if choice.0 == perfil_form.nivel.value %} selected {% endif %}>{{ choice.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        
+
+                        <!-- Campo Descripción -->
+                        <div class="mb-3">
+                            <label for="descripcion" class="form-label">Biografía</label>
+                            <textarea name="descripcion" id="descripcion" class="form-control">{{ perfil_form.descripcion.value }}</textarea>
+                        </div>
+
+                        <!-- Botón de registrar -->
+                        <button type="submit" class="btn btn-success w-100 py-2">Registrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

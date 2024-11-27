@@ -52,42 +52,4 @@ class D_Reto(Conexion):
         finally:
             self.cerrarConexion()
 
-    def buscarRetoActualPorTipo(self,tipo):
-        partitura = None
-        try:
-            self.abrirConexion()
-            cursor = self.conexion.cursor()
-            
-            cursor.execute("{CALL BuscarRetoActualPorTipo (?) }",(tipo))
-            
-            rows = cursor.fetchall()
-        
-            for row in rows:
-                partitura = E_Partitura(idPartitura=row[0],titulo=row[1],compositor=row[2],notacion=pickle.loads(row[3]))
-                    
-        except Exception as ex:
-            print(f"Error al buscar partitura de reto: {ex}")
-            
-        finally:
-            self.cerrarConexion()
-            return partitura
     
-    def buscarPartituraPorIdReto(self,id):
-        partitura = None
-        try:
-            self.abrirConexion()
-            cursor = self.conexion.cursor()
-            
-            cursor.execute("{CALL BuscarPartituraPorIdReto (?) }",(id))
-            
-            rows = cursor.fetchall()
-        
-            for row in rows:
-                partitura = E_Partitura(idPartitura=row[0],titulo=row[1],compositor=row[2],notacion=pickle.loads(row[3]))
-                    
-        except Exception as ex:
-            print(f"Error al buscar partitura de reto: {ex}")
-            
-        finally:
-            self.cerrarConexion()
-            return partitura

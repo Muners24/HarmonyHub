@@ -7,6 +7,7 @@ import bcrypt
 from datos.D_Usuario import D_Usuario
 from datos.D_Perfil import D_Perfil
 from entidades.E_Usuario import E_Usuario
+from entidades.E_Perfil import E_Perfil
 
 class Registro:
     
@@ -17,20 +18,21 @@ class Registro:
     def registrarUsuario(self,usuario):
         msg = ''
         
-        if len(self.DU.buscarUsuarioPorCorreo(usuario.Correo)) > 0:
+        if self.DU.buscarUsuarioPorCorreo(usuario.Correo) != None:
             msg += 'Este correo ya esta registrado'
         
+        usuario.Password = self.encriptarPassword(usuario.Password) 
+        if not self.DU.registrarUsuario(usuario):
+            msg += '\nError al reigstrar usuario'
+
         if msg != '':
             return msg
         
-        usuario.Password = self.encriptarPassword(usuario.Password) 
-        self.DU.registrarUsuario(usuario)
-
-        return self.DU.buscarUsuarioPorCorreo(usuario.Correo)[0].IdUsuario
+        return self.DU.buscarUsuarioPorCorreo(usuario.Correo).IdUsuario
     
-    def registrarPerfil(self,perfil):
+    def registrarPerfil(self,perfil : E_Perfil):
         msg = ''
-        if len(self.DU.buscarUsuarioPorId(perfil.IdUsuario)):
+        if self.DU.buscarUsuarioPorId(perfil.IdUsuario) == None:
             msg = 'Usuario invalido'
         
         if msg != '':

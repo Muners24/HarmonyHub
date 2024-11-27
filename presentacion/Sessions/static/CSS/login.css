@@ -1,0 +1,58 @@
+/* Estilo general para el cuerpo */
+body {
+    background-color: #f8f9fa;
+}
+
+/* Estilo para el contenedor principal */
+.row {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    background-color: #ffffff;
+    gap: 20px; /* Espaciado entre columnas */
+}
+
+/* Estilo del logo */
+img {
+    max-height: 800px; /* Logo más grande */
+    object-fit: contain;
+}
+
+/* Estilo para las etiquetas */
+label {
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+/* Campos de entrada alineados debajo de las etiquetas */
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+/* Botón principal */
+button {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    font-size: 16px;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Links de registro */
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

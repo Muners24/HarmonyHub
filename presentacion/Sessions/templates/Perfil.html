@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Usuario</title>
+</head>
+<body>
+    <h1>Perfil de {{ nombre }}</h1>
+
+    <!-- Mostrar la foto si existe -->
+    {% if photo %}
+        <img src="data:image/png;base64,{{ photo }}" alt="Foto de perfil" style="max-width: 200px; border-radius: 50%;">
+    {% else %}
+        <p>No tienes una foto de perfil.</p>
+    {% endif %}
+
+    <p><strong>Biografía:</strong> {{ bio }}</p>
+    <p><strong>Nivel:</strong> {{ level }}</p>
+</body>
+</html>

@@ -29,7 +29,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'editor',
     'inicio',
-    'retos'
+    'retos',
+    'Sessions',
+    'buscador'
 ]
 
 MIDDLEWARE = [
@@ -124,4 +126,3 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Habilitar las sesiones
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
-

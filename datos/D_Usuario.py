@@ -32,17 +32,16 @@ class D_Usuario(Conexion):
             self.cerrarConexion()
             
     def buscarUsuarioPorCorreo(self,correo):
-        usuarios = []
+        usuario = None
         try:
             self.abrirConexion()
             cursor = self.conexion.cursor()
             
             cursor.execute("{CALL BuscarUsuarioPorCorreo (?)}", (correo))
             
-            rows = cursor.fetchall()
-            
-            for row in rows:
-                usuarios.append(E_Usuario(row[0],row[1],row[2]))
+            row = cursor.fetchone()
+  
+            usuario = E_Usuario(idUsuario=row[0],correo=row[1],password=row[2])
                 
                    
         except Exception as ex:
@@ -50,20 +49,20 @@ class D_Usuario(Conexion):
             
         finally:
             self.cerrarConexion()
-            return usuarios
+            return usuario
         
     def buscarUsuarioPorId(self,idUsuario):
-        usuarios = []
+        usuario = None
         try:
             self.abrirConexion()
             cursor = self.conexion.cursor()
             
+            
             cursor.execute("{CALL BuscarUsuarioPorId (?)}", (idUsuario))
             
-            rows = cursor.fetchall()
-            
-            for row in rows:
-                usuarios.append(E_Usuario(row[0],row[1],row[2]))
+            row = cursor.fetchone()
+  
+            usuario = E_Usuario(idUsuario=row[0],correo=row[1],password=row[2])
                 
                    
         except Exception as ex:
@@ -71,7 +70,7 @@ class D_Usuario(Conexion):
             
         finally:
             self.cerrarConexion()
-            return usuarios
+            return usuario
         
 
 

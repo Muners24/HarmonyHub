@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse, FileResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -12,6 +12,10 @@ from negocios.editor import export
 
 def editor(request):
     
+    if request.session.get('IdUsuario') == None:
+        return redirect('/logout')
+    
+
     buttons = [
         {'title': 'SemiFusa (7)', 'img': 'Semifusa.png', 'onclick': 'editor.setRithm(7)'},
         {'title': 'Fusa (6)', 'img': 'Fusa.png', 'onclick': 'editor.setRithm(6)'},

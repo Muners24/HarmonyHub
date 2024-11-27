@@ -153,7 +153,7 @@ class Editor extends EditorListener {
     let is_final = false
     for (let i = 0; i < this.pentagramas.length; i++) {
       is_final = i == this.pentagramas.length - 1;
-      this.pentagramas[i].draw(this.context,is_final);
+      this.pentagramas[i].draw(this.context, is_final);
     }
 
     this.drawCrescendos();
@@ -338,38 +338,64 @@ class Editor extends EditorListener {
   }
 
   cargarPartitura(notacion) {
-    editor.reinit()
-    editor.config();
-    editor.setTempo(notacion.tempo);
-    editor.setCompasNum(notacion.numerator);
-    editor.setCompasDen(notacion.denominator);
-    
+    this.reinit()
+    this.config();
+    this.setTempo(notacion.tempo);
+    this.setCompasNum(notacion.numerator);
+    this.setCompasDen(notacion.denominator);
+
     let i = 0;
     let notas = notacion.notas;
     while (notas.length !== 0) {
-        let cap = new Fraction(editor.getCompasNum(), editor.getCompasDen());
-        editor.compases[i].empty();
-        while (cap.numerator !== 0 && cap.greaterThanEquals(new Fraction(1,parseInt(notas[0].dur)))){
-            cap.simplify();
-            editor.compases[i].addNota(notas[0].keys,notas[0].dur);
-            cap.subtract(new Fraction(1,parseInt(notas[0].dur)));
-            notas.splice(0,1);
-        }
+      let cap = new Fraction(this.getCompasNum(), this.getCompasDen());
+      this.compases[i].empty();
+      while (cap.numerator !== 0 && cap.greaterThanEquals(new Fraction(1, parseInt(notas[0].dur)))) {
+        cap.simplify();
+        this.compases[i].addNota(notas[0].keys, notas[0].dur);
+        cap.subtract(new Fraction(1, parseInt(notas[0].dur)));
+        notas.splice(0, 1);
+      }
 
-        while(cap.numerator !== 0){
-            cap.simplify();
-            editor.compases[0].addNota(['b/4'],String(cap.denominator)+'r')
-            cap.subtract(new Fraction(1,cap.denominator));
-        }
-    
-        if(notas.length !== 0){
-            editor.addCompas();
-            i++;
-        }
+      while (cap.numerator !== 0) {
+        cap.simplify();
+        this.compases[0].addNota(['b/4'], String(cap.denominator) + 'r')
+        cap.subtract(new Fraction(1, cap.denominator));
+      }
+
+      if (notas.length !== 0) {
+        this.addCompas();
+        i++;
+      }
     }
-    
-   editor.formated = false;
-   editor.Editdraw();
+
+    this.formated = false;
+    this.Editdraw();
+  }
+
+  //retorna la notacion de la partitura
+  getData() {
+    let notas = [];
+
+    for (let i = 0; i < this.pentagramas.length; i++) {
+      let pentagrama = this.pentagramas[i];
+      for (let j = 0; j < pentagrama.compases.length; j++) {
+        let compas = pentagrama.compases[j];
+        for (let k = 0; k < compas.notas.length; k++) {
+          let nota = compas.notas[k];
+          notas.push({
+            keys: nota.getKeys(),
+            dur: nota.getDuration()
+          });
+        }
+      }
+    }
+
+    return {
+      tempo: this.getTempo(),
+      numerator: this.compases[0].getTimeNum(),
+      denominator: this.compases[0].getTimeDen(),
+      notas: notas
+    };
   }
 }
 

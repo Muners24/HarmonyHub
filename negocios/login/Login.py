@@ -17,17 +17,17 @@ class Login:
     def iniciarSesion(self,usuario):
         msg = ''
         
-        usuarios = self.DU.buscarUsuarioPorCorreo(usuario.Correo)
-        if len(usuarios) == 0:
+        usuarioEncontrado = self.DU.buscarUsuarioPorCorreo(usuario.Correo)
+        if usuarioEncontrado == None:
             msg += 'Correo no registrado'
                 
-        if not self.validarPassword(usuario.Password,usuarios[0].Password):
+        if msg == '' and not self.validarPassword(usuario.Password,usuarioEncontrado.Password):
             msg += 'Contraseña invalida'
         
         if msg != '':
             return msg
         
-        return usuarios[0].IdUsuario
+        return usuarioEncontrado.IdUsuario
     
     def validarPassword(self, password: str, hashed_password: str) -> bool:
         return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))

@@ -6,6 +6,3 @@ class E_Usuario:
         self.Correo = correo
         self.Password= password
     
-    def __str__(self):
-        
-        return f'{self.IdUsuario} {self.Correo} {self.Password}'

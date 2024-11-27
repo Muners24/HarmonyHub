@@ -1,6 +1,6 @@
 
 function exportMidi() {
-    const midiData = editorData();
+    const midiData = editor.getData();
 
     let titulo = document.getElementById('tbTitulo').value;
     titulo += '.midi'
@@ -31,29 +31,4 @@ function exportMidi() {
     .catch(error => {
         console.error('Error:', error);
     });
-}
-
-function editorData() {
-    let notas = [];
-
-    for(let i=0;i<editor.pentagramas.length;i++){
-        let pentagrama = editor.pentagramas[i];
-        for(let j=0;j<pentagrama.compases.length;j++){
-            let compas = pentagrama.compases[j];
-            for(let k=0;k<compas.notas.length;k++){
-                let nota = compas.notas[k];
-                notas.push({
-                    keys : nota.getKeys(),
-                    dur: nota.getDuration()
-                });     
-            }
-        }
-    }
-
-    return {
-        tempo: editor.getTempo(),
-        numerator: editor.compases[0].getTimeNum(),
-        denominator: editor.compases[0].getTimeDen(),
-        notas: notas
-    };
 }

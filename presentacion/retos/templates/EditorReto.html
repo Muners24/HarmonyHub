@@ -36,6 +36,7 @@
     </script>
     
     <script src="{% static 'Scripts/RetosOnLoad.js' %}" defer></script>
+    <script src="{% static 'Scripts/ParticiparReto.js' %}" defer></script>
     
 
     <title></title>
@@ -90,7 +91,7 @@
             Reproducir
         </button>
         
-        <button class="editorBtn">
+        <button class="editorBtn" onclick="participarReto()">
             <img src="{% static 'img/Enviar.png' %}" class="button-icon">
             Enviar
         </button>

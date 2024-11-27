@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.retos),
-    path('reto/',views.reto),
-    path('selectReto/',views.selectReto),
+    path('reto/',views.reto,name='reto'),
+    path('selectReto/',views.selectReto,name='selectReto'),
+    path('participarReto/',views.participarReto,name='participarReto'),
 ]
