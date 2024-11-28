@@ -10,7 +10,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 from entidades.E_Reto import E_Reto
 from entidades.E_Partitura import E_Partitura
 from entidades.E_Participacion import E_Participacion
-from negocios.retos.Retos import Retos
+from negocios.retos.N_Participacion import N_Participacion
 from negocios.retos.Partitura import Partitura
 
 
@@ -80,10 +80,10 @@ def participarReto(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body.decode("utf-8"))
-            NR = Retos()
-            NP = Partitura()
+            NParticipacion = N_Participacion()
+            NPartitura = Partitura()
 
-            idPartitura = NP.insertarPartitura(
+            idPartitura = NPartitura.insertarPartitura(
                 E_Partitura(
                     idPartitura = 0,
                     titulo = data["titulo"],
@@ -95,7 +95,7 @@ def participarReto(request):
             if idPartitura == None:
                 return JsonResponse(data)
 
-            NR.participar(
+            NParticipacion.participar(
                 E_Participacion(
                     idParticipacion=0,
                     idUsuario=request.session.get("IdUsuario"),
