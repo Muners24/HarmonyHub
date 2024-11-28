@@ -11,6 +11,7 @@ from entidades.E_Reto import E_Reto
 from entidades.E_Partitura import E_Partitura
 from entidades.E_Participacion import E_Participacion
 from negocios.retos.N_Participacion import N_Participacion
+from negocios.retos.N_Retos import N_Retos
 from negocios.retos.Partitura import Partitura
 
 
@@ -21,7 +22,7 @@ def retos(request):
 
     request.session["IdReto"] = None
 
-    NR = Retos()
+    NR = N_Retos()
     retos = []
     for reto in NR.getRetos():
 

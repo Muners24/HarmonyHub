@@ -7,7 +7,7 @@ from entidades.E_Partitura import E_Partitura
 from datos.D_Reto import D_Reto
 from datos.D_Participacion import D_Participacion
 
-class Retos:
+class N_Retos:
 
     def __init__(self):
         self.DR = D_Reto()
