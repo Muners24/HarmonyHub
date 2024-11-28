@@ -1,39 +1,3 @@
-.dd-categorias{
-    width: 300px;
-    height: 50px;
-    border: 2px solid #000000;
-    border-radius: 6px;
-    font-size: 20px;
-    box-shadow: none;
-    padding: 0 10px;
-    outline: none;
-    text-align: left;
-}
-
-.drop-icon{
-    position: relative;
-    left: 160px;
-    bottom: 5px;
-    width: 20px;
-    height: 20px;
-}
-
-.dropdown-itm-categorias{
-    width: 300px;
-    height: 50px;
-    font-size: 20px;
-    color: #000000;
-    background-color: #ffffff;
-    border: 2px solid #969696;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-    text-align: center;
-    line-height: 50px;
-    box-sizing: border-box;
-}
-
-/*******/
 
 .reto-img{
     width: 400px;
