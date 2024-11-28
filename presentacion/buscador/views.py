@@ -3,22 +3,55 @@ import json
 from django.http import JsonResponse, FileResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-# Create your views here.
+
 def buscador(request):
     
-    #if request.session.get('IdUsuario') == None:
-    #    return redirect('/logout')
+    request.session['query'] = None
+     
+    resultados = None
+    error = ""
+    categoria = "Categoría"
+    texto = ""
     
-    categoria = request.session.get('Categoria',None)
-    if categoria == None:
-        request.session['Categoria'] = 'Categoría'
+    return render(
+        request,
+        "Buscador.html",
+        {
+            "resultados": resultados,
+            "texto": texto,
+            "categoria": categoria,
+            "error": error,
+        },
+    )
+
+
+def buscar(request):
+    if request.session.get('query') == None:
+        return redirect(buscador)
     
-    resultados = 1
-    #resultados = obtenerListados(categoria)
-    return render(request,'Buscador.html',{'resultados': resultados,'categoria' : categoria})
+    query = request.session['query']
+    
+    print(query)
+    
+    resultados = None
+    categoria = query['categoria']
+    texto = query['texto']
+    error = query['error']
+    
+    return render(
+        request,
+        "Buscador.html",
+        {
+            "resultados": resultados,
+            "texto": texto,
+            "categoria": categoria,
+            "error": error,
+        },
+    )
+
 
 @csrf_exempt
-def selectCategoria(request):
+def query(request):
     if request.session.get("IdUsuario") == None:
         return redirect("/logout")
 
@@ -26,9 +59,22 @@ def selectCategoria(request):
         try:
             data = json.loads(request.body.decode("utf-8"))
 
+            texto = data["texto"]
             categoria = data["categoria"]
+            
+            
+            query = request.session.get('query',None)
+            
+            if query != None:
+                print(f'{query} {categoria}')
+                if query['categoria'] == categoria:
+                    categoria = ''
+                
+            if categoria == '':
+                categoria = 'Categoría'
+                
 
-            request.session["Categoria"] = categoria
+            request.session["query"] = {"texto": texto, "categoria": categoria,'error':''}
 
             return JsonResponse(data)
 
@@ -36,7 +82,7 @@ def selectCategoria(request):
             return
     else:
         return JsonResponse({"error": "Método no permitido"}, status=405)
-    
+
 
 def obtenerListados():
     return 0

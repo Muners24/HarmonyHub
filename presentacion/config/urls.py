@@ -7,5 +7,5 @@ urlpatterns = [
     path('editor/',include('editor.urls')),
     path('retos/',include('retos.urls')),
     path('',include('Sessions.urls')),
-    path('buscar/',include('buscador.urls'))
+    path('buscador/',include('buscador.urls'))
 ]

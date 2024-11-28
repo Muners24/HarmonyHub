@@ -24,3 +24,4 @@ def inicio(request):
     
     return render(request, "Inicio.html",{'img': perfil.getImg()})
 
+    
