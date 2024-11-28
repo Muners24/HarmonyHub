@@ -25,7 +25,6 @@ def retos(request):
     NR = N_Retos()
     retos = []
     for reto in NR.getRetos():
-
         r = {"id": reto.IdReto, "titulo": reto.Titulo, "tipo": reto.TipoReto}
         retos.append(r)
 

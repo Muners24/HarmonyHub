@@ -43,7 +43,7 @@ class D_Participacion(Conexion):
             self.abrirConexion()
             cursor = self.conexion.cursor()
             
-            cursor.execute( "{CALL BuscarParticipacionesPorIdUsuario (?)",(id)),
+            cursor.execute( "{CALL BuscarParticipacionesPorIdUsuario (?)}",(id)),
 
             rows = cursor.fetchall()
             

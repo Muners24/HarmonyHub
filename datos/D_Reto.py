@@ -52,4 +52,22 @@ class D_Reto(Conexion):
         finally:
             self.cerrarConexion()
 
-    
+    def buscarRetoPorId(self,idReto:int):
+        reto = None
+        try:
+            self.abrirConexion()
+            cursor = self.conexion.cursor()
+            
+            cursor.execute("{CALL BuscarRetoPorId (?)}", (idReto))
+            
+            row = cursor.fetchone()
+            
+            reto = E_Reto(idReto=row[0],idPartitura=row[1],tiporeto=row[2],titulo=row[3],fecha=row[4])
+                    
+        except Exception as ex:
+            print(f"Error al buscar reto: {ex}")
+            
+        finally:
+            self.cerrarConexion()
+            return reto
+        
