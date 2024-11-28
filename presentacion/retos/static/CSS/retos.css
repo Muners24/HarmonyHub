@@ -86,3 +86,8 @@
 .img-edit:hover{
     cursor: pointer;
 }
+
+.borde-img{
+    width: 1px;
+    border: 2px solid #000000;
+}

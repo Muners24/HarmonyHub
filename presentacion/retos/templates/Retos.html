@@ -33,16 +33,18 @@
         <div class="reto-containter">
       
           {% if reto.tipo == 'Armónico' %}
-            <img src="{% static 'img/LogoFondo.png' %}" class="reto-img" />
+            <img src="{% static 'img/Armonia.png' %}" class="reto-img" />
           {% endif %}
 
           {% if reto.tipo == 'Melódico' %}
-            <img src="{% static 'img/LogoFondo.png' %}" class="reto-img" />
+            <img src="{% static 'img/Melodia.png' %}" class="reto-img" />
           {% endif %}
 
           {% if reto.tipo == 'Rítmico' %}
-            <img src="{% static 'img/LogoFondo.png' %}" class="reto-img" />
+            <img src="{% static 'img/Ritmo.png' %}" class="reto-img" />
           {% endif %}
+          
+          <div class="borde-img"></div>
 
           <div class="row my-0">
             <h1 class="reto-titulo">{{reto.titulo}}</h1>
