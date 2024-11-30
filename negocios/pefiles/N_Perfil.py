@@ -46,3 +46,28 @@ class N_Perfil:
             "participaciones": participaciones,
             "error": None
         }
+
+    def buscarPerfiles(self,nombre):
+        perfiles = self.DP.buscarPefilPorNombre(nombre)
+        
+        if len(perfiles) == 0:
+            return {'error': 'No se encontraron coincidencias'}
+        
+        perfilesJson = []
+        
+        for perfil in perfiles:
+            
+            nivel = self.DN.buscarNivelPorId(perfil.IdNivel)
+            
+            if nivel == None:
+                continue    
+            
+            perfilesJson.append({
+                'nombre': perfil.Nombre,
+                'nivel': nivel.Descripcion,
+                'img': perfil.getImg(),
+            })
+  
+        return {'perfiles': perfilesJson , 'error': None}
+    
+    

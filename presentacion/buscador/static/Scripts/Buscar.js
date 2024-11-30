@@ -1,10 +1,9 @@
-function buscar(categoria = '') {
-    const tbBuscar = document.getElementById('tbBuscar')
+function buscar(categoria) {
+    const tbBuscar = document.getElementById('tbBuscar');
     
-    if (tbBuscar.value === '' && categoria === '') {
-        window.location.href = '/buscador/'
-    }
-    
+    alert(tbBuscar.value);
+    alert(categoria);
+
     let data = {
         'texto': tbBuscar.value,
         'categoria': categoria

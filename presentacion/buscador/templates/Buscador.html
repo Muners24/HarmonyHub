@@ -28,34 +28,51 @@
   
   <body class="htmlContent">
     
+    
 
     <div class="buscador-container mt-5">
-    
-      <div class="col d-flex align-items-center justify-content-between">
-        <div style="display: flex">
-          <input id="tbBuscar" class="tb-buscador" type="text" placeholder="Buscar" value="{{texto}}" />
-          <a style="width: 0px"><img src="{% static 'img/LupaN.png' %}" class="icon-buscador" /></a>
+      <div class="row mx-0">
+        <div class="col d-flex align-items-center justify-content-between">
+
+          <div style="display: flex">
+            <input id="tbBuscar" class="tb-buscador" type="text" placeholder="Buscar" value="{{texto}}" />
+            <a onclick="buscar('{{categoria}}')" style="width: 0px"><img src="{% static 'img/LupaN.png' %}" class="icon-buscador" /></a>
+          </div>
+
+          <div class="dropdown-down">
+              <button class="dd-categoria" onclick="toggleDD('ddItemsCategoria')">
+                  {{categoria}}
+                  <div style="position: absolute;">
+                    <img src="{% static 'img/Symbols/Staccatissimo.png' %}" class="dd-icon">
+                  </div>
+              </button>
+
+              <div id="ddItemsCategoria" class="dropdown-container-down" style="display: none;">
+                  <button class="dd-itm-buscador" onclick="buscar('Perfiles de Usuario')" >Perfiles de Usuario</button>
+                  <button class="dd-itm-buscador" onclick="buscar('Retos')">Retos</button>
+              </div>
+          </div>
+
         </div>
 
-        <div class="dropdown-down">
-            <button class="dd-categoria" onclick="toggleDD('ddItemsCategoria')">
-                {{categoria}}
-                <div style="position: absolute;">
-                  <img src="{% static 'img/Symbols/Staccatissimo.png' %}" class="dd-icon">
-                </div>
-            </button>
+        <div>
+          {% for perfil in perfiles %}
+          <p>{{perfil.nombre}}</p>
+          <img src="{{perfil.img}}" width="50px" height="50px">
+          <p>{{perfil.nivel}}</p>
+          {% endfor %}
 
-            <div id="ddItemsCategoria" class="dropdown-container-down">
-                <button class="dd-itm-buscador" onclick="buscar('Perfiles de Usuario')" >Perfiles de Usuario</button>
-                <button class="dd-itm-buscador" onclick="buscar('Retos')">Retos</button>
-            </div>
+          {% for reto in retos %}
+          <p>{{reto.titulo}}</p>
+          <img src="{{reto.compositor}}" width="50px" height="50px">
+          <p>{{reto.likes}}</p>
+          {% endfor %}
 
-        </div>
+        <p>{{error}}</p>
+
+
       </div>
 
-      <div>
-        {{error}}
-      </div>
     </div>
   </body>
 </html>

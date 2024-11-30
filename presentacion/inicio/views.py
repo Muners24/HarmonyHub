@@ -15,13 +15,7 @@ def inicio(request):
     
     if request.session.get('IdUsuario') == None:
         return redirect('/logout')
-
-    NP = N_Perfil()
-    
-    perfil = NP.buscarPerfilPorIdUsuario(request.session.get('IdUsuario'))
-    
-    NP.datosPerfil(request.session.get('IdUsuario'))
-    
-    return render(request, "Inicio.html",{'img': perfil.getImg()})
+        
+    return render(request, "Inicio.html")
 
     
