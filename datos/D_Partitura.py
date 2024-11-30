@@ -12,7 +12,7 @@ class D_Partitura(Conexion):
     def __init__(self):
         super().__init__()
 
-    def insertarPartitura(self, partitura):
+    def insertarPartitura(self, partitura) -> int | None:
         idPartitura = None
         
         try:
