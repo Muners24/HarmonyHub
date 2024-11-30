@@ -1,9 +1,12 @@
+document.getElementById('tbBuscar').addEventListener('keydown',function(event){
+    if(event.key === 'Enter'){
+        document.getElementById('buscar').click();
+    }
+})
+
 function buscar(categoria) {
     const tbBuscar = document.getElementById('tbBuscar');
     
-    alert(tbBuscar.value);
-    alert(categoria);
-
     let data = {
         'texto': tbBuscar.value,
         'categoria': categoria
@@ -23,4 +26,28 @@ function buscar(categoria) {
         })
         .catch(error => {
         });
+}
+
+function verPerfil(idUsuario){
+
+    let data = {
+        'idUsuario': idUsuario,
+    }
+
+
+    fetch('/buscador/verPerfil/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+        .then(response => {
+            window.location.href = "/perfil/perfiles/";
+        })
+        .then(data => {
+        })
+        .catch(error => {
+        });
+
 }

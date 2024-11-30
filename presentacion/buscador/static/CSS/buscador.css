@@ -59,10 +59,18 @@
     box-sizing: border-box;
 }
 
-.perfil-nombre {
-    font-size: 24px;  
-}
-  
-.perfil-nivel {
-font-size: 18px;  
+.table, .table tr {
+    border-width: 5px;
+    border-color: #000000;  /* Color de borde negro */
+  }
+
+  .table img {
+    display: block;  
+    margin: 0 auto; 
+    height: 150px; 
+  }
+
+.error{
+    font-size: 25px;
+    color: #ff2525;
 }

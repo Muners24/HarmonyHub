@@ -9,6 +9,7 @@ def buscador(request):
     if request.session.get('IdUsuario') == None:
         return redirect('/logout')
     
+    request.session['IdUsuarioBuscar'] = None
     request.session["query"] = None
 
     texto = ""
@@ -34,6 +35,8 @@ def buscar(request):
     
     if request.session.get("query") == None:
         return redirect(buscador)
+
+    request.session['IdUsuarioBuscar'] = None
 
     query = request.session["query"]
 
@@ -155,5 +158,21 @@ def query(request):
         return JsonResponse({"error": "Método no permitido"}, status=405)
 
 
-def obtenerListados():
-    return 0
+@csrf_exempt
+def verPerfil(request):
+    if request.session.get("IdUsuario") == None:
+        return redirect("/logout")
+
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body.decode("utf-8"))
+
+            request.session['IdUsuarioBuscar'] = data.get('idUsuario')
+            
+            return JsonResponse(data)
+        except Exception as e:
+            return
+    else:
+        return JsonResponse({"error": "Método no permitido"}, status=405)
+    
+

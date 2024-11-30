@@ -16,7 +16,6 @@
     />
 
     <script src="{% static 'Scripts/Buscar.js' %}" defer></script>
-
     <title></title>
   </head>
 
@@ -30,7 +29,7 @@
       <div class="col d-flex justify-content-center">
         <div style="display: flex;">
           <input id='tbBuscar' class="tb-search" type="text" placeholder="Buscar" />
-          <a onclick="buscar('Categoría')" ><img src="{% static 'img/LupaN.png'%}" class="search-icon" /></a>
+          <a id='buscar' onclick="buscar('Categoría')" ><img src="{% static 'img/LupaN.png'%}" class="search-icon" /></a>
         </div>
       </div>
 

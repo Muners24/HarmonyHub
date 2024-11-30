@@ -63,6 +63,7 @@ class N_Perfil:
                 continue    
             
             perfilesJson.append({
+                'idUsuario':perfil.IdUsuario,
                 'nombre': perfil.Nombre,
                 'nivel': nivel.Descripcion,
                 'img': perfil.getImg(),
