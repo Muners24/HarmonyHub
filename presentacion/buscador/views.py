@@ -3,7 +3,7 @@ import json
 from django.http import JsonResponse, FileResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from negocios.pefiles.N_Perfil import N_Perfil
-
+from negocios.retos.N_Participacion import N_Participacion
 
 def buscador(request):
     if request.session.get('IdUsuario') == None:
@@ -11,10 +11,9 @@ def buscador(request):
     
     request.session["query"] = None
 
-    resultados = None
-    error = ""
-    categoria = "Categoría"
     texto = ""
+    categoria = "Categoría"
+    error = ""
 
     return render(
         request,
@@ -38,13 +37,10 @@ def buscar(request):
 
     query = request.session["query"]
 
-    print(f'{query['categoria']} {query['texto']}')
     categoria = query["categoria"]
     texto = query["texto"]
     error = ''
 
-    print()
-    
     resultadosPerfil = []
     resultadosParticipacion = []
 
@@ -61,11 +57,12 @@ def buscar(request):
             },
         )
         
-    NP = N_Perfil()
+    N_PERF = N_Perfil()
+    N_PART = N_Participacion()
+    
     if categoria == "Perfiles de Usuario":
-        print('buscando perfiles')
         
-        resultado = NP.buscarPerfiles(texto)
+        resultado = N_PERF.buscarPerfiles(texto)
 
         print(resultado)
         
@@ -78,23 +75,40 @@ def buscar(request):
     
 
     if categoria == "Retos":
-        print('buscando retos')
+        resultado = N_PART.getParticipacionesPorTexto(texto)
+
+        print(resultado)
         
+        if resultado.get("error") == None:
+            resultadosParticipacion = resultado["participaciones"]
+        else:
+            error = resultado['error']
+    
     
     if categoria == 'Categoría':
-        print('buscando retos y perfiles')
         
-        resultado = NP.buscarPerfiles(texto)
+        resultado = N_PERF.buscarPerfiles(texto)
+        print(resultado)
+        
         count_error = 0
         
         if resultado.get("error") == None:
             resultadosPerfil = resultado["perfiles"]
         else:
             count_error += 1
+        
+        resultado = N_PART.getParticipacionesPorTexto(texto)
+
+        print(resultado)
+        
+        if resultado.get("error") == None:
+            resultadosParticipacion = resultado["participaciones"]
+        else:
+            count_error += 1
             
-        if count_error > 0:
+        if count_error > 1:
             error = 'No se encontraron coincidencias'
-    
+
     
     
     return render(

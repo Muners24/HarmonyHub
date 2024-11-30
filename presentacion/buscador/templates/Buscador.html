@@ -55,23 +55,35 @@
 
         </div>
 
-        <div>
-          {% for perfil in perfiles %}
-          <p>{{perfil.nombre}}</p>
-          <img src="{{perfil.img}}" width="50px" height="50px">
-          <p>{{perfil.nivel}}</p>
-          {% endfor %}
+        <div class="mt-4">
+          <p>{{error}}</p>
+
+          <table class="table table-striped table-hover align-top border border-dark">
+            <tbody>
+              {% for perfil in perfiles %}
+                <tr>
+                  <td style="width: 200px;">
+                    <img src="{{ perfil.img }}" width="auto" height="150px" style="align-center" />
+                  </td>
+        
+                  <td>
+                    <strong style="font-size: 24px;">{{ perfil.nombre }}</strong>
+                    <br></br>
+                    <small class="text-muted" style="font-size: 18px;">{{ perfil.nivel }}</small>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
 
           {% for reto in retos %}
           <p>{{reto.titulo}}</p>
-          <img src="{{reto.compositor}}" width="50px" height="50px">
+          <img src="" width="50px" height="50px">
+          <p>{{reto.compositor}}</p>
           <p>{{reto.likes}}</p>
           {% endfor %}
 
-        <p>{{error}}</p>
-
-
-      </div>
+        </div>
 
     </div>
   </body>

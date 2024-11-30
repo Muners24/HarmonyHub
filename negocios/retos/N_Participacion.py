@@ -43,4 +43,33 @@ class N_Participacion:
         
         return {'participaciones': participacionesJson}
     
+    def getParticipacionesPorTexto(self,texto:int):
+        
+        participaciones = self.DParticipacion.buscarParticipacionesPorTexto(texto)
+        
+        participacionesJson = []
+        
+        for participacion in participaciones:
+            reto = self.DR.buscarRetoPorId(participacion.IdReto)
+            
+            if reto == None:
+                return {'error': 'Reto invalido'}
+            
+            partitura = self.DPartitura.buscarPartituraPorId(participacion.IdPartitura)
+
+            if partitura == None:
+                return {'error': 'Partitura no encontrada'}
+            
+            participacionesJson.append({
+                'titulo' : participacion.Titulo,
+                'compositor': partitura.Compositor,
+                'tipo': reto.TipoReto,
+                'likes': 0,
+            })
+        
+        error = None
+        if len(participacionesJson) == 0:
+            error = 'No se encontraron participaciones'
+        
+        return {'participaciones': participacionesJson , 'error': error}
     

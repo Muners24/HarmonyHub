@@ -31,7 +31,8 @@ INSTALLED_APPS = [
     'inicio',
     'retos',
     'Sessions',
-    'buscador'
+    'buscador',
+    'Profile'
 ]
 
 MIDDLEWARE = [
