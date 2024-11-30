@@ -25,20 +25,17 @@
       <!-- Contenido principal -->
       <div class="row mt-4">
         <!-- Columna Izquierda-->
-        <div class="col-md-6">
+        <div class="col-md-7">
           <!-- Nombre -->
           <div class="text-left mb-3">
             <h1>{{ nombre }}</h1>
           </div>
 
           <!-- Descripción -->
-          <div
-            class="description-box border border-dark p-3 bg-light"
-            style="overflow-y: auto;"
-          >
+          <div class="border border-dark border-3 rounded p-3 bg-light" style="height: 200px; width: 100%;">
             {{ descripcion }}
-          </div>
-
+        </div>
+        
 
           <!-- Tabla de Participaciones -->
           {% if participaciones %}
@@ -47,7 +44,7 @@
                 <tbody>
                   {% for participacion in participaciones %}
                     <tr>
-                      <td style="width: 100px;">
+                      <td style="width: 120px;">
                         {% if participacion.tipo == 'Armónico' %}
                           <img src="{% static 'img/Armonia.png' %}" class="img-thumbnail" />
                         {% endif %}
@@ -62,23 +59,25 @@
                       </td>
 
                       <td>
-                        <strong>{{ participacion.titulo }}</strong><br>
-                        <small class="text-muted">{{ participacion.compositor }}</small>
+                        <strong style="font-size: 20px;">{{ participacion.titulo }}</strong><br>
+                        <small class="text-muted" style="font-size: 18px;">{{ participacion.compositor }}</small>
                       </td>
                       <!-- Likes -->
-                      <td>Likes: {{ participacion.likes }}</td>
+                      <td style="font-size: 20px; text-align: right;">
+                        <strong> Likes: {{ participacion.likes }} </strong> 
+                      </td>
                     </tr>
                   {% endfor %}
                 </tbody>
               </table>
             </div>
           {% else %}
-            <p class="mt-4">No se encontraron participaciones.</p>
+            <p class="mt-4">No hay participaciones.</p>
           {% endif %}
         </div>
 
         <!-- Columna Derecha -->
-        <div class="col-md-6 text-center">
+        <div class="col-md-5 text-center">
           <!-- Foto de Perfil -->
           <div class="profile-image mx-auto mb-3">
             <img
