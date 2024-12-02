@@ -54,15 +54,14 @@
 
         <div class="mt-4">
           <p class="error">{{error}}</p>
-
-          <table class="table table-striped table-hover align-top border border-dark">
+          <table class="table">
             <tbody>
               {% for perfil in perfiles %}
-                <tr onclick="verPerfil({{perfil.idUsuario}});" style="cursor: pointer;">
-                  <td style="width: 300px;">
-                    <img src="{{ perfil.img }}" width="auto" height="150px" style="align-center" />
+                <tr class="panel-perfil" onclick="verPerfil({{perfil.idUsuario}});">
+                  <td style="width: 300px">
+                    <img src="{{ perfil.img }}" width="auto;" height="100%" style="align-center; max-width: 100%;" />
                   </td>
-        
+                  <div class="divi"></div>
                   <td>
                     <strong style="font-size: 34px;">{{ perfil.nombre }}</strong>
                     <br></br>
@@ -74,7 +73,7 @@
 
             <tbody>
               {% for reto in retos %}
-                <tr>
+                <tr onclick="verParticipacion({{reto.id}});" style="cursor: pointer;">
                   <td style="width: 300px">
                     {% if reto.tipo == 'Armónico' %}
                       <img src="{% static 'img/Armonia.png' %}" class="img-thumbnail" />

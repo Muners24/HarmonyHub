@@ -11,7 +11,7 @@ class D_Usuario(Conexion):
         super().__init__()
     
     
-    def registrarUsuario(self,usuario):
+    def registrarUsuario(self,usuario: E_Usuario) -> bool:
         try:
             self.abrirConexion()
             cursor = self.conexion.cursor()
@@ -31,7 +31,7 @@ class D_Usuario(Conexion):
         finally:
             self.cerrarConexion()
             
-    def buscarUsuarioPorCorreo(self,correo):
+    def buscarUsuarioPorCorreo(self,correo: str) -> E_Usuario | None:
         usuario = None
         try:
             self.abrirConexion()
@@ -51,7 +51,7 @@ class D_Usuario(Conexion):
             self.cerrarConexion()
             return usuario
         
-    def buscarUsuarioPorId(self,idUsuario):
+    def buscarUsuarioPorId(self,idUsuario:int) -> E_Usuario | None:
         usuario = None
         try:
             self.abrirConexion()

@@ -12,30 +12,12 @@ def PerfilView(request):
 
     NP = N_Perfil()
 
-    datos = NP.datosPerfil(request.session.get('IdUsuario'))
+    respuesta = NP.datosPerfil(request.session.get('IdUsuario'))
 
-    if datos['error']:
-        return render(request, "Profile.html", {'error': datos['error']})
+    if respuesta['error']:
+        return render(request, "Profile.html", {'error': respuesta['error']})
 
-    nombre = datos['nombre']
-    descripcion = datos['descripcion']
-    nivel = datos['nivel']
-    img = datos['img']
-    progreso = datos['progreso']
-    porcentaje = datos['porcentaje']
-    participaciones = datos['participaciones']
-
-    context = {
-        'img': img,
-        'nombre': nombre,
-        'descripcion': descripcion,
-        'nivel': nivel,
-        'progreso': progreso,
-        'porcentaje': porcentaje,
-        'participaciones': participaciones.get('participaciones', [])
-    }
-
-    return render(request, "Profile.html", context)
+    return render(request, "Profile.html", respuesta)
 
 def perfiles(request):
     if request.session.get('IdUsuario') is None:
@@ -45,28 +27,10 @@ def perfiles(request):
         return redirect('/buscador')
     
     NP = N_Perfil()
+    
+    respuesta = NP.datosPerfil(request.session.get('IdUsuarioBuscar'))
 
-    datos = NP.datosPerfil(request.session.get('IdUsuarioBuscar'))
+    if respuesta['error']:
+        return render(request, "Profile.html", {'error': respuesta['error']})
 
-    if datos['error']:
-        return render(request, "Profile.html", {'error': datos['error']})
-
-    nombre = datos['nombre']
-    descripcion = datos['descripcion']
-    nivel = datos['nivel']
-    img = datos['img']
-    progreso = datos['progreso']
-    porcentaje = datos['porcentaje']
-    participaciones = datos['participaciones']
-
-    context = {
-        'img': img,
-        'nombre': nombre,
-        'descripcion': descripcion,
-        'nivel': nivel,
-        'progreso': progreso,
-        'porcentaje': porcentaje,
-        'participaciones': participaciones.get('participaciones', [])
-    }
-
-    return render(request, "Profile.html", context)
+    return render(request, "Profile.html", respuesta)

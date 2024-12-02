@@ -143,6 +143,8 @@
   transition: background-color 0.3s, transform 0.2s;
   text-align: center;
   line-height: 50px;
+  margin-left: 1px;
+  margin-right: 1px;
 }
 
 .editorBtn:hover {
@@ -163,6 +165,7 @@
   text-align: center;
   line-height: 60px;
   box-sizing: border-box;
+  display: none;
 }
 
 .dropdown-itm:focus{

@@ -32,7 +32,9 @@ INSTALLED_APPS = [
     'retos',
     'Sessions',
     'buscador',
-    'Profile'
+    'Profile',
+    'participacion',
+    'resultados'
 ]
 
 MIDDLEWARE = [

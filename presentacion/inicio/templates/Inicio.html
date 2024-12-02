@@ -16,6 +16,10 @@
     />
 
     <script src="{% static 'Scripts/Buscar.js' %}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/midi.js@0.3.0"></script>
+
+
+
     <title></title>
   </head>
 
@@ -29,7 +33,7 @@
       <div class="col d-flex justify-content-center">
         <div style="display: flex;">
           <input id='tbBuscar' class="tb-search" type="text" placeholder="Buscar" />
-          <a id='buscar' onclick="buscar('Categoría')" ><img src="{% static 'img/LupaN.png'%}" class="search-icon" /></a>
+          <a id='buscar' onclick="buscar('Categoría')" style="width: 0px;"><img src="{% static 'img/LupaN.png'%}" class="search-icon" /></a>
         </div>
       </div>
 
@@ -50,6 +54,34 @@
           </button></a
         >
       </div>
+
+      <input type="file" id="inputMidi" accept=".mid,.midi" />
+      <button onclick="reproducirMIDI()">Reproducir MIDI</button>
+  
+      <script>
+          function reproducirMIDI() {
+            MIDI.loadPlugin({
+              soundfontUrl: "https://cdn.jsdelivr.net/npm/midi.js@0.3.0/soundfont/",
+              instrument: "acoustic_grand_piano", // Change this to your preferred instrument
+              onsuccess: function() {
+                console.log("MIDI Plugin loaded successfully");
+              }
+              onerror: function() {
+                alert('error');
+              }
+            });
+
+            const input = document.getElementById('inputMidi');
+            const formData = new FormData();
+            formData.append('file', input.files[0]);
+      
+                // Load and play the MIDI file
+                MIDI.Player.loadDataUri(formData, function() {
+                  MIDI.Player.start();
+                });
+          }
+      </script>
+
 
       <div class="row justify-content-center">
         <img src="{% static 'img/LogoFondo.png' %}" class="logo-fondo" />

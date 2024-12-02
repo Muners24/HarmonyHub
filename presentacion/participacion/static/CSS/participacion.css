@@ -1,0 +1,11 @@
+.lbl-container{
+    margin-left: 50%;
+    justify-content: space-between;
+    display: flex;
+}
+
+.text-partitura{
+    font-size: 25px;
+    font-weight: bold;
+    color: #333333;
+}

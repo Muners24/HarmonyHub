@@ -12,7 +12,7 @@ from entidades.E_Partitura import E_Partitura
 from entidades.E_Participacion import E_Participacion
 from negocios.retos.N_Participacion import N_Participacion
 from negocios.retos.N_Retos import N_Retos
-from negocios.retos.Partitura import Partitura
+from negocios.retos.N_Partitura import N_Partitura
 
 
 def retos(request):
@@ -30,7 +30,6 @@ def retos(request):
 
     return render(request, "Retos.html", {"retos": retos})
 
-
 def reto(request):
 
     if request.session.get("IdUsuario") == None:
@@ -40,11 +39,10 @@ def reto(request):
     if idReto == None:
         return redirect(retos)
 
-    NP = Partitura()
+    NP = N_Partitura()
 
     partitura = NP.getPartituraPorIdReto(idReto)
     return render(request, "EditorReto.html", getParameters(partitura))
-
 
 @csrf_exempt
 def selectReto(request):
@@ -68,7 +66,6 @@ def selectReto(request):
     else:
         return JsonResponse({"error": "Método no permitido"}, status=405)
 
-
 @csrf_exempt
 def participarReto(request):
     if request.session.get("IdUsuario") == None:
@@ -81,7 +78,7 @@ def participarReto(request):
         try:
             data = json.loads(request.body.decode("utf-8"))
             NParticipacion = N_Participacion()
-            NPartitura = Partitura()
+            NPartitura = N_Partitura()
 
             idPartitura = NPartitura.insertarPartitura(
                 E_Partitura(
@@ -91,7 +88,7 @@ def participarReto(request):
                     notacion = data["notacion"],
                 )
             )
-
+            
             if idPartitura == None:
                 return JsonResponse(data)
 
@@ -112,7 +109,6 @@ def participarReto(request):
             return JsonResponse({"error": str(e)}, status=500)
     else:
         return JsonResponse({"error": "Método no permitido"}, status=405)
-
 
 def getParameters(partitura):
     buttons = [

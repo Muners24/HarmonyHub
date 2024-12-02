@@ -338,6 +338,7 @@ class Editor extends EditorListener {
   }
 
   cargarPartitura(notacion) {
+
     this.reinit()
     this.config();
     this.setTempo(notacion.tempo);
@@ -347,15 +348,17 @@ class Editor extends EditorListener {
     let i = 0;
     let notas = notacion.notas;
     while (notas.length !== 0) {
+
       let cap = new Fraction(this.getCompasNum(), this.getCompasDen());
       this.compases[i].empty();
+
       while (cap.numerator !== 0 && cap.greaterThanEquals(new Fraction(1, parseInt(notas[0].dur)))) {
         cap.simplify();
         this.compases[i].addNota(notas[0].keys, notas[0].dur);
         cap.subtract(new Fraction(1, parseInt(notas[0].dur)));
         notas.splice(0, 1);
       }
-
+      
       while (cap.numerator !== 0) {
         cap.simplify();
         this.compases[0].addNota(['b/4'], String(cap.denominator) + 'r')
@@ -366,7 +369,9 @@ class Editor extends EditorListener {
         this.addCompas();
         i++;
       }
+
     }
+
 
     this.formated = false;
     this.Editdraw();

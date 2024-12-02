@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   editor = new Editor('Editor');
   editor.config();
   editor.Editdraw();
+  editor.initInput();
 
 });
 

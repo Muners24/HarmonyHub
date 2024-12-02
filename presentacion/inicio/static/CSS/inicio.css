@@ -8,6 +8,8 @@
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
+    margin-left: 1px;
+    margin-right: 1px;
 }
 
 .tb-search{

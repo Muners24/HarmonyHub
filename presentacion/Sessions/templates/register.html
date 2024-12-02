@@ -14,15 +14,16 @@
     <script src="{% static 'Scripts/ShowSection.js' %}" defer></script>
 
     <script src="{% static 'Scripts/ShowImage.js' %}" defer></script>
+    <script src="{% static 'Scripts/Deshabilitar.js' %}" defer></script>
 
 </head>
 <body class="bg-light">
     <div class="container d-flex justify-content-center align-items-center vh-100">
-        <div class="row shadow-lg rounded-3 overflow-hidden" style="max-width: 900px; width: 100%; background-color: #f7f3ec;">
+        <div class="row shadow-lg rounded-3 overflow-hidden" style="width: 100%; background-color: #f7f3ec;">
             <!-- Sección izquierda con logo y texto -->
             <div class="col-md-6 d-flex flex-column align-items-center justify-content-center text-center bg-light p-4">
                 <h1 class="mb-4 fw-bold">Harmony Hub</h1>
-                <img src="{% static 'images/Logo.png' %}" alt="Harmony Hub Logo" class="img-fluid" style="max-width: 600px;">
+                <img src="{% static 'img/Logo.png' %}" alt="Harmony Hub Logo" class="img-fluid" style="max-width: 600px;">
             </div>
             <!-- Sección del formulario -->
             <div class="col-md-6 p-5">
@@ -105,7 +106,7 @@
                         </div>
 
                         <!-- Botón de registrar -->
-                        <button type="submit" class="btn btn-success w-100 py-2">Registrar</button>
+                        <button id="registrar" type="submit" class="btn btn-success w-100 py-2">Registrar</button>
                     </div>
                 </form>
             </div>

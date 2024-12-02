@@ -17,7 +17,7 @@ class D_Nivel(Conexion):
             self.abrirConexion()
             cursor = self.conexion.cursor()
             
-            cursor.execute( "{CALL BuscarNivelPorId (?)}",(id)),
+            cursor.execute( "{CALL BuscarNivelPorId (?)}",(id))
 
             row = cursor.fetchone()
             

@@ -17,7 +17,7 @@ class D_Perfil(Conexion):
     def __init__(self):
         super().__init__()
     
-    def registrarPerfil(self,perfil):
+    def registrarPerfil(self,perfil: E_Perfil) -> bool:
         try:
             self.abrirConexion()
             cursor = self.conexion.cursor()
@@ -41,13 +41,13 @@ class D_Perfil(Conexion):
         finally:
             self.cerrarConexion()
     
-    def buscarPefilPorIdUsuario(self,id):
+    def buscarPefilPorIdUsuario(self,idUsuario:int) -> E_Perfil | None:
         perfil = None
         try:
             self.abrirConexion()
             cursor = self.conexion.cursor()
             
-            cursor.execute("{CALL BuscarPefilPorIdUsuario (?)}", (id))
+            cursor.execute("{CALL BuscarPefilPorIdUsuario (?)}", (idUsuario))
             
             row = cursor.fetchone()
             
@@ -82,7 +82,7 @@ class D_Perfil(Conexion):
             self.cerrarConexion()
             return perfil
 
-    def buscarPefilPorNombre(self,nombreUsuario):
+    def buscarPefilPorNombre(self,nombreUsuario: str) -> list:
         perfiles = []
         try:
             self.abrirConexion()

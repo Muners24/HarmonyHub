@@ -74,3 +74,9 @@
     font-size: 25px;
     color: #ff2525;
 }
+
+.panel-perfil{
+    cursor: pointer;
+    width: 100%;
+    justify-content: left;
+}

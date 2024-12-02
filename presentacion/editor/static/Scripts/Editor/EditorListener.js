@@ -6,17 +6,6 @@ class EditorListener {
         this.render.resize(this.bordeR, 200);
         this.context = this.render.getContext();
 
-        this.canvas.addEventListener('click', (event) => this.handleClick(event));
-
-        this.canvas.addEventListener('mousemove', (event) => {
-            if (this.nota_selected !== -1) {
-                // Si nota_selected es diferente de -1, ejecutamos la función debounced
-                this.debounce(this.handleMov.bind(this), 60)(event);
-            }
-        });
-
-        //requiere focus si se configura con svgElement
-        document.addEventListener('keydown', this.debounce(this.handleKeydown.bind(this), 16));
         this.rec = this.canvas.getBoundingClientRect();
         this.nota_selected = -1;
         this.compas_selected = -1;
@@ -37,6 +26,20 @@ class EditorListener {
 
         this.pentagramas = [];
         this.crescendos = new Map();
+    }
+
+    initInput(){
+        this.canvas.addEventListener('click', (event) => this.handleClick(event));
+
+        this.canvas.addEventListener('mousemove', (event) => {
+            if (this.nota_selected !== -1) {
+                // Si nota_selected es diferente de -1, ejecutamos la función debounced
+                this.debounce(this.handleMov.bind(this), 60)(event);
+            }
+        });
+
+        //requiere focus si se configura con svgElement
+        document.addEventListener('keydown', this.debounce(this.handleKeydown.bind(this), 16));
     }
 
     debounce(func, delay) {

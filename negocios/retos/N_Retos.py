@@ -19,7 +19,7 @@ class N_Retos:
 
     def __init__(self):
         self.DR = D_Reto()
-        self.DP = D_Participacion()
+        self.DParticipacion = D_Participacion()
         self.DPartitura = D_Partitura()
         
     def getRetos(self):
@@ -32,10 +32,12 @@ class N_Retos:
         
             retos = self.DR.listarRetosSemanales()
 
+        self.DParticipacion.calificarParticipaciones()
+        
         return retos
 
     def participar(self,participacion):
-        return self.DP.insertarParticipacion(participacion)
+        return self.DParticipacion.insertarParticipacion(participacion)
     
     
     def generarReto(self, tipoReto):

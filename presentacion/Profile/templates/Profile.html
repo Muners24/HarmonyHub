@@ -17,6 +17,9 @@
       href="{% static 'CSS/profile.css' %}"
     />
 
+    <script src="{% static 'Scripts/Buscar.js' %}" defer></script>
+
+
     <title>Perfil</title>
   </head>
 
@@ -43,7 +46,7 @@
               <table class="table table-striped table-hover align-middle border border-dark">
                 <tbody>
                   {% for participacion in participaciones %}
-                    <tr>
+                    <tr onclick="verParticipacion({{participacion.id}});" style="cursor: pointer;">
                       <td style="width: 120px;">
                         {% if participacion.tipo == 'Armónico' %}
                           <img src="{% static 'img/Armonia.png' %}" class="img-thumbnail" />

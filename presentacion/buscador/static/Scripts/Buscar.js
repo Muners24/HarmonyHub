@@ -51,3 +51,26 @@ function verPerfil(idUsuario){
         });
 
 }
+
+function verParticipacion(idParticipacion){
+
+    let data = {
+        'idParticipacion': idParticipacion,
+    }
+
+
+    fetch('/buscador/verParticipacion/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+        .then(response => {
+            window.location.href = "/participacion/";
+        })
+        .then(data => {
+        })
+        .catch(error => {
+        });
+}

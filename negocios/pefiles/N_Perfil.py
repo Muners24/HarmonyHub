@@ -17,8 +17,8 @@ class N_Perfil:
         self.DN = D_Nivel()
         self.NP = N_Participacion()
 
-    def buscarPerfilPorIdUsuario(self, id) -> E_Perfil:
-        return self.DP.buscarPefilPorIdUsuario(id)
+    def buscarPerfilPorIdUsuario(self, idUsuario:int) -> E_Perfil:
+        return self.DP.buscarPefilPorIdUsuario(idUsuario)
 
     def datosPerfil(self, idUsuario: int):
         perfil = self.DP.buscarPefilPorIdUsuario(idUsuario)
@@ -31,10 +31,12 @@ class N_Perfil:
         if nivel == None:
             return {"error": "Nivel invalido"}
 
-        participaciones = self.NP.getParticipaciones(idUsuario)
+        respuesta = self.NP.getParticipaciones(idUsuario)
         
-        if participaciones.get('error',None) != None:
-            return {"error": participaciones['error']}
+        if respuesta.get('error') != None:
+            return {"error": respuesta['error']}
+        
+        print(respuesta)
         
         return {
             "nombre": perfil.Nombre,
@@ -43,7 +45,7 @@ class N_Perfil:
             "nivel": nivel.Descripcion,
             "progreso": f"{perfil.Progreso}/{nivel.Progreso}",
             "porcentaje": perfil.Progreso * 100 / nivel.Progreso,
-            "participaciones": participaciones,
+            "participaciones": respuesta['participaciones'],
             "error": None
         }
 

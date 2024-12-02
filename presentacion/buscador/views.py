@@ -10,6 +10,8 @@ def buscador(request):
         return redirect('/logout')
     
     request.session['IdUsuarioBuscar'] = None
+    request.session['IdParticipacionBuscar'] = None
+    
     request.session["query"] = None
 
     texto = ""
@@ -37,7 +39,8 @@ def buscar(request):
         return redirect(buscador)
 
     request.session['IdUsuarioBuscar'] = None
-
+    request.session['IdParticipacionBuscar'] = None
+    
     query = request.session["query"]
 
     categoria = query["categoria"]
@@ -66,8 +69,6 @@ def buscar(request):
     if categoria == "Perfiles de Usuario":
         
         resultado = N_PERF.buscarPerfiles(texto)
-
-        print(resultado)
         
         if resultado.get("error") == None:
             resultadosPerfil = resultado["perfiles"]
@@ -79,8 +80,6 @@ def buscar(request):
 
     if categoria == "Retos":
         resultado = N_PART.getParticipacionesPorTexto(texto)
-
-        print(resultado)
         
         if resultado.get("error") == None:
             resultadosParticipacion = resultado["participaciones"]
@@ -91,7 +90,6 @@ def buscar(request):
     if categoria == 'Categoría':
         
         resultado = N_PERF.buscarPerfiles(texto)
-        print(resultado)
         
         count_error = 0
         
@@ -101,8 +99,6 @@ def buscar(request):
             count_error += 1
         
         resultado = N_PART.getParticipacionesPorTexto(texto)
-
-        print(resultado)
         
         if resultado.get("error") == None:
             resultadosParticipacion = resultado["participaciones"]
@@ -112,8 +108,6 @@ def buscar(request):
         if count_error > 1:
             error = 'No se encontraron coincidencias'
 
-    
-    
     return render(
         request,
         "Buscador.html",
@@ -125,7 +119,6 @@ def buscar(request):
             "error": error,
         },
     )
-
 
 @csrf_exempt
 def query(request):
@@ -176,3 +169,19 @@ def verPerfil(request):
         return JsonResponse({"error": "Método no permitido"}, status=405)
     
 
+@csrf_exempt
+def verParticipacion(request):
+    if request.session.get("IdUsuario") == None:
+        return redirect("/logout")
+
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body.decode("utf-8"))
+
+            request.session['IdParticipacionBuscar'] = data.get('idParticipacion')
+                        
+            return JsonResponse(data)
+        except Exception as e:
+            return
+    else:
+        return JsonResponse({"error": "Método no permitido"}, status=405)

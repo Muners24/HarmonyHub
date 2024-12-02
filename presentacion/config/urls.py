@@ -9,4 +9,6 @@ urlpatterns = [
     path('',include('Sessions.urls')),
     path('buscador/',include('buscador.urls')),
     path('perfil/',include('Profile.urls')),
+    path('participacion/',include('participacion.urls')),
+    path('resultados/',include('resultados.urls')),
 ]

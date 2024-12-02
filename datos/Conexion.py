@@ -15,7 +15,6 @@ class Conexion:
         try:
             if not self.conexion or self.conexion.closed:
                 self.conexion = pyodbc.connect(self.con_str)
-                print("Conexión exitosa a la base de datos!")
         except Exception as ex:
             print(f"Error al abrir la conexión: {ex}")
 
@@ -25,6 +24,5 @@ class Conexion:
         try:
             if self.conexion and not self.conexion.closed:
                 self.conexion.close()
-                print("Conexión cerrada exitosamente.")
         except Exception as ex:
             print(f"Error al cerrar la conexión: {ex}")
