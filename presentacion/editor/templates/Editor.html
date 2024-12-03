@@ -30,6 +30,7 @@
     <script src="{% static 'Scripts/Front/DD_Plus.js' %}" defer></script>
     <script src="{% static 'Scripts/Front/DropDown.js' %}" defer></script>
     
+    <script src="{% static 'Scripts/DropDownMaster.js' %}" defer></script>
     <script src="{% static 'Scripts/EditorOnLoad.js' %}" defer></script>
 
     <title></title>
@@ -66,12 +67,12 @@
           </button> 
 
           <!-- Dropdown-archivo -->
-          <div id="ddItemsArchivo" class="dropdown-container-down">
+          <div id="ddItemsArchivo" class="dropdown-container-down" style="display: none;">
             <a href="/editor"><button class="dropdown-itm">Nuevo</button></a>
             
             <!-- Dropdown-import -->
             <div  class="dropdown-right">
-              <div id="ddItemsImport" class="dropdown-container-down">
+              <div id="ddItemsImport" class="dropdown-container-down" style="display: none;">
                 <button class="dropdown-itm" onclick="loadFile('inputMidi')">MIDI</button>
                 <input id="inputMidi" type="file" style="display: none;" onchange="importMidi()">
 
@@ -81,7 +82,7 @@
             
             <!-- Dropdown-export -->
             <div  class="dropdown-right">
-              <div id="ddItemsExport" class="dropdown-container-down">
+              <div id="ddItemsExport" class="dropdown-container-down" style="display: none;">
                 <button class="dropdown-itm" onclick="exportMidi()">MIDI</button>
               </div> 
             </div>
