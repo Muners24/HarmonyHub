@@ -9,8 +9,6 @@ function toggleDD(id){
 
     let element = document.getElementById(id);
     
-    alert(id);
-
     if (element.style.display === 'none'){
         element.style.display = '';
         return;

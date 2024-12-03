@@ -103,8 +103,6 @@ class N_Participacion:
         if partitura == None:
             return {'error': 'Partitura no encontrada'}
         
-        print(votable)
-        
         participacionJson = {
             'id' : participacion.IdParticipacion,
             'titulo' : participacion.Titulo,
@@ -126,16 +124,24 @@ class N_Participacion:
             if perfil == None:
                 continue
             
+            reto = self.DR.buscarRetoPorId(participacion.IdReto)
+            
+            if reto == None:
+                continue
+            
             partitura = self.DPartitura.buscarPartituraPorId(participacion.IdPartitura)
             
             if partitura == None:
                 continue
+            
             
             likes = self.DL.contarLikes(participacion.IdParticipacion)
             
             participacionesJson.append({
                 'id': participacion.IdParticipacion,
                 'img':perfil.getImg(),
+                'tituloReto' : reto.Titulo,
+                'tipoReto' : reto.TipoReto,
                 'titulo': participacion.Titulo,
                 'compositor': partitura.Compositor,
                 'likes': likes,
