@@ -16,7 +16,8 @@
     />
 
     <script src="{% static 'Scripts/Buscar.js' %}" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/midi.js@0.3.0"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/midi.js/0.3.0/midi.min.js" integrity="sha512-ep4Zu1sjPuVNVh9DvaHnw65KDtBer9JdsXHL4aouR1EgILTmhh9NRpn1xm6gHtQbknj5DOvKCXdqJKw/MLK/rQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 
 
 
@@ -62,32 +63,26 @@
         </a>
       </div>
 
-      <input type="file" id="inputMidi" accept=".mid,.midi" />
       <button onclick="reproducirMIDI()">Reproducir MIDI</button>
-  
-      <script>
-          function reproducirMIDI() {
-            MIDI.loadPlugin({
-              soundfontUrl: "https://cdn.jsdelivr.net/npm/midi.js@0.3.0/soundfont/",
-              instrument: "acoustic_grand_piano", // Change this to your preferred instrument
-              onsuccess: function() {
-                console.log("MIDI Plugin loaded successfully");
-              }
-              onerror: function() {
-                alert('error');
-              }
-            });
 
-            const input = document.getElementById('inputMidi');
-            const formData = new FormData();
-            formData.append('file', input.files[0]);
-      
-                // Load and play the MIDI file
-                MIDI.Player.loadDataUri(formData, function() {
-                  MIDI.Player.start();
-                });
+    <script>
+
+      function reproducirMIDI(){
+        MIDI.loadPlugin({
+          onsuccess: function() {
+            alert('reproducir');
+            MIDI.Player.loadFile('Melodía Serena.mid', function() {
+              MIDI.Player.start();
+            });
           }
-      </script>
+          onerror: function(){
+            alert('rerror');
+
+          }
+        });
+      }
+      
+    </script>
 
 
       <div class="row justify-content-center">

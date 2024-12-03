@@ -6,6 +6,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from datos.Conexion import Conexion
 from entidades.E_Nivel import E_Nivel
 
+
 class D_Nivel(Conexion):
 
     def __init__(self):
@@ -30,5 +31,24 @@ class D_Nivel(Conexion):
         finally:
             self.cerrarConexion()
             return nivel
+        
+    def subirNivel(self, idPerfil: int) -> bool:
+        try:
+            self.abrirConexion()
+            cursor = self.conexion.cursor()
+            
+            cursor.execute("{CALL SubirNivel (?)}", (idPerfil))
+            
+            self.conexion.commit()
+            
+            return True
+        
+        except Exception as ex:
+            print(f"Error al subir de nivel: {ex}")
+            return False
+            
+        finally:
+            self.cerrarConexion()
+        
 
   

@@ -125,3 +125,44 @@ class D_Perfil(Conexion):
         finally:
             self.cerrarConexion()
             return perfiles
+        
+    def perfilesListosParaSubirNivel(self) -> list:
+        idPerfiles = []
+        try:
+            self.abrirConexion()
+            cursor = self.conexion.cursor()
+            
+            cursor.execute( "{CALL PerfilesListosParaSubirNivel }")
+
+            rows = cursor.fetchall()
+            
+            for row in rows:
+                idPerfiles.append(row[0])           
+
+        
+        except Exception as ex:
+            print(f"Error al buscar perfiles listos para nivel: {ex}")
+        
+        finally:
+            self.cerrarConexion()
+            return idPerfiles
+        
+    
+    def subirNivel(self, idPerfil: int) -> bool:
+        try:
+            self.abrirConexion()
+            cursor = self.conexion.cursor()
+            
+            cursor.execute("{CALL SubirNivel (?)}", (idPerfil))
+            
+            self.conexion.commit()
+            
+            return True
+        
+        except Exception as ex:
+            print(f"Error al insertar perfil: {ex}")
+            return False
+            
+        finally:
+            self.cerrarConexion()
+        
