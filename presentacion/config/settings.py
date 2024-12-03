@@ -34,7 +34,8 @@ INSTALLED_APPS = [
     'buscador',
     'Profile',
     'participacion',
-    'resultados'
+    'resultados',
+    'Info',
 ]
 
 MIDDLEWARE = [

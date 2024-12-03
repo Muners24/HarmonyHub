@@ -1,5 +1,6 @@
 import sys
 import os
+import time
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 from datos.D_Participacion import D_Participacion
@@ -113,21 +114,23 @@ class N_Participacion:
         return {'participacion': participacionJson ,'votable': votable, 'error': None}
     
     def getResultado(self):
+        
         participaciones = self.DParticipacion.listarParticipacionesAnteriores()
         
         participacionesJson = []
         
-        for participacion in participaciones:
-            
+        for participacion in participaciones:            
             perfil = self.DPerfil.buscarPefilPorIdUsuario(participacion.IdUsuario)
             
             if perfil == None:
                 continue
             
+            
             reto = self.DR.buscarRetoPorId(participacion.IdReto)
             
             if reto == None:
                 continue
+            
             
             partitura = self.DPartitura.buscarPartituraPorId(participacion.IdPartitura)
             
@@ -148,8 +151,11 @@ class N_Participacion:
                 'calificacion':participacion.Calificacion,
             })
             
+            
         error = None
         if len(participacionesJson) == 0:
             error = 'No hay participaciones registradas'
-            
+        
+        
+        
         return {'participaciones': participacionesJson,'error': error}

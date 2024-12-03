@@ -15,12 +15,13 @@ class E_Perfil:
     def getImg(self):
         archivo_base64 = None
         content_type = None
-        
+
         content_type = self.Foto.content_type
-            
+        
         if content_type.startswith('image/'):
             with BytesIO(self.Foto.read()) as buffer:
                 archivo_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+
         
-        return f'data:{content_type}; base64,{archivo_base64}'
+        return f'data:{content_type};base64,{archivo_base64}'
        

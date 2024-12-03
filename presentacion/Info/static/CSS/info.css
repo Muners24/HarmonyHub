@@ -1,0 +1,88 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffff;
+    margin: 20px;
+    margin-top: 150px;
+    padding: 20px; 
+}
+
+header {
+    position: fixed;
+    top: 400px;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: #333; 
+    color: white;
+    text-align: center;
+    line-height: 60px;
+    z-index: 1000;
+}
+
+.tabla-contenedor {
+    border: 2px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-radius: 8px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+
+th, td {
+    border: 2.5px solid;
+    padding: 10px;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bolder;
+}
+
+th {
+    background-color: #f0e6d6;
+}
+
+td:first-child {
+    width: 300px;
+    height: auto;
+    text-align: center;
+    background-color: #eaeaea;
+}
+
+td:last-child{
+    width: 800px;
+    text-align: left;
+    font-size: 20px;
+    font-weight: normal;
+}
+
+td a {
+    font-size: 40px;
+}
+
+img {
+    width: 150px;
+    height: auto;
+}
+
+h2 {
+    color: #333;
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.titulos{
+    font-size: 24px;
+    font-weight: bold;
+}
+
+img.retos {
+    width: 300px;
+    height: auto;
+}

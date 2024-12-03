@@ -67,12 +67,12 @@
           </button> 
 
           <!-- Dropdown-archivo -->
-          <div id="ddItemsArchivo" class="dropdown-container-down" style="display: none;">
+          <div id="ddItemsArchivo" class="dropdown-container-down" style="display: none; max-width: 230px;">
             <a href="/editor"><button class="dropdown-itm">Nuevo</button></a>
             
             <!-- Dropdown-import -->
             <div  class="dropdown-right">
-              <div id="ddItemsImport" class="dropdown-container-down" style="display: none;">
+              <div id="ddItemsImport" style="display: none;">
                 <button class="dropdown-itm" onclick="loadFile('inputMidi')">MIDI</button>
                 <input id="inputMidi" type="file" style="display: none;" onchange="importMidi()">
 
@@ -82,7 +82,7 @@
             
             <!-- Dropdown-export -->
             <div  class="dropdown-right">
-              <div id="ddItemsExport" class="dropdown-container-down" style="display: none;">
+              <div id="ddItemsExport" style="display: none;">
                 <button class="dropdown-itm" onclick="exportMidi()">MIDI</button>
               </div> 
             </div>

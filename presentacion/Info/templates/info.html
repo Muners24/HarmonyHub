@@ -1,0 +1,342 @@
+{% extends "MainMenu.html" %} {% block content %}
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    {% load static %}
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'CSS/info.css' %}"
+    />
+    
+    <title></title>
+  </head>
+  
+  <body>
+    <h2>Información</h2>
+    <div class="tabla-contenedor">
+        <p class="titulos">
+            Tabla de Figuras Musicales
+        </p>
+        <table>
+            <tbody>
+                <tr>
+                    <tr>
+                        <td>
+                            <img src="{% static 'img/Semifusa.png' %}" class="img">
+                        </td>
+                        <td>SemiFusa</td>
+                        <td>La semifusa es una figura musical que se utiliza para representar una duración corta. Se equivale a 1/8 de un compás en un tiempo de 4/4.</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <img src="{% static 'img/Fusa.png' %}" class="img">
+                        </td>
+                        <td>Fusa</td>
+                        <td>La fusa es una figura musical que equivale a la mitad de una semicorchea o 1/16 de un compás en un tiempo de 4/4.</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <img src="{% static 'img/SemiCorchea.png' %}" class="img">
+                        </td>
+                        <td>Semicorchea</td>
+                        <td>La semicorchea es una figura musical que tiene la mitad de la duración de una corchea, es decir, 1/8 de un compás en un tiempo de 4/4.</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <img src="{% static 'img/Corchea.png' %}" class="img">
+                        </td>
+                        <td>Corchea</td>
+                        <td>La corchea es una figura musical que tiene la mitad de la duración de una negra, es decir, 1/4 de un compás en un tiempo de 4/4.</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <img src="{% static 'img/Negra.png' %}" class="img">
+                        </td>
+                        <td>Negra</td>
+                        <td>La negra es una figura musical que representa una duración de 1/4 de un compás en un tiempo de 4/4.</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <img src="{% static 'img/Blanca.png' %}" class="img">
+                        </td>
+                        <td>Blanca</td>
+                        <td>La blanca es una figura musical que representa una duración de 1/2 de un compás en un tiempo de 4/4.</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <img src="{% static 'img/Redonda.png' %}" class="img">
+                        </td>
+                        <td>Redonda</td>
+                        <td>La redonda es la figura musical de mayor duración en este contexto, representando la duración completa de un compás en un tiempo de 4/4.</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <img src="{% static 'img/Corchea.png' %}" class="img">
+                        </td>
+                        <td>Corchea</td>
+                        <td>La corchea es una figura musical que tiene la mitad de la duración de una negra, es decir, 1/4 de un compás en un tiempo de 4/4.</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <img src="{% static 'img/Silencio.png' %}" class="img">
+                        </td>
+                        <td>Silencio</td>
+                        <td>El silencio es un símbolo que indica la ausencia de sonido en una determinada duración. Cada tipo de silencio tiene su propia duración correspondiente a las figuras musicales.</td>
+                    </tr>
+                    
+
+            </tbody>
+        </table>
+        <p class="titulos">
+            Tabla de Alteraciones
+        </p>
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <img src="{% static 'img/DobleBemol1.png' %}" class="img">
+                    </td>
+                    <td>Doble Bemol</td>
+                    <td>Indica que una nota debe bajarse dos semitonos (un tono completo) respecto a su altura original.</td>
+                </tr>                
+                
+                <tr>
+                    <td>
+                        <img src="{% static 'img/Bemol1.png' %}" class="img">
+                    </td>
+                    <td>Bemol</td>
+                    <td>Disminuye el tono de la nota por un semitono cromático.</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <img src="{% static 'img/Natural1.png' %}" class="img">
+                    </td>
+                    <td>Natural</td>
+                    <td>Restablece el tono de la nota a su altura original, anulando cualquier alteración previa.</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <img src="{% static 'img/Sostenido1.png' %}" class="img">
+                    </td>
+                    <td>Sostenido</td>
+                    <td>Aumenta el tono de la nota por un semitono cromático.</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <img src="{% static 'img/DobleSostenido1.png' %}" class="img">
+                    </td>
+                    <td>Doble Sostenido</td>
+                    <td>Aumenta el tono de la nota por dos semitonos cromáticos.</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <img src="{% static 'img/Puntillo.png' %}" class="img">
+                    </td>
+                    <td>Puntillo</td>
+                    <td>Aumenta la duración de la nota o el descanso a la mitad de su valor original.</td>
+                </tr>                
+
+            </tbody>
+        </table>
+
+        <p class="titulos">
+            Tabla de Relaciones entre Notas
+        </p>
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <img src="{% static 'img/Legato.png' %}" class="img">
+                    </td>
+                    <td>Legato</td>
+                    <td>Indica que las notas deben ser tocadas de manera suave y conectada, sin separación entre ellas, produciendo una transición fluida.</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <img src="{% static 'img/Triplet.png' %}" class="img">
+                    </td>
+                    <td>Tresillo</td>
+                    <td>Indica que tres notas deben tocarse en el tiempo de dos, dividiendo el compás de manera irregular en tres partes iguales.</td>
+                </tr>                
+
+            </tbody>
+        </table>
+
+        <p class="titulos">
+            Tabla de Dinámicas
+        </p>
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <img src="{% static 'img/PP.png' %}" class="img">
+                    </td>
+                    <td>Pianissimo</td>
+                    <td>Un término musical que indica que la música debe interpretarse con una suavidad extrema, mucho más suave que "piano".</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <img src="{% static 'img/P.png' %}" class="img">
+                    </td>
+                    <td>Piano</td>
+                    <td>Indica que la música debe interpretarse suavemente, pero no tan suave como pianissimo. Es una intensidad moderadamente baja.</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <img src="{% static 'img/MP.png' %}" class="img">
+                    </td>
+                    <td>MezzoPiano</td>
+                    <td>Un término que indica una dinámica moderada, ligeramente suave. Es más fuerte que "piano", pero aún suave.</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <img src="{% static 'img/MF.png' %}" class="img">
+                    </td>
+                    <td>MezzoForte</td>
+                    <td>Indica una dinámica moderada, ligeramente fuerte. Es más fuerte que "mezzo-piano", pero no tan fuerte como "forte".</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <img src="{% static 'img/F.png' %}" class="img">
+                    </td>
+                    <td>Forte</td>
+                    <td>Se interpreta con fuerza, marcando un volumen fuerte, pero no tan intenso como fortissimo.</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <img src="{% static 'img/FF.png' %}" class="img">
+                    </td>
+                    <td>Fortissimo</td>
+                    <td>Indica que la música debe ser interpretada muy fuerte, con una gran intensidad. Es el volumen más alto en las dinámicas comunes.</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <img src="{% static 'img/Crecendo.png' %}" class="img">
+                    </td>
+                    <td>Crescendo</td>
+                    <td>Indica que la intensidad de la música debe ir en aumento gradualmente, pasando de un volumen más suave a uno más fuerte a lo largo de un pasaje.</td>
+                </tr>                
+
+            </tbody>
+        </table>
+
+        <p class="titulos">
+            Tabla de Articulaciones o Acentos
+        </p>
+        <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <img src="{% static 'img/Staccato.png' %}" class="img">
+                    </td>
+                    <td>Staccato</td>
+                    <td>Un símbolo que indica que una nota debe ser tocada de forma breve y separada de las demás.</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <img src="{% static 'img/Staccatissimo.png' %}" class="img">
+                    </td>
+                    <td>Staccatissimo</td>
+                    <td>Indica que las notas deben ser aún más cortas y separadas que en el staccato, con una interrupción más marcada.</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <img src="{% static 'img/Tenuto.png' %}" class="img">
+                    </td>
+                    <td>Tenuto</td>
+                    <td>Indica que una nota debe ser sostenida durante su valor completo o un poco más, con énfasis en la duración.</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <img src="{% static 'img/Marcato.png' %}" class="img">
+                    </td>
+                    <td>Marcato</td>
+                    <td>Indica que la nota debe ser tocada con un énfasis fuerte, destacada respecto a las demás notas.</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <img src="{% static 'img/Acento.png' %}" class="img">
+                    </td>
+                    <td>Acento</td>
+                    <td>Se utiliza para indicar que una nota debe ser tocada con mayor intensidad o énfasis, normalmente en el tiempo fuerte de un compás.</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <img src="{% static 'img/Fermata.png' %}" class="img">
+                    </td>
+                    <td>Fermata</td>
+                    <td>Indica que la nota o descanso debe ser sostenido más allá de su valor habitual, hasta que el director o intérprete decida cuándo continuar.</td>
+                </tr>                
+
+            </tbody>
+        </table>
+
+        <p class="titulos">
+            Tabla Descripción de Categoría de Retos
+        </p>
+        <table>
+            <tbody>
+
+                <tr>
+                    <td>
+                        <img src="{% static 'img/Melodia.png' %}" class="retos">
+                    </td>
+                    <td>Melódico</td>
+                    <td>Te darán una melodía como base, y tu tarea será hacerla sonar mejor. Puedes ajustar las notas o agregar algunas nuevas para mejorarla, pero sin cambiar la idea principal.</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <img src="{% static 'img/Armonia.png' %}" class="retos">
+                    </td>
+                    <td>Armónico</td>
+                    <td>Con una melodía base que te proporcionarán, tu reto es añadir los acordes que la acompañen. Los acordes deben hacer que la melodía suene más completa y armoniosa.</td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <img src="{% static 'img/Ritmo.png' %}" class="retos">
+                    </td>
+                    <td>Rítmico</td>
+                    <td>El reto rítmico consiste en crear una melodía que siga un patrón rítmico específico. Esto implica que las notas de la melodía se ajusten a un ritmo determinado, ya sea simple o complejo, y que todo el conjunto musical respete la estructura temporal establecida. Este tipo de reto pone énfasis en la relación entre la duración de las notas y los tiempos musicales.</td>
+                </tr>
+                
+                
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+
+{% endblock %}

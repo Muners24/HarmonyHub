@@ -11,4 +11,5 @@ urlpatterns = [
     path('perfil/',include('Profile.urls')),
     path('participacion/',include('participacion.urls')),
     path('resultados/',include('resultados.urls')),
+    path('info/',include('Info.urls')),
 ]
