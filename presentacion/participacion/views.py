@@ -22,9 +22,10 @@ def participacion(request):
     NL = N_Like()
 
     resultado = NP.getParticipacionPorId(idParticipacion)
-
+    
     if resultado['votable']:
         resultado['like'] = NL.getLike(E_Like(idLike=0,idParticipacion=idParticipacion,idUsuario=idUsuario))
+    
     
     return render(request, "Participacion.html",resultado)
 

@@ -51,6 +51,9 @@ class EditorListener {
     }
 
     handleMov(event) {
+        if (this.playing)
+            return;
+
         const x = event.pageX - this.rec.left;
         const y = event.pageY - this.rec.top;
         let compas = this.pentagramas[this.penta_selected].compases[this.compas_selected];
@@ -99,6 +102,9 @@ class EditorListener {
     }
 
     handleKeydown(event) {
+        if (this.playing)
+            return;
+
         this.temp_compas = null;
         this.temp_nota = null;
         switch (event.key) {
@@ -207,6 +213,9 @@ class EditorListener {
     }
 
     handleClick(event) {
+        if(this.playing)
+            return;
+
         const x = event.pageX - this.rec.left;
         const y = event.pageY - this.rec.top;
 

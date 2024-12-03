@@ -12,7 +12,7 @@ class Notacion {
         let notas = ['b/', 'a/', 'g/', 'f/', 'e/', 'd/', 'c/'];
         this.l
         let k = -115;
-        for (let i = 9; i >= 0; i--) {
+        for (let i = 7; i >= 0; i--) {
             for (let j = 0; j < notas.length; j++) {
                 this.altura_notas.set((notas[j] + i.toString()), k);
                 this.keys.push(notas[j] + i.toString());

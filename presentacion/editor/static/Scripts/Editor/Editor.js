@@ -15,6 +15,8 @@ const { Renderer, Stave, StaveNote, Formatter,
 class Editor extends EditorListener {
   constructor(canvas) {
     super(canvas);
+    this.player = new Player();
+    this.playing = false;
   }
 
   addCompas(timeNum = 4, timeDen = 4) {
@@ -358,7 +360,7 @@ class Editor extends EditorListener {
         cap.subtract(new Fraction(1, parseInt(notas[0].dur)));
         notas.splice(0, 1);
       }
-      
+
       while (cap.numerator !== 0) {
         cap.simplify();
         this.compases[0].addNota(['b/4'], String(cap.denominator) + 'r')
@@ -402,6 +404,67 @@ class Editor extends EditorListener {
       notas: notas
     };
   }
+
+  play() {
+    if(this.playing)
+      return;
+
+    this.playing = true;
+    this.noteDeselect();
+    this.signDeselect();
+    this.player.play(this.getData());
+    this.drawPlay();
+  }
+
+  async drawPlay() {
+    let notas = [];
+    for (let i = 0; i < this.compases.length; i++) {
+        for (let j = 0; j < this.compases[i].notas.length; j++) {
+            notas.push(this.compases[i].notas[j]);
+        }
+    }
+
+    let currentTime = Date.now();
+    
+    const bpm = this.getTempo();
+    
+    let delayTime = currentTime;
+
+    for (let i = 0; i < notas.length; i++) {
+        let nota = notas[i];
+        let dur = this.player.durationMap[nota.getDuration().replace('r', '')];
+
+        let noteDurationMs = this.caclularMs(parseInt(dur));
+        // Usar setTimeout para simular el retraso entre notas
+        setTimeout(() => {
+            this.playing = true;
+            nota.playing = true;
+            this.Editdraw();
+        }, delayTime - currentTime); // Retraso desde el tiempo actual
+
+        // Desactivar la nota después de su duración
+        setTimeout(() => {
+            nota.playing = false;
+            this.Editdraw();
+        }, delayTime + noteDurationMs - currentTime);
+
+        // Actualizar el tiempo para la siguiente nota
+        delayTime += noteDurationMs;
+        
+        // Si es la última nota, detener la reproducción
+        if (i === notas.length - 1) {
+            setTimeout(() => {
+                this.playing = false;
+            }, delayTime - currentTime);
+        }
+    }
+
+  }
+
+  caclularMs(duration) {
+    return (60000 / this.getTempo()) / (duration / this.getCompasDen());
+  }
+
 }
 
 

@@ -42,6 +42,9 @@ def reto(request):
     NP = N_Partitura()
 
     partitura = NP.getPartituraPorIdReto(idReto)
+    
+    print(partitura.Notacion)
+    
     return render(request, "EditorReto.html", getParameters(partitura))
 
 @csrf_exempt

@@ -9,11 +9,13 @@
     <meta charset="UTF-8" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vexflow/4.2.5/vexflow-min.js" integrity="sha512-6TxXkXvDGlTfA/gxa+Odoa/so4d4/bjB6c5lgyZq8OVWqUVoDm2dC2PSI4g8Shlc2RZ6FnS1jh792Fo3HRINnw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.6.0/math.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/15.1.3/Tone.js" integrity="sha512-l/S587UA2X7JyCkDqZiEX+4OC6Hp8FC0PE1MFi3+KFLk3n1lxQAtSq8YTZ4ig2YFpJal2Jhz3H3iIFyv3KScFA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'CSS/editor.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'CSS/master.css' %}"/>
 
+    <script src="{% static 'Scripts/Editor/Player.js' %}" defer></script>
     <script src="{% static 'Scripts/Editor/EditorListener.js' %}" defer></script>
     <script src="{% static 'Scripts/Editor/VexRec.js' %}" defer></script>
     <script src="{% static 'Scripts/Editor/Notacion.js' %}" defer></script>
@@ -86,7 +88,7 @@
         </div>
 
         <!-- Resto del menu -->
-        <button class="editorBtn" onclick="closeArchivo();">
+        <button class="editorBtn" onclick="editor.play()">
             <img src="{% static 'img/Reproducir.png' %}" class="button-icon">
             Reproducir
         </button>

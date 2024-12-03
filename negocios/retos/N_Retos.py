@@ -125,7 +125,7 @@ class N_Retos:
             ' "notas": [\n'
             " {\n"
             ' "keys": ["[nota de la escala (por ejemplo, c/4)]", ...],\n'
-            ' "dur": "[duración de la nota: 4, 8, o 16]"\n'
+            ' "dur": "[duración de la nota: 1, 2, 4, 8, 16, ... ,64]"\n'
             " },\n"
             " ...\n"
             " ]\n"

@@ -1,9 +1,16 @@
-
 function exportMidi() {
     const midiData = editor.getData();
 
-    let titulo = document.getElementById('tbTitulo').value;
-    titulo += '.midi'
+    let titulo = '';
+    const tbTitulo = document.getElementById('tbTitulo');
+    if (tbTitulo) {
+        titulo = tbTitulo.value;
+    }
+    if (!titulo) {
+        titulo = 'sin_titulo';
+    }
+    titulo += '.midi';
+
     fetch('/editor/exportMidi/', {
         method: 'POST',
         headers: {

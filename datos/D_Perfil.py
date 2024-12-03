@@ -148,21 +148,4 @@ class D_Perfil(Conexion):
             return idPerfiles
         
     
-    def subirNivel(self, idPerfil: int) -> bool:
-        try:
-            self.abrirConexion()
-            cursor = self.conexion.cursor()
-            
-            cursor.execute("{CALL SubirNivel (?)}", (idPerfil))
-            
-            self.conexion.commit()
-            
-            return True
-        
-        except Exception as ex:
-            print(f"Error al insertar perfil: {ex}")
-            return False
-            
-        finally:
-            self.cerrarConexion()
         

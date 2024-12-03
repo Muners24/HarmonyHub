@@ -38,7 +38,7 @@ def registrar(request):
             userName = perfil_form.cleaned_data['userName']
             descripcion = perfil_form.cleaned_data['descripcion']
             foto = perfil_form.cleaned_data['foto']
-
+          
             NR.registrarPerfil(
                 perfil=E_Perfil(
                     idUsuario=id_usuario,

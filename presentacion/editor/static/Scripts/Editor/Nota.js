@@ -8,6 +8,7 @@ class Nota extends VexRec {
         this.keys = keys;
         this.duracion = duracion;
 
+        this.playing = false;
         this.accidentals = new Map();
         this.articulations = [];
         this.doted = false;
@@ -35,6 +36,9 @@ class Nota extends VexRec {
 
         if (this.selected && this.isRest())
             this.nota.setStyle({ fillStyle: 'rgba(0,100,200,1)' });
+
+        if (this.playing)
+            this.nota.setStyle({ fillStyle: 'red' });
 
         let count = 0;
         for (let i = 0; i < this.keys.length; i++) {

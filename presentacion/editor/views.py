@@ -61,6 +61,7 @@ def exportMidi(request):
         try:
             data = json.loads(request.body.decode("utf-8"))
             path = export.exportMidi(data)
+                        
             file = open(path, 'rb')
             return FileResponse(file,filename='midi.mid')
 
