@@ -49,7 +49,10 @@
   }
   
   .res-button img {
-    width: 50px;
+    display: block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
   }
 
   .error {
