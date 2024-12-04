@@ -435,23 +435,19 @@ class Editor extends EditorListener {
         let dur = this.player.durationMap[nota.getDuration().replace('r', '')];
 
         let noteDurationMs = this.caclularMs(parseInt(dur));
-        // Usar setTimeout para simular el retraso entre notas
         setTimeout(() => {
             this.playing = true;
             nota.playing = true;
             this.Editdraw();
-        }, delayTime - currentTime); // Retraso desde el tiempo actual
+        }, delayTime - currentTime);
 
-        // Desactivar la nota después de su duración
         setTimeout(() => {
             nota.playing = false;
             this.Editdraw();
         }, delayTime + noteDurationMs - currentTime);
 
-        // Actualizar el tiempo para la siguiente nota
         delayTime += noteDurationMs;
         
-        // Si es la última nota, detener la reproducción
         if (i === notas.length - 1) {
             setTimeout(() => {
                 this.playing = false;

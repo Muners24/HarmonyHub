@@ -53,45 +53,55 @@
             <p class="error">{{error}}</p>
           {% endif %}
           
-          <table class="tabla">
+          <table class="tabla" style="border: 2px solid">
+            <thead>
+              {% comment %} <tr>
+                <th>Imagen</th>
+                <th>Título del Reto</th>
+                <th>Compositor</th>
+                <th>Likes</th>
+                <th>Calificación</th>
+                <th>Acción</th>
+              </tr> {% endcomment %}
+            </thead>
             <tbody>
               {% for participacion in participaciones %}
-                <tr>
-                  <td>
-                    <img src="{{participacion.img}}" class="img-resultado">
-                  </td>
-
-                  <td>
-                    <p>{{participacion.tituloReto}}</p>
-                    <p>{{participacion.tipoReto}}</p>
-                  </td>
-                  
-                  <td>
-                    <p>{{participacion.titulo}}</p>
-                    <p>{{participacion.compositor}}</p>
-                  </td>
-
-                  <td>
-                    <p>Likes</p>
-                    <p>{{participacion.likes}}</p>
-                  </td>
-
-                  <td>
-                    <p>calificacion</p>
-                    <p>{{participacion.calificacion}}</p>
-                  </td>
-
-                  <td>
-                    <button class="res-button" onclick="verParticipacion({{participacion.id}});">
-                      <img src="{% static 'img/Archivo.png' %}">
-                      Ir
-                    </button>
-                  <td>
-                </tr>
+              <tr>
+                <td style="align-content: center">
+                  <img src="{{participacion.img}}" class="img-resultado">
+                </td>
+          
+                <td>
+                  <p>{{participacion.tituloReto}}</p>
+                  {% comment %} <p>{{participacion.tipoReto}}</p> {% endcomment %}
+                  <p>{{participacion.compositor}}</p>
+                </td>
+          
+                <td>
+                  <p>Participante</p>
+                  <p>{{partitura.compositor}}</p>
+                </td>
+          
+                <td>
+                  <p>Likes</p>
+                  <p>{{participacion.likes}}</p>
+                </td>
+          
+                <td>
+                  <p>Calificación</p>
+                  <p>{{participacion.calificacion}}</p>
+                </td>
+          
+                <td>
+                  <button class="res-button" onclick="verParticipacion({{participacion.id}});">
+                    <img src="{% static 'img/Archivo.png' %}" width="20px" height="20px">
+                    Ir
+                  </button>
+                </td>
+              </tr>
               {% endfor %}
             </tbody>
           </table>
-
         </div>
       </div>
     </div>

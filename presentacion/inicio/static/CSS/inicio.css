@@ -1,5 +1,5 @@
 .i-button {
-    width: 305px;
+    width: 260px;
     height: 60px;
     font-size: 25px;
     color: #fff;
@@ -36,6 +36,7 @@
     font-weight: bold;
     color: #2c2e33;
     padding-bottom: 4px;
+    margin-bottom: 20px;
 }
 
 .logo-fondo{
