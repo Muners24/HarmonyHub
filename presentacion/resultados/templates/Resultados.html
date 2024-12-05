@@ -20,6 +20,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'CSS/editor.css' %}"/>
 
     <script src="{% static 'Scripts/DropDownMaster.js' %}" defer></script>
+    <script src="{% static 'Scripts/SelCategoria.js' %}" defer></script>
     <script src="{% static 'Scripts/Buscar.js' %}" defer></script>
     
     <title></title>
@@ -33,16 +34,16 @@
           <p class="titulo" >Resultado de retos</p>
           <div class="dropdown-down">
               <button class="dd-categoria" onclick="toggleDD('ddItemsCategoria')">
-                  Categoría
+                  {{categoria}}
                   <div style="position: absolute;">
                     <img src="{% static 'img/Symbols/Staccatissimo.png' %}" class="dd-icon">
                   </div>
               </button>
 
               <div id="ddItemsCategoria" class="dropdown-container-down" style="display: none;">
-                  <button class="dd-itm-buscador" onclick="" >Armónico</button>
-                  <button class="dd-itm-buscador" onclick="">Rítmico</button>
-                  <button class="dd-itm-buscador" onclick="">Melódico</button>
+                  <button class="dd-itm-buscador" onclick="selCategoria('Armónico')" >Armónico</button>
+                  <button class="dd-itm-buscador" onclick="selCategoria('Rítmico')">Rítmico</button>
+                  <button class="dd-itm-buscador" onclick="selCategoria('Melódico')">Melódico</button>
               </div>
           </div>
 

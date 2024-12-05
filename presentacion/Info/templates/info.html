@@ -21,9 +21,91 @@
   <body>
     <h2>Información</h2>
     <div class="tabla-contenedor">
+
+        <p class="titulos">
+            Pentagrama
+        </p>
+
+        <p>
+            El pentagrama es el conjunto de cinco líneas horizontales sobre las que escribimos las notas musicales. Es como una "hoja de papel" musical.
+
+            Las notas se colocan en estas líneas o en los espacios entre ellas. Y dependiendo de la clave que estés usando, estas líneas y espacios representarán notas específicas.
+        
+        </p>
+
+        <br>
+
+        <p class="titulos">
+            Claves
+        </p>
+
+        <p>
+            Imagina que la clave es como el mapa que te dice dónde están las notas en el pentagrama. Es un símbolo que se coloca al principio de la partitura y nos dice cómo leer las notas que vienen después.
+
+            Cada clave nos indica en qué posición debemos leer las notas en las líneas del pentagrama. Es como si te diera un "punto de referencia" para que sepas cómo interpretar las notas.
+        </p>
+
+        <ul style="padding-left: 40px;">
+            <li>
+                <img src="{% static 'img/ClaveSol.jpg' %}" class="claves">
+                Se utiliza para notas más agudas, como las de los instrumentos melódicos (por ejemplo, el piano en la mano derecha o la voz soprano). 
+            </li>
+            <br>
+            <li>
+                <img src="{% static 'img/ClaveFa.jpg' %}" class="claves">
+                Se utiliza para notas más graves, como las del bajo o del piano en la mano izquierda.
+            </li>
+        </ul>
+
+        <br>
+
+        <p class="titulos">
+            Compás
+        </p>
+        
+        <p>
+            El compás divide la música en secciones. Se representa con dos líneas verticales que separan los grupos de notas y silencios. El número de tiempos que tiene un compás se indica al principio con un número, como 4/4 (cuatro tiempos por compás).
+            <br>
+            Estas marcas indican el ritmo con el que debes tocar la música, como:
+        </p>
+
+        <ul style="padding-left: 40px;">
+            <li>4/4: Cuatro tiempos por compás.</li>
+            <li>3/4: Tres tiempos por compás.</li>
+            <li>6/8: Seis tiempos por compás.</li>
+        </ul>
+
+        <br>
+
+        <p class="titulos">
+            Tempo
+        </p>
+        
+        <p>
+            El tempo en la música es la velocidad a la que se debe interpretar una pieza musical. Indica cuán rápido o lento debe ir la música y se mide en pulsos por minuto (BPM).
+            <br>
+            Por ejemplo:
+        </p>
+
+        <ul style="padding-left: 40px;">
+            <li>Tempo rápido: 120 BPM o más rápido. Suena como si la música estuviera moviéndose con mucha energía.</li>
+            <li>Tempo lento: 60 BPM o menos. La música suena más relajada o pausada.</li>
+        </ul>
+
+        <p>
+            El tempo se puede indicar al principio de la partitura con una palabra italiana (como Allegro para rápido o Adagio para lento) o con un número que indica los pulsos por minuto.
+        </p>
+
+        <br>
+
         <p class="titulos">
             Tabla de Figuras Musicales
         </p>
+
+        <p>
+            Aquí aprenderás sobre los símbolos que usamos para escribir las notas y los silencios en la música. Cada figura representa una duración diferente de sonido o de silencio. 
+        </p>
+        
         <table>
             <tbody>
                 <tr>
@@ -69,7 +151,7 @@
                     
                     <tr>
                         <td>
-                            <img src="{% static 'img/Blanca.png' %}" class="hd">
+                            <img src="{% static 'img/Blanca1.png' %}" class="hq">
                         </td>
                         <td>Blanca</td>
                         <td>La blanca es una figura musical que representa una duración de 1/2 de un compás en un tiempo de 4/4.</td>
@@ -94,9 +176,18 @@
 
             </tbody>
         </table>
+
+        <br>
+        <br>
+
         <p class="titulos">
             Tabla de Alteraciones
         </p>
+
+        <p>
+            Esta sección te muestra los símbolos que cambian el sonido de las notas. Algunos símbolos hacen que la nota suene más baja (como el bemol) y otros la hacen sonar más alta (como el sostenido). También verás símbolos que vuelven a la nota a su tono original, como el natural.
+        </p>
+
         <table>
             <tbody>
                 <tr>
@@ -141,7 +232,7 @@
                 
                 <tr>
                     <td>
-                        <img src="{% static 'img/Puntillo.png' %}" class="hd">
+                        <img src="{% static 'img/Puntillo1.png' %}" class="hq">
                     </td>
                     <td>Puntillo</td>
                     <td>Aumenta la duración de la nota o el descanso a la mitad de su valor original.</td>
@@ -150,8 +241,16 @@
             </tbody>
         </table>
 
+        <br>
+        <br>
+
         <p class="titulos">
             Tabla de Relaciones entre Notas
+        </p>
+
+        <p>
+            Aquí se habla de cómo las notas pueden estar relacionadas entre sí.        
+
         </p>
         <table>
             <tbody>
@@ -174,9 +273,17 @@
             </tbody>
         </table>
 
+        <br>
+        <br>
+
         <p class="titulos">
             Tabla de Dinámicas
         </p>
+
+        <p>
+            En esta sección, aprenderás sobre el volumen con el que debes tocar la música. Hay símbolos que indican si la música debe sonar muy suave (pianissimo) o muy fuerte (fortissimo). También te dice si la música debe ir aumentando el volumen (como el símbolo crescendo).
+        </p>
+
         <table>
             <tbody>
                 <tr>
@@ -238,9 +345,17 @@
             </tbody>
         </table>
 
+        <br>
+        <br>
+
         <p class="titulos">
             Tabla de Articulaciones o Acentos
         </p>
+
+        <p>
+            Aquí se habla de cómo debes tocar las notas de manera especial.         
+        </p>
+
         <table>
             <tbody>
                 <tr>
@@ -294,9 +409,17 @@
             </tbody>
         </table>
 
+        <br>
+        <br>
+
         <p class="titulos">
             Tabla Descripción de Categoría de Retos
         </p>
+
+        <p>
+            Esta sección explica qué tipos de desafíos musicales puedes encontrar.        
+        </p>
+
         <table>
             <tbody>
 

@@ -1,0 +1,17 @@
+.titulo-partitura {
+    position: absolute;
+    font-size: 25px;
+    font-weight: bold;
+    color: #333333;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.compositor-partitura {
+    position: absolute;
+    font-size: 25px;
+    font-weight: bold;
+    color: #333333;
+    right: 0;
+    margin-right: 10%;
+}

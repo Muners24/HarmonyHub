@@ -126,6 +126,28 @@ class D_Participacion(Conexion):
             self.cerrarConexion()
             return participaciones
         
+    def listarParticipacionesAnterioresCategoria(self,categoria:str)->list:
+        participaciones = []
+        try:
+            self.abrirConexion()
+            cursor = self.conexion.cursor()
+            
+            cursor.execute( "{CALL ListarParticipacionesAnterioresCategoria (?)}",(categoria)),
+
+            rows = cursor.fetchall()
+            
+            for row in rows:
+                participaciones.append(
+                    E_Participacion(idParticipacion=row[0],idUsuario=row[1],idPartitura=row[2],idReto=row[3],titulo=row[4],calificacion=row[5])
+                )
+
+        except Exception as ex:
+            print(f"Error al listar participaciones anteriores: {ex}")
+        
+        finally:
+            self.cerrarConexion()
+            return participaciones
+        
     def calificarParticipaciones(self) -> True:
         try:
             self.abrirConexion()

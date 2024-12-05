@@ -1,9 +1,9 @@
 import pyodbc
 
-server = 'DESKTOP-A2KPPT3\\SQLEXPRESS' 
-database = 'harmonydb'         
-username = 'HARMONYHUB'                     
-password = '1234'     
+server = 'harmonyteds.database.windows.net' 
+database = 'harmonyhub'         
+username = 'ramon'                     
+password = 'R123456789.'   
 
 class Conexion:
     

@@ -2,12 +2,17 @@ from django.shortcuts import render, redirect
 from .forms import UsuarioForm, PerfilForm, LoginForm
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+
+import os
+import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+
 from negocios.registro.Registro import Registro
 from negocios.login.Login import Login
 from entidades.E_Usuario import E_Usuario
 from entidades.E_Perfil import E_Perfil
-import base64
-import io
+
 
 def registrar(request):
     if request.method == 'POST':
@@ -61,8 +66,6 @@ def registrar(request):
         'perfil_form': perfil_form,
     })
 
-
-
 def login(request):
     request.session['IdUsuario'] = None
 
@@ -94,9 +97,9 @@ def login(request):
 def logout(request):
     request.session['IdUsuario'] = None
     
-    return redirect(login)  
+    return redirect('/login/')  
 
 def tologin(request):
     
-    return redirect(logout)  
+    return redirect('/logout/')
     

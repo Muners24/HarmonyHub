@@ -159,3 +159,51 @@ class N_Participacion:
         
         
         return {'participaciones': participacionesJson,'error': error}
+    
+    
+    def getResultadosCategoria(self,categoria):
+        
+        participaciones = self.DParticipacion.listarParticipacionesAnterioresCategoria(categoria)
+        
+        participacionesJson = []
+        
+        for participacion in participaciones:            
+            perfil = self.DPerfil.buscarPefilPorIdUsuario(participacion.IdUsuario)
+            
+            if perfil == None:
+                continue
+            
+            
+            reto = self.DR.buscarRetoPorId(participacion.IdReto)
+            
+            if reto == None:
+                continue
+            
+            
+            partitura = self.DPartitura.buscarPartituraPorId(participacion.IdPartitura)
+            
+            if partitura == None:
+                continue
+            
+            
+            likes = self.DL.contarLikes(participacion.IdParticipacion)
+            
+            participacionesJson.append({
+                'id': participacion.IdParticipacion,
+                'img':perfil.getImg(),
+                'tituloReto' : reto.Titulo,
+                'tipoReto' : reto.TipoReto,
+                'titulo': participacion.Titulo,
+                'compositor': partitura.Compositor,
+                'likes': likes,
+                'calificacion':participacion.Calificacion,
+            })
+            
+            
+        error = None
+        if len(participacionesJson) == 0:
+            error = 'No hay participaciones registradas'
+        
+        
+        
+        return {'participaciones': participacionesJson,'error': error}
